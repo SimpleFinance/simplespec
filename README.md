@@ -21,7 +21,7 @@ How To Use
     
     val scalaToolsReleases = "scala-tools.org Releases" at "http://scala-tools.org/repo-releases"
     val codaRepo = "Coda Hale's Repository" at "http://repo.codahale.com/"
-    val simplespec = "com.codahale" %% "simplespec" % "0.1" withSources()
+    val simplespec = "com.codahale" %% "simplespec" % "0.1.0" withSources()
 
 **Second**, write a spec:
     
