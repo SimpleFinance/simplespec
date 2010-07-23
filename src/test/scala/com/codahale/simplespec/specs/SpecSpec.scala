@@ -14,10 +14,27 @@ object SpecSpec extends Spec {
     println("after all")
   }
   
+  trait IAmATrait {
+    val v: Boolean
+    def `should work out but only when included` {
+      true must be(v)
+    }
+  }
+  
+  abstract class `Abstract classes` {
+    def `should never run` {
+      true must be(false)
+    }
+  }
+  
   class `The simplest thing ever` {
     def `should work` {
-      
+      true must be(true)
     }
+  }
+  
+  class `Classes with mixins` extends IAmATrait {
+    override val v = true
   }
   
   class `A crazy object-oriented spec` {
