@@ -3,15 +3,20 @@ package com.codahale.simplespec
 import org.specs.Specification
 import reflect.NameTransformer
 import java.lang.reflect.{InvocationTargetException}
-import java.lang.reflect.Modifier.{isAbstract, isInterface, isPublic}
+import java.lang.reflect.Modifier.{isAbstract, isFinal, isInterface, isPublic, isStatic}
 
 abstract class Spec extends Specification {
   {
     val klass = Class.forName(this.getClass.getName.replace("$", ""))
     for (susKlass <- klass.getClasses if isPublic(susKlass.getModifiers) &&
                                          !isAbstract(susKlass.getModifiers) &&
-                                         !isInterface(susKlass.getModifiers)) {
+                                         !isInterface(susKlass.getModifiers) && 
+                                         !(isStatic(susKlass.getModifiers) &&
+                                           isPublic(susKlass.getModifiers) &&
+                                           isFinal(susKlass.getModifiers))) {
       NameTransformer.decode(susKlass.getSimpleName) should {
+        // println(susKlass)
+        // println(susKlass.getModifiers)
         beforeAll.before
         afterAll.after
         val beforeEachMethod = try {
