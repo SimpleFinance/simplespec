@@ -15,5 +15,5 @@ class SimpleSpec(info: sbt.ProjectInfo) extends sbt.DefaultProject(info) with Id
    * Dependencies
    */
   val scalaToolsReleases = "scala-tools.org Releases" at "http://scala-tools.org/repo-releases"
-  val specs = "org.scala-tools.testing" %% "specs" % "1.6.5" withSources()
+  val specs = "org.scala-tools.testing" %% "specs" % "1.6.6" withSources()
 }
