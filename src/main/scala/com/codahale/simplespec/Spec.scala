@@ -33,8 +33,8 @@ abstract class Spec extends Specification {
         for (exampleMethod <- susKlass.getDeclaredMethods if exampleMethod.getName.startsWith("should")) {
           val name = NameTransformer.decode(exampleMethod.getName)
           name.substring("should".length) >> {
-            val instance = susKlass.getConstructor().newInstance()
             try {
+              val instance = susKlass.getConstructor().newInstance()
               beforeEachMethod.map { _.invoke(instance) }
               try {
                 exampleMethod.invoke(instance)

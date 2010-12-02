@@ -56,4 +56,16 @@ object SpecSpec extends Spec {
       println("after each")
     }
   }
+
+//  class `A class which throws an exception when it's created` {
+//    throw new IllegalArgumentException("oh noes")
+//
+//    def `should not be horribly ugly` {
+//      true must be(true)
+//    }
+//
+//    def `should do something cool` {
+//      true must be(true)
+//    }
+//  }
 }

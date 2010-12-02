@@ -1,4 +1,4 @@
-class SimpleSpec(info: sbt.ProjectInfo) extends sbt.DefaultProject(info) with posterous.Publish with rsync.RsyncPublishing {
+class SimpleSpec(info: sbt.ProjectInfo) extends sbt.DefaultProject(info) with IdeaProject with posterous.Publish with rsync.RsyncPublishing {
   /**
    * Publish the source as well as the class files.
    */
@@ -15,5 +15,5 @@ class SimpleSpec(info: sbt.ProjectInfo) extends sbt.DefaultProject(info) with po
    * Dependencies
    */
   val scalaToolsReleases = "scala-tools.org Releases" at "http://scala-tools.org/repo-releases"
-  val specs = "org.scala-tools.testing" %% "specs" % "1.6.5" withSources()
+  val specs = "org.scala-tools.testing" %% "specs" % "1.6.6" withSources()
 }
