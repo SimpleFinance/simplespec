@@ -1,4 +1,9 @@
-class SimpleSpec(info: sbt.ProjectInfo) extends sbt.DefaultProject(info) with IdeaProject with posterous.Publish with rsync.RsyncPublishing {
+import sbt._
+import maven._
+
+class SimpleSpec(info: ProjectInfo) extends DefaultProject(info)
+                                            with IdeaProject
+                                            with MavenDependencies {
   /**
    * Publish the source as well as the class files.
    */
@@ -7,13 +12,15 @@ class SimpleSpec(info: sbt.ProjectInfo) extends sbt.DefaultProject(info) with Id
   override def packageToPublishActions = super.packageToPublishActions ++ Seq(packageSrc)
 
   /**
-   * Publish via rsync.
+   * Publish to my repo.
    */
-  def rsyncRepo = "codahale.com:/home/codahale/repo.codahale.com"
+  lazy val publishTo = Resolver.sftp("Personal Repo",
+                                     "codahale.com",
+                                     "/home/codahale/repo.codahale.com/")
   
   /**
    * Dependencies
    */
   val scalaToolsReleases = "scala-tools.org Releases" at "http://scala-tools.org/repo-releases"
-  val specs = "org.scala-tools.testing" %% "specs" % "1.6.6" withSources()
+  val specs = "org.scala-tools.testing" %% "specs" % "1.6.6"
 }
