@@ -1,7 +1,7 @@
 import sbt._
 import maven._
 
-class SimpleSpec(info: ProjectInfo) extends DefaultProject(info)
+class SimpleSpecProject(info: ProjectInfo) extends DefaultProject(info)
                                             with IdeaProject
                                             with MavenDependencies {
   /**
