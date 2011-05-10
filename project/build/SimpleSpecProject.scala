@@ -22,5 +22,5 @@ class SimpleSpecProject(info: ProjectInfo) extends DefaultProject(info)
    * Dependencies
    */
   val scalaToolsReleases = "scala-tools.org Releases" at "http://scala-tools.org/repo-releases"
-  val specs = "org.scala-tools.testing" %% "specs" % "1.6.6"
+  val specs = "org.scala-tools.testing" %% "specs" % "1.6.7.2"
 }

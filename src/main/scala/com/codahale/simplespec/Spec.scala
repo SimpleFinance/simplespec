@@ -1,61 +1,36 @@
 package com.codahale.simplespec
 
 import org.specs.Specification
-import reflect.NameTransformer
-import java.lang.reflect.{InvocationTargetException}
-import java.lang.reflect.Modifier.{isAbstract, isFinal, isInterface, isPublic, isStatic}
 
-abstract class Spec extends Specification {
+trait Spec extends Specification with Discovery {
+  def beforeAll() {}
+
+  def afterAll() {}
+
   {
     val klass = Class.forName(this.getClass.getName.replace("$", ""))
-    for (susKlass <- klass.getClasses if isPublic(susKlass.getModifiers) &&
-                                         !isAbstract(susKlass.getModifiers) &&
-                                         !isInterface(susKlass.getModifiers) && 
-                                         !(isStatic(susKlass.getModifiers) &&
-                                           isPublic(susKlass.getModifiers) &&
-                                           isFinal(susKlass.getModifiers))) {
-      NameTransformer.decode(susKlass.getSimpleName) should {
-        // println(susKlass)
-        // println(susKlass.getModifiers)
+    for ((path, requirements) <- discover(klass).groupBy {_.names}) {
+      val sus = specify(path.mkString(" "))
+      sus.verb = ""
+      sus.should {
         beforeAll.before
         afterAll.after
-        val beforeEachMethod = try {
-          Some(susKlass.getDeclaredMethod("beforeEach"))
-        } catch {
-          case e: Exception => None
-        }
-        val afterEachMethod = try {
-          Some(susKlass.getDeclaredMethod("afterEach"))
-        } catch {
-          case e: Exception => None
-        }
-        
-        for (exampleMethod <- susKlass.getDeclaredMethods if exampleMethod.getName.startsWith("should")) {
-          val name = NameTransformer.decode(exampleMethod.getName)
-          name.substring("should".length) >> {
-            try {
-              val instance = susKlass.getConstructor().newInstance()
-              beforeEachMethod.map { _.invoke(instance) }
-              try {
-                exampleMethod.invoke(instance)
-              } finally {
-                afterEachMethod.map { _.invoke(instance) }
-              }
-            } catch {
-              case e: InvocationTargetException =>
-                throw e.getCause
-            }
+        requirements.foreach { req =>
+          req.name >> {
+            req.evaluate()
           }
         }
       }
     }
   }
-  
-  def beforeAll {
-    // override me for awesome fun
-  }
-  
-  def afterAll {
-    // override me for awesome fun
-  }
 }
+
+trait Before {
+  def beforeEach() {}
+}
+
+trait After {
+  def afterEach() {}
+}
+
+trait Around extends Before with After
