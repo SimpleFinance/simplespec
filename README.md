@@ -11,7 +11,7 @@ methods.
 Requirements
 ------------
 
-* Scala 2.8.0
+* Scala 2.8.1
 
 
 How To Use
