@@ -1,16 +1,19 @@
 package org.example.specs
 
 import collection.mutable
-import com.codahale.simplespec.{Before, Spec}
+import org.specs2.execute.Pending
+import com.codahale.simplespec.{BeforeAndAfterEach, BeforeEach, Spec}
 
 object ExampleSpec extends Spec {
-  private val numbers = new mutable.HashSet[Int]
 
-  override def beforeAll() {
-    numbers += 1
-  }
+
+  override def beforeAll() = println("beforeAll")
+
+  override def afterAll() = println("afterAll")
 
   class `A set with two numbers` {
+    private val numbers = new mutable.HashSet[Int]
+    numbers += 1
     numbers += 2
 
     def `has a size of two` = {
@@ -40,22 +43,32 @@ object ExampleSpec extends Spec {
         numbers -= 109
 
         def `probably doesn't have a size of three hundred and four` = {
-          skip("poop")
-          numbers must haveSize(304)
+//          numbers must haveSize(304)
         }
       }
     }
   }
 
-  class `A class with some setup` extends Before {
+  class `A class with some setup` extends BeforeAndAfterEach {
     private var items: List[String] = Nil
 
     override def beforeEach() {
+      println("before")
       items = "whoah" :: items
     }
 
+    override def afterEach() = println("after")
+
     def `should run the setup` = {
       items must haveSize(1)
+    }
+
+    def `should do another thing` = {
+      done
+    }
+
+    def `should really blah blee bloo` = {
+      done
     }
   }
 
@@ -63,7 +76,7 @@ object ExampleSpec extends Spec {
 //    throw new IllegalArgumentException("what the hell dude")
 //
 //    def `should blah blee bloo` = {
-//      skip("poop")
+////      skip("poop")
 //    }
 //  }
 }

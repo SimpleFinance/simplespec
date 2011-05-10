@@ -3,6 +3,7 @@ package com.codahale.simplespec
 import java.lang.reflect.Modifier._
 import reflect.NameTransformer
 import java.lang.reflect.{InvocationTargetException, Method}
+import org.specs2.execute.{FailureException, Failure}
 
 case class Requirement(klass: Class[_], method: Method) {
   lazy val path = (klass :: parents(klass)).reverse
@@ -12,28 +13,41 @@ case class Requirement(klass: Class[_], method: Method) {
   lazy val name = NameTransformer.decode(method.getName)
 
   def evaluate() = {
-    val root = path.head.newInstance().asInstanceOf[Object]
-    val instance = path.tail.foldLeft(root) { (parent, k) =>
-      k.getConstructor(parent.getClass).newInstance(parent).asInstanceOf[Object]
-    }
     try {
-      if (classOf[Before].isAssignableFrom(instance.getClass)) {
-        instance.asInstanceOf[Before].beforeEach()
+      val root = path.head.newInstance().asInstanceOf[Object]
+      val instance = path.tail.foldLeft(root) {(parent, k) =>
+        k.getConstructor(parent.getClass).newInstance(parent).asInstanceOf[Object]
+      }
+
+      if (classOf[BeforeEach].isAssignableFrom(instance.getClass)) {
+        instance.asInstanceOf[BeforeEach].beforeEach()
       }
       try {
         method.invoke(instance)
       } finally {
-        if (classOf[After].isAssignableFrom(instance.getClass)) {
-          instance.asInstanceOf[After].afterEach()
+        if (classOf[AfterEach].isAssignableFrom(instance.getClass)) {
+          instance.asInstanceOf[AfterEach].afterEach()
         }
       }
     } catch {
       case e: InvocationTargetException => {
-        throw e.getCause
-//        val entry = e.getCause.getStackTrace.dropWhile { e =>
-//          val n = e.getClassName
-//          n.startsWith("com.codahale.simplespec") || n.startsWith("scala")
-//        }.head
+        e.getCause match {
+          case failure: FailureException => {
+            val f = failure.f
+            throw new FailureException(
+              Failure(f.m, f.e,
+                // seriously this is what it takes to fake out specs2's
+                // location code
+                new StackTraceElement("dummy", "dummy", "dummy", -1) ::
+                  f.stackTrace.filterNot {el =>
+                    el.getClassName.startsWith("org.specs2")
+                  },
+                f.details)
+            )
+          }
+          case e2 if e2 != null => throw e2
+          case _ => throw e
+        }
       }
     }
   }
@@ -64,8 +78,8 @@ trait Discovery {
     isPublic(method.getModifiers) &&
       !method.getName.contains("$$") &&
       method.getParameterTypes.length == 0 &&
-      !(method.getName == "beforeEach" && classOf[Before].isAssignableFrom(method.getDeclaringClass)) &&
-      !(method.getName == "afterEach" && classOf[After].isAssignableFrom(method.getDeclaringClass))
+      !(method.getName == "beforeEach" && classOf[BeforeEach].isAssignableFrom(method.getDeclaringClass)) &&
+      !(method.getName == "afterEach" && classOf[AfterEach].isAssignableFrom(method.getDeclaringClass))
 
   protected def discover(klass: Class[_]): List[Requirement] = {
     var requirements = List.empty[Requirement]
