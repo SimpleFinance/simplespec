@@ -18,6 +18,7 @@ trait Spec extends Specification with Discovery {
         requirements.map { req =>
           req.name in {
             req.evaluate() match {
+              case null => success
               case r: Result => r
               case other: Object => {
                 try {

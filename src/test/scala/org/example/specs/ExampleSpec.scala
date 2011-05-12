@@ -74,6 +74,10 @@ object ExampleSpec extends Spec with Mockito {
     def `should really blah blee bloo` = {
       done
     }
+
+    def `should do a thing`() {
+      1 must beEqualTo(1)
+    }
   }
 
   private class Dingo {
