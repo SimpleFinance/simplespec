@@ -1,8 +1,8 @@
 package org.example.specs
 
 import collection.mutable
-import com.codahale.simplespec.{BeforeAndAfterEach, Spec}
 import org.specs2.mock.Mockito
+import com.codahale.simplespec.{ignore, BeforeAndAfterEach, Spec}
 
 object ExampleSpec extends Spec with Mockito {
   override def beforeAll() {
@@ -47,6 +47,10 @@ object ExampleSpec extends Spec with Mockito {
         def `probably doesn't have a size of three hundred and four` = {
 //          numbers must haveSize(304)
         }
+
+        def `is also a giraffe` = {
+          "moo"
+        }
       }
     }
   }
@@ -78,9 +82,13 @@ object ExampleSpec extends Spec with Mockito {
     def `should do a thing`() {
       1 must beEqualTo(1)
     }
+
+    @ignore
+    def doADamnThing = "yay"
   }
 
-  private class Dingo {
+  @ignore
+  class Dingo {
     def poop = "woo"
   }
 
