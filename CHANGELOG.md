@@ -1,3 +1,12 @@
+v0.3.1: May 12 2011
+===================
+
+* Now only cross-building for Scala 2.8.1 and 2.9.0.
+* Fixed a bug handling non-`Result` return types.
+* No longer considers example methods returning `Unit` to be pending.s
+* Added a new `@ignore` annotation.
+* Improved example discovery reflection.
+
 v0.3.0: May 10 2011
 ===================
 

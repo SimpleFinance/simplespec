@@ -63,23 +63,25 @@ case class Requirement(klass: Class[_], method: Method) {
 }
 
 trait Discovery {
-  private def couldHaveRequirements(klass: Class[_]) = try {
-    isPublic(klass.getModifiers) &&
-    !isAbstract(klass.getModifiers) &&
-    !isInterface(klass.getModifiers) &&
-    !(isStatic(klass.getModifiers) &&
-      isFinal(klass.getModifiers)) &&
-      !klass.getSimpleName.contains("$anonfun$")
-  } catch {
-    case e => false
+  private def isSynthetic(modifiers: Int) = (modifiers & 0x00001000) != 0
+
+  private def couldHaveRequirements(klass: Class[_]) = {
+    klass.getInterfaces.contains(classOf[ScalaObject]) &&
+      !isInterface(klass.getModifiers) &&
+      !klass.isAnnotationPresent(classOf[ignore])
   }
 
-  private def isRequirement(method: Method) =
-    isPublic(method.getModifiers) &&
-      !method.getName.contains("$$") &&
-      method.getParameterTypes.length == 0 &&
+
+  private def isRequirement(method: Method) = {
+    method.getParameterTypes.length == 0 &&
+    !isSynthetic(method.getModifiers) &&
+      !isPrivate(method.getModifiers) &&
+      !isFinal(method.getModifiers) &&
       !(method.getName == "beforeEach" && classOf[BeforeEach].isAssignableFrom(method.getDeclaringClass)) &&
-      !(method.getName == "afterEach" && classOf[AfterEach].isAssignableFrom(method.getDeclaringClass))
+      !(method.getName == "afterEach" && classOf[AfterEach].isAssignableFrom(method.getDeclaringClass)) &&
+      !method.isAnnotationPresent(classOf[ignore])
+  }
+
 
   protected def discover(klass: Class[_]): List[Requirement] = {
     var requirements = List.empty[Requirement]

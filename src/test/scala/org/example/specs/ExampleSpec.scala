@@ -1,15 +1,17 @@
 package org.example.specs
 
 import collection.mutable
-import org.specs2.execute.Pending
-import com.codahale.simplespec.{BeforeAndAfterEach, BeforeEach, Spec}
+import org.specs2.mock.Mockito
+import com.codahale.simplespec.{ignore, BeforeAndAfterEach, Spec}
 
-object ExampleSpec extends Spec {
+object ExampleSpec extends Spec with Mockito {
+  override def beforeAll() {
+    println("beforeAll")
+  }
 
-
-  override def beforeAll() = println("beforeAll")
-
-  override def afterAll() = println("afterAll")
+  override def afterAll() {
+    println("afterAll")
+  }
 
   class `A set with two numbers` {
     private val numbers = new mutable.HashSet[Int]
@@ -45,6 +47,10 @@ object ExampleSpec extends Spec {
         def `probably doesn't have a size of three hundred and four` = {
 //          numbers must haveSize(304)
         }
+
+        def `is also a giraffe` = {
+          "moo"
+        }
       }
     }
   }
@@ -57,7 +63,9 @@ object ExampleSpec extends Spec {
       items = "whoah" :: items
     }
 
-    override def afterEach() = println("after")
+    override def afterEach() {
+      println("after")
+    }
 
     def `should run the setup` = {
       items must haveSize(1)
@@ -69,6 +77,28 @@ object ExampleSpec extends Spec {
 
     def `should really blah blee bloo` = {
       done
+    }
+
+    def `should do a thing`() {
+      1 must beEqualTo(1)
+    }
+
+    @ignore
+    def doADamnThing = "yay"
+  }
+
+  @ignore
+  class Dingo {
+    def poop = "woo"
+  }
+
+  class `A class with a mock` {
+    private val dingo = mock[Dingo]
+
+    def `shouldn't need to return a Result, really` = {
+      dingo.poop
+
+      there was one(dingo).poop
     }
   }
 
