@@ -11,7 +11,7 @@ write your specifications as simple classes and methods.
 Requirements
 ------------
 
-* Scala 2.8.1 or 2.9.0.RC1 or 2.9.0.RC2
+* Scala 2.8.1 or 2.9.0
 * Specs2 1.2
 
 
@@ -22,7 +22,7 @@ How To Use
 
 ```scala
     val codaRepo = "Coda Hale's Repository" at "http://repo.codahale.com/"
-    val simplespec = "com.codahale" %% "simplespec" % "0.3.0" % "test"
+    val simplespec = "com.codahale" %% "simplespec" % "0.3.1" % "test"
 
     // tell SBT to use the Specs2 runner
     def specs2Framework = new TestFramework("org.specs2.runner.SpecsFramework")
