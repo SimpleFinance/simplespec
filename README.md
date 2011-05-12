@@ -23,6 +23,10 @@ How To Use
 ```scala
     val codaRepo = "Coda Hale's Repository" at "http://repo.codahale.com/"
     val simplespec = "com.codahale" %% "simplespec" % "0.3.0" % "test"
+
+    // tell SBT to use the Specs2 runner
+    def specs2Framework = new TestFramework("org.specs2.runner.SpecsFramework")
+    override def testFrameworks = super.testFrameworks ++ Seq(specs2Framework)
 ```
 
 **Second**, write a spec:
