@@ -79,7 +79,8 @@ trait Discovery {
       !isFinal(method.getModifiers) &&
       !(method.getName == "beforeEach" && classOf[BeforeEach].isAssignableFrom(method.getDeclaringClass)) &&
       !(method.getName == "afterEach" && classOf[AfterEach].isAssignableFrom(method.getDeclaringClass)) &&
-      !method.isAnnotationPresent(classOf[ignore])
+      !method.isAnnotationPresent(classOf[ignore]) &&
+      !method.getName.endsWith("$outer")
   }
 
 
