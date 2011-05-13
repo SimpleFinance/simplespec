@@ -12,7 +12,7 @@ Requirements
 ------------
 
 * Scala 2.8.1 or 2.9.0
-* Specs2 1.2
+* Specs2 1.3
 
 
 How To Use
@@ -22,7 +22,7 @@ How To Use
 
 ```scala
     val codaRepo = "Coda Hale's Repository" at "http://repo.codahale.com/"
-    val simplespec = "com.codahale" %% "simplespec" % "0.3.2" % "test"
+    val simplespec = "com.codahale" %% "simplespec" % "0.3.3" % "test"
 
     // tell SBT to use the Specs2 runner
     def specs2Framework = new TestFramework("org.specs2.runner.SpecsFramework")
