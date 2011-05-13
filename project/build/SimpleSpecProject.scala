@@ -24,10 +24,7 @@ class SimpleSpecProject(info: ProjectInfo) extends DefaultProject(info)
   /**
    * Dependencies
    */
-  val specs2 = crossScalaVersionString match {
-    case "2.8.1" => "org.specs2" % "specs2_2.8.1" % "1.2"
-    case "2.9.0" => "org.specs2" % "specs2_2.9.0.RC2" % "1.2"
-  }
+  val specs2 = "org.specs2" %% "specs2" % "1.3"
 
   def specs2Framework = new TestFramework("org.specs2.runner.SpecsFramework")
   override def testFrameworks = super.testFrameworks ++ Seq(specs2Framework)
