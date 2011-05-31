@@ -68,7 +68,8 @@ trait Discovery {
   private def couldHaveRequirements(klass: Class[_]) = {
     klass.getInterfaces.contains(classOf[ScalaObject]) &&
       !isInterface(klass.getModifiers) &&
-      !klass.isAnnotationPresent(classOf[ignore])
+      !klass.isAnnotationPresent(classOf[ignore]) &&
+      isPublic(klass.getModifiers)
   }
 
 
