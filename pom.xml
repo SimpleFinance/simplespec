@@ -5,9 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.codahale</groupId>
-    <artifactId>simplespec_${scala.version}</artifactId>
+    <artifactId>simplespec</artifactId>
     <version>0.3.4-SNAPSHOT</version>
     <name>SimpleSpec for Scala ${scala.version}</name>
+
+    <properties>
+        <scala.version>2.9.0-1</scala.version>
+    </properties>
 
     <developers>
         <developer>
@@ -62,30 +66,6 @@
             <version>1.3</version>
         </dependency>
     </dependencies>
-
-    <profiles>
-        <profile>
-            <id>scala-2.8.1</id>
-            <properties>
-                <scala.version>2.8.1</scala.version>
-            </properties>
-        </profile>
-        <profile>
-            <id>scala-2.9.0</id>
-            <properties>
-                <scala.version>2.9.0</scala.version>
-            </properties>
-        </profile>
-        <profile>
-            <id>scala-2.9.0-1</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <scala.version>2.9.0-1</scala.version>
-            </properties>
-        </profile>
-    </profiles>
 
     <build>
         <plugins>
