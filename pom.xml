@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.codahale</groupId>
-    <artifactId>simplespec</artifactId>
+    <artifactId>simplespec_2.9.0-1</artifactId>
     <version>0.3.4-SNAPSHOT</version>
     <name>SimpleSpec for Scala ${scala.version}</name>
 
