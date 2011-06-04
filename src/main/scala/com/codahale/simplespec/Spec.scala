@@ -4,12 +4,15 @@ import org.specs2.mutable.Specification
 import org.specs2.execute.Result
 import org.specs2.specification.Step
 import java.lang.reflect.InvocationTargetException
+import org.junit.runner.RunWith
+import org.specs2.runner.JUnitRunner
 
-trait Spec extends Specification with Discovery {
+@RunWith(classOf[JUnitRunner])
+abstract class Spec extends Specification with Discovery {
   def beforeAll() {}
   def afterAll() {}
 
-  override def is = Step(beforeAll) ^ super.is ^ Step(afterAll)
+  override def is = Step(beforeAll()) ^ super.is ^ Step(afterAll())
 
   {
     val klass = Class.forName(this.getClass.getName.replace("$", ""))

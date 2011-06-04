@@ -4,7 +4,7 @@ import collection.mutable
 import org.specs2.mock.Mockito
 import com.codahale.simplespec.{ignore, BeforeAndAfterEach, Spec}
 
-object ExampleSpec extends Spec with Mockito {
+class ExampleSpec extends Spec with Mockito {
   override def beforeAll() {
     println("beforeAll")
   }
