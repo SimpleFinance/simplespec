@@ -1,3 +1,8 @@
+v0.3.4: Jun 04 2011
+===================
+
+* Added JUnit `@RunWith` annotation so `Spec` instances can run in Maven.
+
 v0.3.3: May 12 2011
 ===================
 
