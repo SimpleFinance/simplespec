@@ -20,13 +20,21 @@ How To Use
 
 **First**, specify SimpleSpec as a dependency:
 
-```scala
-    val codaRepo = "Coda Hale's Repository" at "http://repo.codahale.com/"
-    val simplespec = "com.codahale" %% "simplespec" % "0.3.3" % "test"
+```xml
+<repositories>
+    <repository>
+        <id>repo.codahale.com</id>
+        <url>http://repo.codahale.com</url>
+    </repository>
+</repositories>
 
-    // tell SBT to use the Specs2 runner
-    def specs2Framework = new TestFramework("org.specs2.runner.SpecsFramework")
-    override def testFrameworks = super.testFrameworks ++ Seq(specs2Framework)
+<dependencies>
+    <dependency>
+        <groupId>com.codahale</groupId>
+        <artifactId>simplespec_${scala.version}</artifactId>
+        <version>0.3.4</version>
+    </dependency>
+</dependencies>
 ```
 
 **Second**, write a spec:
