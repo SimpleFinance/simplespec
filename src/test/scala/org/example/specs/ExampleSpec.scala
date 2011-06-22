@@ -13,6 +13,8 @@ class ExampleSpec extends Spec with Mockito {
     println("afterAll")
   }
 
+  override def arguments = sequential
+
   class `A set with two numbers` {
     private val numbers = new mutable.HashSet[Int]
     numbers += 1
