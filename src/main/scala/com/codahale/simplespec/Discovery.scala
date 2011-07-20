@@ -4,6 +4,7 @@ import java.lang.reflect.Modifier._
 import reflect.NameTransformer
 import java.lang.reflect.{InvocationTargetException, Method}
 import org.specs2.execute.{FailureException, Failure}
+import com.codahale.simplespec.annotation.test
 
 case class Requirement(klass: Class[_], method: Method) {
   lazy val path = (klass :: parents(klass)).reverse
@@ -68,20 +69,13 @@ trait Discovery {
   private def couldHaveRequirements(klass: Class[_]) = {
     klass.getInterfaces.contains(classOf[ScalaObject]) &&
       !isInterface(klass.getModifiers) &&
-      !klass.isAnnotationPresent(classOf[ignore]) &&
       isPublic(klass.getModifiers)
   }
 
 
   private def isRequirement(method: Method) = {
     method.getParameterTypes.length == 0 &&
-    !isSynthetic(method.getModifiers) &&
-      !isPrivate(method.getModifiers) &&
-      !isFinal(method.getModifiers) &&
-      !(method.getName == "beforeEach" && classOf[BeforeEach].isAssignableFrom(method.getDeclaringClass)) &&
-      !(method.getName == "afterEach" && classOf[AfterEach].isAssignableFrom(method.getDeclaringClass)) &&
-      !method.isAnnotationPresent(classOf[ignore]) &&
-      !method.getName.endsWith("$outer")
+      method.isAnnotationPresent(classOf[test])
   }
 
 
