@@ -1,3 +1,10 @@
+v0.4.0: Jun 25 2011
+===================
+
+* Upgraded to Specs2 1.5.
+* Modified discovery to **only** run methods annotated with `@test`.
+* Added `Spec#arguments` method for specifying Specs2 arguments.
+
 v0.3.4: Jun 04 2011
 ===================
 

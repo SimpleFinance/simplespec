@@ -11,8 +11,8 @@ write your specifications as simple classes and methods.
 Requirements
 ------------
 
-* Scala 2.8.1 or 2.9.0
-* Specs2 1.3
+* Scala 2.8.1 or 2.9.0-1
+* Specs2 1.5
 
 
 How To Use
@@ -32,7 +32,7 @@ How To Use
     <dependency>
         <groupId>com.codahale</groupId>
         <artifactId>simplespec_${scala.version}</artifactId>
-        <version>0.3.4</version>
+        <version>0.4.0</version>
     </dependency>
 </dependencies>
 ```
@@ -42,23 +42,24 @@ How To Use
 ```scala
     import com.example.Stack
     import com.codahale.simplespec.Spec
+    import com.codahale.simplespec.annotation.test
     
-    object StackSpec extends Spec {
+    class StackSpec extends Spec {
       class `An empty stack` {
         val stack = Stack()
         
-        def `has a size of zero` = {
+        @test def `has a size of zero` = {
           stack.size must beEqualTo(0)
         }
         
-        def `is empty` = {
+        @test def `is empty` = {
           stack.isEmpty must beTrue
         }
 
         class `with an item added to it` = {
           stack += "woo"
 
-          def `might have an item in it` = {
+          @test def `might have an item in it` = {
             stack.isEmpty must beFalse
           }
         }
@@ -90,7 +91,8 @@ classes, making it play nicely with mutable data structures and mocks.
 
 Because Scala can use arbitrary strings for class and method names using the
 backtick characters, it's easy to use the literate style in naming
-systems-under-specification and examples.
+systems-under-specification and examples. Simplespec will only run methods which
+have been annotated with the `@test` annotation.
 
 `Spec` has two methods -- `beforeAll` and `afterAll` which are called before and
 after the entire set of requirements are evaluated. This is useful for fixture
