@@ -12,7 +12,9 @@ abstract class Spec extends Specification with Discovery {
   def beforeAll() {}
   def afterAll() {}
 
-  override def is = Step(beforeAll()) ^ super.is ^ Step(afterAll())
+  def arguments = args()
+
+  override def is = Step(beforeAll()) ^ arguments ^ super.is ^ Step(afterAll())
 
   {
     val klass = Class.forName(this.getClass.getName.replace("$", ""))

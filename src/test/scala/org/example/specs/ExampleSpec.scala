@@ -2,7 +2,8 @@ package org.example.specs
 
 import collection.mutable
 import org.specs2.mock.Mockito
-import com.codahale.simplespec.{ignore, BeforeAndAfterEach, Spec}
+import com.codahale.simplespec.annotation.test
+import com.codahale.simplespec.{BeforeAndAfterEach, Spec}
 
 class ExampleSpec extends Spec with Mockito {
   override def beforeAll() {
@@ -13,30 +14,32 @@ class ExampleSpec extends Spec with Mockito {
     println("afterAll")
   }
 
+  override def arguments = sequential
+
   class `A set with two numbers` {
     private val numbers = new mutable.HashSet[Int]
     numbers += 1
     numbers += 2
-
-    def `has a size of two` = {
+    
+    @test def `has a size of two` = {
       numbers must haveSize(2)
     }
 
     class `plus another number` {
       numbers += 3
 
-      def `probably has a size of three` = {
+      @test def `probably has a size of three` = {
         numbers must haveSize(3)
       }
 
       class `and a fourth number` {
         numbers += 4
 
-        def `really should have a size of four` = {
+        @test def `really should have a size of four` = {
           numbers must haveSize(4)
         }
 
-        def `should be awesome` = {
+        @test def `should be awesome` = {
           numbers must contain(2)
         }
       }
@@ -44,11 +47,11 @@ class ExampleSpec extends Spec with Mockito {
       class `minus a number which wasn't there in the first place` {
         numbers -= 109
 
-        def `probably doesn't have a size of three hundred and four` = {
+        @test def `probably doesn't have a size of three hundred and four` = {
 //          numbers must haveSize(304)
         }
 
-        def `is also a giraffe` = {
+        @test def `is also a giraffe` = {
           "moo"
         }
       }
@@ -67,27 +70,23 @@ class ExampleSpec extends Spec with Mockito {
       println("after")
     }
 
-    def `should run the setup` = {
+    @test def `should run the setup` = {
       items must haveSize(1)
     }
 
-    def `should do another thing` = {
+    @test def `should do another thing` = {
       done
     }
 
-    def `should really blah blee bloo` = {
+    @test def `should really blah blee bloo` = {
       done
     }
 
-    def `should do a thing`() {
+    @test def `should do a thing`() {
       1 must beEqualTo(1)
     }
-
-    @ignore
-    def doADamnThing = "yay"
   }
 
-  @ignore
   class Dingo {
     def poop = "woo"
   }
@@ -95,7 +94,7 @@ class ExampleSpec extends Spec with Mockito {
   class `A class with a mock` {
     private val dingo = mock[Dingo]
 
-    def `shouldn't need to return a Result, really` = {
+    @test def `shouldn't need to return a Result, really` = {
       dingo.poop
 
       there was one(dingo).poop
