@@ -69,8 +69,6 @@ case class Requirement(klass: Class[_], method: Method) {
 }
 
 trait Discovery {
-  private def isSynthetic(modifiers: Int) = (modifiers & 0x00001000) != 0
-
   private def couldHaveRequirements(klass: Class[_]) = {
     klass.getInterfaces.contains(classOf[ScalaObject]) &&
       !isInterface(klass.getModifiers) &&
