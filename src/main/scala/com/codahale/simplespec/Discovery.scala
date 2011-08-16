@@ -16,18 +16,23 @@ case class Requirement(klass: Class[_], method: Method) {
   def evaluate() = {
     try {
       val root = path.head.newInstance().asInstanceOf[Object]
-      val instance = path.tail.foldLeft(root) {(parent, k) =>
-        k.getConstructor(parent.getClass).newInstance(parent).asInstanceOf[Object]
+      val instances = path.tail.foldLeft(root :: Nil) { (parents, k) =>
+        val parent = parents.head
+        k.getConstructor(parent.getClass).newInstance(parent).asInstanceOf[Object] :: parents
       }
 
-      if (classOf[BeforeEach].isAssignableFrom(instance.getClass)) {
-        instance.asInstanceOf[BeforeEach].beforeEach()
+      val instance = instances.head
+
+      for (o <- instances.reverse if classOf[BeforeEach].isAssignableFrom(o.getClass)) {
+        o.asInstanceOf[BeforeEach].beforeEach()
       }
+
+
       try {
         method.invoke(instance)
       } finally {
-        if (classOf[AfterEach].isAssignableFrom(instance.getClass)) {
-          instance.asInstanceOf[AfterEach].afterEach()
+        for (o <- instances if classOf[AfterEach].isAssignableFrom(o.getClass)) {
+          o.asInstanceOf[AfterEach].afterEach()
         }
       }
     } catch {
@@ -64,8 +69,6 @@ case class Requirement(klass: Class[_], method: Method) {
 }
 
 trait Discovery {
-  private def isSynthetic(modifiers: Int) = (modifiers & 0x00001000) != 0
-
   private def couldHaveRequirements(klass: Class[_]) = {
     klass.getInterfaces.contains(classOf[ScalaObject]) &&
       !isInterface(klass.getModifiers) &&

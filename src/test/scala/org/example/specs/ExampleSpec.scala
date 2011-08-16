@@ -14,6 +14,41 @@ class ExampleSpec extends Spec with Mockito {
     println("afterAll")
   }
 
+  class `A` extends BeforeAndAfterEach {
+    override def afterEach() {
+      println("after A")
+    }
+
+    override def beforeEach() {
+      println("before A")
+    }
+
+    class `then B` extends BeforeAndAfterEach {
+      override def afterEach() {
+        println("after B")
+      }
+
+      override def beforeEach() {
+        println("before B")
+      }
+
+      class `then C` extends BeforeAndAfterEach {
+        @test def `is just frickin' fine` = {
+          println("C")
+          1 must beEqualTo(1)
+        }
+
+        override def afterEach() {
+          println("after C")
+        }
+
+        override def beforeEach() {
+          println("before C")
+        }
+      }
+    }
+  }
+
   override def arguments = sequential
 
   class `A set with two numbers` {
