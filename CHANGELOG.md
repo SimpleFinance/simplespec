@@ -1,3 +1,9 @@
+v0.4.1: Aug 16 2011
+===================
+
+* Now calling `beforeEach` and `afterEach` for all enclosing classes of an
+  example.
+
 v0.4.0: Jul 25 2011
 ===================
 
