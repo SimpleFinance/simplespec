@@ -1,0 +1,158 @@
+package com.codahale.simplespec
+
+import org.junit.Assert._
+
+private[simplespec] class IgnoredTestException extends Exception
+
+trait Assertions {
+  /**
+   * Fail the test immediately.
+   */
+  def fail(): Any = org.junit.Assert.fail()
+
+  /**
+   * Fail the test immediately with the given message.
+   */
+  def fail(message: String): Any = org.junit.Assert.fail(message)
+
+  /**
+   * Ignore all following assertions in the test.
+   */
+  def pending(): Any = throw new IgnoredTestException
+  
+  implicit def any2Assertable[A](value: A) = new AssertableAny[A](value)
+  implicit def bool2Assertable(value: Boolean) = new AssertableBoolean(value)
+  implicit def opt2Assertable[A](value: Option[A]) = new AssertableOption[A](value)
+  implicit def lambda2Assertable[A](value: => A) = new AssertableLambda[A](() => value)
+}
+
+class AssertableAny[A](actual: A) {
+  /**
+   * Assert that the value is equal to the given value.
+   */
+  def mustEqual(expected: Any): Any = {
+    if (actual != expected) {
+      assertEquals(expected, actual)
+    }
+  }
+}
+
+class AssertableBoolean(actual: Boolean) {
+  /**
+   * Assert that the value is true.
+   */
+  def mustBeTrue(): Any = {
+    assertEquals(true, actual)
+  }
+
+  /**
+   * Assert that the value is false.
+   */
+  def mustBeFalse(): Any = {
+    assertEquals(false, actual)
+  }
+}
+
+class AssertableOption[A](actual: Option[A]) {
+  /**
+   * Assert that the value is None.
+   */
+  def mustBeNone(): Any = {
+    assertEquals(None, actual)
+  }
+
+  /**
+   * Assert that the value is Some(x).
+   */
+  def mustBeSome(expected: Any): Any = {
+    val realExpected = Some(expected)
+    if (actual.isDefined) {
+      if (actual != realExpected) {
+        assertEquals(realExpected, actual)
+      }
+    } else assertEquals(realExpected, actual)
+  }
+}
+
+class AssertableLambda[A](expected: () => A) {
+  /**
+   * Assert that the left-hand lambda throws an exception of the given type.
+   */
+  def mustThrowA[E <: Throwable]()(implicit mf: Manifest[E]): Any = {
+    val klass = mf.erasure
+    var ok = true
+    try {
+      expected()
+      ok = false
+    } catch {
+      case e: Throwable => {
+        assertTrue("expected a " + klass.getName + " to be thrown, but a " + e.getClass.getName + " was thrown instead",
+          klass.isAssignableFrom(e.getClass))
+      }
+    }
+
+    if (!ok) {
+      fail("expected a " + klass.getName + " to be thrown, but nothing happened")
+    }
+  }
+
+  /**
+   * Assert that the left-hand lambda throws an exception of the given type.
+   */
+  def mustThrowAn[E <: Throwable]()(implicit mf: Manifest[E]): Any =
+    mustThrowA[E]()(mf)
+
+  /**
+   * Assert that the left-hand lambda throws an exception of the given type and
+   * with the given message.
+   */
+  def mustThrowA[E <: Throwable](message: String)(implicit mf: Manifest[E]): Any = {
+    val klass = mf.erasure
+    var ok = true
+    try {
+      expected()
+      ok = false
+    } catch {
+      case e: Throwable => {
+        assertTrue("expected a " + klass.getName + " to be thrown, but a " + e.getClass.getName + " was thrown instead",
+          klass.isAssignableFrom(e.getClass))
+        assertEquals(message, e.getMessage)
+      }
+    }
+
+    if (!ok) {
+      fail("expected a " + klass.getName + " to be thrown, but nothing happened")
+    }
+  }
+
+  /**
+   * Assert that the left-hand lambda throws an exception of the given type and
+   * with the given message.
+   */
+  def mustThrowAn[E <: Throwable](message: String)(implicit mf: Manifest[E]): Any =
+    mustThrowA[E](message)(mf)
+
+  /**
+   * Assert that the left-hand lambda throws an exception which matches the
+   * given partial function.
+   */
+  def mustThrowA(pf: PartialFunction[Throwable, Any]): Any = {
+    var ok = true
+    try {
+      expected()
+      ok = false
+    } catch {
+      case e: Throwable => {
+        if (pf.isDefinedAt(e)) {
+          pf(e)
+        } else {
+          fail("expected something besides a " + e.getClass.getName + " to be thrown")
+        }
+      }
+    }
+
+    if (!ok) {
+      fail("expected an exception to be thrown, but nothing happened")
+    }
+  }
+}

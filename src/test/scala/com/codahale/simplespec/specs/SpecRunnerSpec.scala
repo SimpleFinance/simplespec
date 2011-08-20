@@ -3,10 +3,10 @@ package com.codahale.simplespec.specs
 import scala.collection.mutable
 import org.junit.Assert._
 import com.codahale.simplespec.annotation.test
-import com.codahale.simplespec.{SpecRunner, Spec}
 import org.junit.Test
 import org.junit.runner.{Result, Description}
 import org.junit.runner.notification.{Failure, RunListener, RunNotifier}
+import com.codahale.simplespec.{Assertions, SpecRunner, Spec}
 
 class SpecRunnerSpec {
   @Test
@@ -179,16 +179,16 @@ class RecordingRunListener extends RunListener {
   }
 }
 
-class SpecExample extends Spec {
+class SpecExample extends Spec with Assertions {
   val numbers = new mutable.HashSet[Int]()
 
   class `An empty set` {
     @test def `has a size of zero` = {
-      numbers.size must beEqualTo(0)
+      numbers.size.mustEqual(0)
     }
 
     @test def `is empty` = {
-      numbers.isEmpty must beTrue
+      numbers.isEmpty.mustBeTrue
     }
   }
 
@@ -196,22 +196,22 @@ class SpecExample extends Spec {
     numbers += 1
 
     @test def `has a size of one` = {
-      numbers.size must beEqualTo(1)
+      numbers.size.mustEqual(1)
     }
 
     @test def `is not empty` = {
-      numbers.isEmpty must beFalse
+      numbers.isEmpty.mustBeFalse
     }
 
     class `having had that number removed` {
       numbers -= 1
 
       @test def `has a size of zero` = {
-        numbers.size must beEqualTo(0)
+        numbers.size.mustEqual(0)
       }
 
       @test def `is empty` = {
-        numbers.isEmpty must beTrue
+        numbers.isEmpty.mustBeTrue
       }
     }
   }

@@ -2,10 +2,8 @@ package com.codahale.simplespec
 
 import org.junit.runner.RunWith
 
-class IgnoredTestException extends Exception
-
 @RunWith(classOf[SpecRunner])
-abstract class Spec extends Matchers with BeforeAndAfterEach {
+abstract class Spec extends Assertions with BeforeAndAfterEach {
   
 }
 
