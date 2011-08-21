@@ -2,6 +2,9 @@ package com.codahale.simplespec
 
 import org.junit.Assert._
 import scala.collection.TraversableLike
+import scala.util.matching.Regex
+import org.hamcrest.CoreMatchers
+import org.mockito.internal.matchers.Matches
 
 private[simplespec] class IgnoredTestException extends Exception
 
@@ -148,6 +151,36 @@ class AssertableLambda[A](expected: () => A) {
    */
   def mustThrowAn[E <: Throwable](message: String)(implicit mf: Manifest[E]): Any =
     mustThrowA[E](message)(mf)
+
+  /**
+   * Assert that the left-hand lambda throws an exception of the given type and
+   * with a message which matches the given regular expression.
+   */
+  def mustThrowA[E <: Throwable](pattern: Regex)(implicit mf: Manifest[E]): Any = {
+    val klass = mf.erasure
+    var ok = true
+    try {
+      expected()
+      ok = false
+    } catch {
+      case e: Throwable => {
+        assertTrue("expected a " + klass.getName + " to be thrown, but a " + e.getClass.getName + " was thrown instead",
+          klass.isAssignableFrom(e.getClass))
+        assertThat(e.getMessage, new Matches(pattern.toString()))
+      }
+    }
+
+    if (!ok) {
+      fail("expected a " + klass.getName + " to be thrown, but nothing happened")
+    }
+  }
+
+  /**
+   * Assert that the left-hand lambda throws an exception of the given type and
+   * with a message which matches the given regular expression.
+   */
+  def mustThrowAn[E <: Throwable](pattern: Regex)(implicit mf: Manifest[E]): Any =
+    mustThrowA[E](pattern)(mf)
 
   /**
    * Assert that the left-hand lambda throws an exception which matches the
