@@ -23,6 +23,7 @@ trait Assertions {
   implicit def any2Assertable[A](value: A) = new AssertableAny[A](value)
   implicit def bool2Assertable(value: Boolean) = new AssertableBoolean(value)
   implicit def opt2Assertable[A](value: Option[A]) = new AssertableOption[A](value)
+  implicit def either2Assertable[A, B](value: Either[A, B]) = new AssertableEither[A, B](value)
   implicit def lambda2Assertable[A](value: => A) = new AssertableLambda[A](() => value)
 }
 
@@ -34,6 +35,20 @@ class AssertableAny[A](actual: A) {
     if (actual != expected) {
       assertEquals(expected, actual)
     }
+  }
+
+  /**
+   * Assert that the value is null.
+   */
+  def mustBeNull(): Any = {
+    assertNull(actual)
+  }
+
+  /**
+   * Assert that the value is not null.
+   */
+  def mustBeNotNull(): Any = {
+    assertNotNull(actual)
   }
 }
 
@@ -154,5 +169,21 @@ class AssertableLambda[A](expected: () => A) {
     if (!ok) {
       fail("expected an exception to be thrown, but nothing happened")
     }
+  }
+}
+
+class AssertableEither[L, R](actual: Either[L, R]) {
+  /**
+   * Assert that the value is Right(x).
+   */
+  def mustBeRight(expected: R): Any = {
+    assertEquals(Right(expected), actual)
+  }
+
+  /**
+   * Assert that the value is Left(x).
+   */
+  def mustBeLeft(expected: L): Any = {
+    assertEquals(Left(expected), actual)
   }
 }
