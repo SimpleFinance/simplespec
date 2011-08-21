@@ -1,9 +1,7 @@
 package com.codahale.simplespec
 
 import org.junit.Assert._
-import scala.collection.TraversableLike
 import scala.util.matching.Regex
-import org.hamcrest.CoreMatchers
 import org.mockito.internal.matchers.Matches
 
 private[simplespec] class IgnoredTestException extends Exception
