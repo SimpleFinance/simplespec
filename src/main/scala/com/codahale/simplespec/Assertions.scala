@@ -1,6 +1,7 @@
 package com.codahale.simplespec
 
 import org.junit.Assert._
+import scala.collection.TraversableLike
 
 private[simplespec] class IgnoredTestException extends Exception
 
@@ -24,6 +25,7 @@ trait Assertions {
   implicit def bool2Assertable(value: Boolean) = new AssertableBoolean(value)
   implicit def opt2Assertable[A](value: Option[A]) = new AssertableOption[A](value)
   implicit def either2Assertable[A, B](value: Either[A, B]) = new AssertableEither[A, B](value)
+  implicit def traversableLike2Assertable[A](value: Traversable[A]) = new AssertableTraversable[A](value)
   implicit def lambda2Assertable[A](value: => A) = new AssertableLambda[A](() => value)
 }
 
@@ -185,5 +187,25 @@ class AssertableEither[L, R](actual: Either[L, R]) {
    */
   def mustBeLeft(expected: L): Any = {
     assertEquals(Left(expected), actual)
+  }
+}
+
+class AssertableTraversable[A](actual: Traversable[A]) {
+  /**
+   * Assert that the value is empty.
+   */
+  def mustBeEmpty(): Any = {
+    if (!actual.isEmpty) {
+      fail("expected an empty collection")
+    }
+  }
+
+  /**
+   * Assert that the value is not empty.
+   */
+  def mustNotBeEmpty(): Any = {
+    if (actual.isEmpty) {
+      fail("expected a non-empty collection")
+    }
   }
 }
