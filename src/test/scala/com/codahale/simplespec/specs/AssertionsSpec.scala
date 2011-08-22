@@ -161,3 +161,28 @@ class EitherAssertionSpec extends Assertions {
     }.mustThrowAn[AssertionError]("expected:<Right(2)> but was:<Right(1)>")
   }
 }
+
+class TraversableSpec extends Assertions {
+  val empty: List[String] = Nil
+  val full = "woo" :: Nil
+
+  @Test
+  def emptyCollectionsMustBeEmpty() {
+    empty.mustBeEmpty()
+  }
+
+  @Test
+  def emptyCollectionsMustNotBeNotEmpty() {
+    empty.mustNotBeEmpty().mustThrowAn[AssertionError]("expected: <non-empty> but was: <empty>")
+  }
+
+  @Test
+  def fullCollectionsMustNotBeEmpty() {
+    full.mustBeEmpty().mustThrowAn[AssertionError]("expected: <empty> but was: <non-empty>")
+  }
+
+  @Test
+  def fullCollectionsMustBeNotEmpty() {
+    full.mustNotBeEmpty()
+  }
+}

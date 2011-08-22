@@ -227,7 +227,7 @@ class AssertableTraversable[A](actual: Traversable[A]) {
    */
   def mustBeEmpty(): Any = {
     if (!actual.isEmpty) {
-      fail("expected an empty collection")
+      fail("expected: <empty> but was: <non-empty>")
     }
   }
 
@@ -236,7 +236,7 @@ class AssertableTraversable[A](actual: Traversable[A]) {
    */
   def mustNotBeEmpty(): Any = {
     if (actual.isEmpty) {
-      fail("expected a non-empty collection")
+      fail("expected: <non-empty> but was: <empty>")
     }
   }
 }
