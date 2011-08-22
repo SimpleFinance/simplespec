@@ -262,6 +262,16 @@ class AssertableTraversable[A](actual: Traversable[A]) {
       fail("expected: <non-empty> but was: <empty>")
     }
   }
+
+  /**
+   * Assert that the value has the expected size.
+   */
+  def mustHaveSize(expected: Int): Any = {
+    val size = actual.size
+    if (size != expected) {
+      fail("expected: <" + expected + "> elements but had: <" + size + "> elements")
+    }
+  }
 }
 
 class AssertableNumeric[A](actual: A) {

@@ -169,6 +169,15 @@ class TraversableSpec extends Assertions {
   def fullCollectionsMustBeNotEmpty() {
     full.mustNotBeEmpty()
   }
+
+  @Test
+  def collectionsMustHaveSizes() {
+    empty.mustHaveSize(0)
+    empty.mustHaveSize(1).mustThrowAn[AssertionError]("expected: <1> elements but had: <0> elements")
+
+    full.mustHaveSize(1)
+    full.mustHaveSize(0).mustThrowAn[AssertionError]("expected: <0> elements but had: <1> elements")
+  }
 }
 
 class NumericSpec extends Assertions {
