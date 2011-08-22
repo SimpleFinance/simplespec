@@ -146,6 +146,16 @@ class EitherAssertionSpec extends Assertions {
   }
 }
 
+class ClassSpec extends Assertions {
+  @Test
+  def checkInstances() {
+    "yay".mustBeAnInstanceOf[String]
+    "yay".mustBeAnInstanceOf[List[Int]].mustThrowAn[AssertionError](
+      "expected: an instance of <scala.collection.immutable.List> " +
+        "but was: an instance of <java.lang.String>")
+  }
+}
+
 class TraversableSpec extends Assertions {
   val empty: List[String] = Nil
   val full = "woo" :: Nil

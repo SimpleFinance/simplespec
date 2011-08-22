@@ -23,6 +23,7 @@ trait Assertions {
   def pending(): Any = throw new IgnoredTestException
   
   implicit def any2Assertable[A](value: A) = new AssertableAny[A](value)
+  implicit def anyRef[A <: AnyRef](value: A) = new AssertableAnyRef[A](value)
   implicit def bool2Assertable(value: Boolean) = new AssertableBoolean(value)
   implicit def opt2Assertable[A](value: Option[A]) = new AssertableOption[A](value)
   implicit def either2Assertable[A, B](value: Either[A, B]) = new AssertableEither[A, B](value)
@@ -53,6 +54,18 @@ class AssertableAny[A](actual: A) {
    */
   def mustBeNotNull(): Any = {
     assertNotNull(actual)
+  }
+}
+
+class AssertableAnyRef[A <: AnyRef](actual: A) {
+  /**
+   * Assert that the value is an instance of the given type.
+   */
+  def mustBeAnInstanceOf[B](implicit mf: Manifest[B]): Any = {
+    if (!mf.erasure.isAssignableFrom(actual.getClass)) {
+      fail("expected: an instance of <" + mf.erasure.getName +
+        "> but was: an instance of <" + actual.getClass.getName + ">")
+    }
   }
 }
 
