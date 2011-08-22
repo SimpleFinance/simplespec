@@ -51,47 +51,39 @@ class ExceptionAssertionSpec extends Assertions {
 class BooleanAssertionSpec extends Assertions {
   @Test
   def trueMustBeTrue() {
-    true.mustBeTrue
+    true.mustBeTrue()
   }
 
   @Test
   def trueMustNotBeFalse() {
-    {
-      true.mustBeFalse
-    }.mustThrowAn[AssertionError]("expected:<false> but was:<true>")
+    true.mustBeFalse().mustThrowAn[AssertionError]("expected:<false> but was:<true>")
   }
 
   @Test
   def falseMustBeFalse() {
-    false.mustBeFalse
+    false.mustBeFalse()
   }
 
   @Test
   def falseMustNotBeTrue() {
-    {
-      false.mustBeTrue
-    }.mustThrowAn[AssertionError]("expected:<true> but was:<false>")
+    false.mustBeTrue().mustThrowAn[AssertionError]("expected:<true> but was:<false>")
   }
 }
 
 class OptionAssertionSpec extends Assertions {
   @Test
   def noneMustBeNone() {
-    None.mustBeNone
+    None.mustBeNone()
   }
 
   @Test
   def noneMustNotBeSome() {
-    {
-      None.mustBeSome(12)
-    }.mustThrowAn[AssertionError]("expected:<Some(12)> but was:<None>")
+    None.mustBeSome(12).mustThrowAn[AssertionError]("expected:<Some(12)> but was:<None>")
   }
 
   @Test
   def someMustNotBeNone() {
-    {
-      Some(12).mustBeNone
-    }.mustThrowAn[AssertionError]("expected:<None> but was:<Some(12)>")
+    Some(12).mustBeNone().mustThrowAn[AssertionError]("expected:<None> but was:<Some(12)>")
   }
 
   @Test
@@ -101,9 +93,7 @@ class OptionAssertionSpec extends Assertions {
 
   @Test
   def someMustNotBeSomeOtherValue() {
-    {
-      Some(12).mustBeSome(13)
-    }.mustThrowA[AssertionError]("expected:<Some(13)> but was:<Some(12)>")
+    Some(12).mustBeSome(13).mustThrowA[AssertionError]("expected:<Some(13)> but was:<Some(12)>")
   }
 }
 
@@ -120,16 +110,14 @@ class EqualityAssertionSpec extends Assertions {
 
   @Test
   def somethingNotMustEqualSomethingElse() {
-    {
-      1.mustEqual(2)
-    }.mustThrowAn[AssertionError]("expected:<2> but was:<1>")
+    1.mustEqual(2).mustThrowAn[AssertionError]("expected:<2> but was:<1>")
   }
 }
 
 class PendingAssertionSpec extends Assertions {
   @Test
   def pendingMustThrowAnIgnoredTestException() {
-    pending.mustThrowAn[IgnoredTestException]
+    pending().mustThrowAn[IgnoredTestException]
   }
 }
 
@@ -149,16 +137,12 @@ class EitherAssertionSpec extends Assertions {
 
   @Test
   def rightMustNotBeLeft() {
-    {
-      right.mustBeLeft("woo")
-    }.mustThrowAn[AssertionError]("expected:<Left(woo)> but was:<Right(1)>")
+    right.mustBeLeft("woo").mustThrowAn[AssertionError]("expected:<Left(woo)> but was:<Right(1)>")
   }
 
   @Test
   def leftMustNotBeSomeOtherLeft() {
-    {
-      right.mustBeRight(2)
-    }.mustThrowAn[AssertionError]("expected:<Right(2)> but was:<Right(1)>")
+    right.mustBeRight(2).mustThrowAn[AssertionError]("expected:<Right(2)> but was:<Right(1)>")
   }
 }
 
