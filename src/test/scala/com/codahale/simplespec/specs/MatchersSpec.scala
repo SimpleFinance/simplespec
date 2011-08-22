@@ -112,6 +112,12 @@ class PendingAssertionSpec extends Matchables with Matchers {
 
 class ClassSpec extends Matchables with Matchers {
   @Test
+  def checkSubclasses() {
+    val list: Seq[Int] = Nil
+    list.must(beA[List[Int]])
+  }
+
+  @Test
   def checkInstances() {
     val obj: Object = "yay"
     obj.must(beA[String])

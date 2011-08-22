@@ -100,7 +100,7 @@ trait Matchers {
   /**
    * Is the value an instance of the given type?
    */
-  def beA[A <: AnyRef](implicit mf: Manifest[A]) = CoreMatchers.is(CoreMatchers.instanceOf(mf.erasure))
+  def beA[A <: AnyRef](implicit mf: Manifest[A]) = CoreMatchers.is(CoreMatchers.instanceOf(mf.erasure)).asInstanceOf[Matcher[_ <: A]]
 
   /**
    * Is the value an empty traversable?
