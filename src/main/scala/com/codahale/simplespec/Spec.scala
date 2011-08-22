@@ -3,10 +3,10 @@ package com.codahale.simplespec
 import org.junit.runner.RunWith
 
 @RunWith(classOf[SpecRunner])
-abstract class Spec
-  extends Assertions
-          with Mocks
-          with BeforeAndAfterEach {
+abstract class Spec extends Matchables
+                            with Matchers
+                            with Mocks
+                            with BeforeAndAfterEach {
   
 }
 

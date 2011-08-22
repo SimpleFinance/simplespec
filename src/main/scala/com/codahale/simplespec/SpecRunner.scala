@@ -5,7 +5,7 @@ import java.lang.reflect.Modifier._
 import java.lang.reflect.Method
 import com.codahale.simplespec.annotation.test
 import scala.reflect.NameTransformer
-import org.junit.runner.notification.{Failure, RunNotifier}
+import org.junit.runner.notification.{Failure => TestFailure, RunNotifier}
 
 class SpecRunner(topKlass: Class[_]) extends Runner {
   require(classOf[Spec].isAssignableFrom(topKlass))
@@ -28,7 +28,7 @@ class SpecRunner(topKlass: Class[_]) extends Runner {
       } catch {
         case e: IgnoredTestException => notifier.fireTestIgnored(desc)
         case e: Throwable => {
-          notifier.fireTestFailure(new Failure(desc, e))
+          notifier.fireTestFailure(new TestFailure(desc, e))
           notifier.fireTestFinished(desc)
         }
       }

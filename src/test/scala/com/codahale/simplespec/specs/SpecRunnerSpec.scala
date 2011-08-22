@@ -6,7 +6,7 @@ import com.codahale.simplespec.annotation.test
 import org.junit.Test
 import org.junit.runner.{Result, Description}
 import org.junit.runner.notification.{Failure, RunListener, RunNotifier}
-import com.codahale.simplespec.{Assertions, SpecRunner, Spec}
+import com.codahale.simplespec.{SpecRunner, Spec}
 
 class SpecRunnerSpec {
   @Test
@@ -179,16 +179,16 @@ class RecordingRunListener extends RunListener {
   }
 }
 
-class SpecExample extends Spec with Assertions {
+class SpecExample extends Spec {
   val numbers = new mutable.HashSet[Int]()
 
   class `An empty set` {
     @test def `has a size of zero` = {
-      numbers.size.mustEqual(0)
+      numbers.size.must(be(0))
     }
 
     @test def `is empty` = {
-      numbers.isEmpty.mustBeTrue
+      numbers.isEmpty.must(be(true))
     }
   }
 
@@ -196,22 +196,22 @@ class SpecExample extends Spec with Assertions {
     numbers += 1
 
     @test def `has a size of one` = {
-      numbers.size.mustEqual(1)
+      numbers.size.must(be(1))
     }
 
     @test def `is not empty` = {
-      numbers.isEmpty.mustBeFalse
+      numbers.isEmpty.must(be(false))
     }
 
     class `having had that number removed` {
       numbers -= 1
 
       @test def `has a size of zero` = {
-        numbers.size.mustEqual(0)
+        numbers.size.must(be(0))
       }
 
       @test def `is empty` = {
-        numbers.isEmpty.mustBeTrue
+        numbers.isEmpty.must(be(true))
       }
     }
   }
@@ -220,7 +220,7 @@ class SpecExample extends Spec with Assertions {
 class BustedSpecExample extends Spec {
   class `An ignored test` {
     @test def `should be ignored` = {
-      pending
+      pending()
     }
   }
 

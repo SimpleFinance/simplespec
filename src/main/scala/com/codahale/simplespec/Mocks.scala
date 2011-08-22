@@ -3,7 +3,7 @@ package com.codahale.simplespec
 import org.mockito.stubbing.Answer
 import org.mockito.invocation.InvocationOnMock
 import org.hamcrest.Matcher
-import org.mockito.{InOrder, Matchers, Mockito}
+import org.mockito.{InOrder, Matchers => MockitoMatchers, Mockito}
 import scala.util.matching.Regex
 
 trait Mocks {
@@ -20,63 +20,63 @@ trait Mocks {
   /**
    * Returns a matcher which will accept any instance.
    */
-  def any[A](implicit mf: Manifest[A]) = Matchers.any(mf.erasure.asInstanceOf[Class[A]])
+  def any[A](implicit mf: Manifest[A]) = MockitoMatchers.any(mf.erasure.asInstanceOf[Class[A]])
 
   /**
    * Returns a matcher which will accept any instance of the given type.
    */
-  def isA[A](implicit mf: Manifest[A]) = Matchers.isA(mf.erasure.asInstanceOf[Class[A]])
+  def isA[A](implicit mf: Manifest[A]) = MockitoMatchers.isA(mf.erasure.asInstanceOf[Class[A]])
 
   /**
    * Returns a matcher which will accept any instance of the given type which is
    * equal to the given value.
    */
-  def equalTo[A](value: A): A = Matchers.eq(value)
+  def equalTo[A](value: A): A = MockitoMatchers.eq(value)
 
   /**
    * Returns a matcher which will accept only the same instance as the given
    * value.
    */
-  def same[A](value: A): A = Matchers.same(value)
+  def same[A](value: A): A = MockitoMatchers.same(value)
 
   /**
    * Returns a matcher which will accept only null values.
    */
-  def isNull[A]: A = Matchers.isNull.asInstanceOf[A]
+  def isNull[A]: A = MockitoMatchers.isNull.asInstanceOf[A]
 
   /**
    * Returns a matcher which will accept only non-null values.
    */
-  def isNotNull[A]: A = Matchers.isNotNull.asInstanceOf[A]
+  def isNotNull[A]: A = MockitoMatchers.isNotNull.asInstanceOf[A]
 
   /**
    * Returns a matcher which will accept only strings which contain the given
    * substring.
    */
-  def contains(substring: String) = Matchers.contains(substring)
+  def contains(substring: String) = MockitoMatchers.contains(substring)
 
   /**
    * Returns a matcher which will accept only strings which match the given
    * pattern.
    */
-  def matches(pattern: Regex) = Matchers.matches(pattern.toString())
+  def matches(pattern: Regex) = MockitoMatchers.matches(pattern.toString())
 
   /**
    * Returns a matcher which will accept only strings which end with the given
    * suffix.
    */
-  def endsWith(suffix: String) = Matchers.endsWith(suffix)
+  def endsWith(suffix: String) = MockitoMatchers.endsWith(suffix)
 
   /**
    * Returns a matcher which will accept only strings which start with the given
    * prefix.
    */
-  def startsWith(prefix: String) = Matchers.startsWith(prefix)
+  def startsWith(prefix: String) = MockitoMatchers.startsWith(prefix)
 
   /**
    * Returns a matcher which will accept values which match the given matcher.
    */
-  def somethingThat[A](condition: Matcher[A]) = Matchers.argThat(condition)
+  def somethingThat[A](condition: Matcher[A]) = MockitoMatchers.argThat(condition)
 
   /**
    * Resets the given mock or stub's previous behavior.
