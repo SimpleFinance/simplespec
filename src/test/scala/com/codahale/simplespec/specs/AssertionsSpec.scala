@@ -183,3 +183,28 @@ class NumericSpec extends Assertions {
     100.mustBeApproximately(98, 1).mustThrowAn[AssertionError]("expected: <98+/-1> but was: <100>")
   }
 }
+
+class EventuallySpec extends Assertions {
+  var elements = 1 :: 2 :: 3 :: 4 :: Nil
+
+  @Test
+  def aConditionMustEventuallyPass() {
+    pop().eventually { _.mustBeNone() }
+  }
+
+  @Test
+  def aConditionMustEventuallyNotPass() {
+    pop().eventually(2) { _.mustBeNone() }.mustThrowAn[AssertionError]
+    pop().eventually(2) { _.mustBeSome(40) }.mustThrowAn[AssertionError]
+  }
+
+  def pop() = {
+    elements match {
+      case x :: xs => {
+        elements = xs
+        Some(x)
+      }
+      case Nil => None
+    }
+  }
+}

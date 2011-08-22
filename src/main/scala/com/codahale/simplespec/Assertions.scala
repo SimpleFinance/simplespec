@@ -3,7 +3,6 @@ package com.codahale.simplespec
 import org.junit.Assert._
 import scala.util.matching.Regex
 import org.mockito.internal.matchers.Matches
-import org.junit.ComparisonFailure
 
 private[simplespec] class IgnoredTestException extends Exception
 
@@ -94,7 +93,7 @@ class AssertableOption[A](actual: Option[A]) {
   }
 }
 
-class AssertableLambda[A](expected: () => A) {
+class AssertableLambda[A](lambda: () => A) {
   /**
    * Assert that the left-hand lambda throws an exception of the given type.
    */
@@ -102,7 +101,7 @@ class AssertableLambda[A](expected: () => A) {
     val klass = mf.erasure
     var ok = true
     try {
-      expected()
+      lambda()
       ok = false
     } catch {
       case e: Throwable => {
@@ -130,7 +129,7 @@ class AssertableLambda[A](expected: () => A) {
     val klass = mf.erasure
     var ok = true
     try {
-      expected()
+      lambda()
       ok = false
     } catch {
       case e: Throwable => {
@@ -160,7 +159,7 @@ class AssertableLambda[A](expected: () => A) {
     val klass = mf.erasure
     var ok = true
     try {
-      expected()
+      lambda()
       ok = false
     } catch {
       case e: Throwable => {
@@ -189,7 +188,7 @@ class AssertableLambda[A](expected: () => A) {
   def mustThrowA(pf: PartialFunction[Throwable, Any]): Any = {
     var ok = true
     try {
-      expected()
+      lambda()
       ok = false
     } catch {
       case e: Throwable => {
@@ -203,6 +202,28 @@ class AssertableLambda[A](expected: () => A) {
 
     if (!ok) {
       fail("expected an exception to be thrown, but nothing happened")
+    }
+  }
+
+  /**
+   * Assert that the left-hand lambda will eventually pass the provided
+   * assertions given 20 attempts.
+   */
+  def eventually(condition: A => Any): Any =
+    eventually(20)(condition)
+
+  /**
+   * Assert that the left-hand lambda will eventually pass the provided
+   * assertions given sufficient attempts.
+   */
+  def eventually(attempts: Int)(condition: A => Any): Any = {
+    for (i <- 1 to attempts) {
+      try {
+        condition(lambda())
+        return ()
+      } catch {
+        case e: AssertionError if i < attempts => // bury it
+      }
     }
   }
 }
