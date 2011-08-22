@@ -170,3 +170,16 @@ class TraversableSpec extends Assertions {
     full.mustNotBeEmpty()
   }
 }
+
+class NumericSpec extends Assertions {
+  @Test
+  def numbersMustBeApproximate() {
+    100.mustBeApproximately(101, 2)
+  }
+
+  @Test
+  def numbersMustNotBeTooApproximate() {
+    100.mustBeApproximately(102, 1).mustThrowAn[AssertionError]("expected: <102+/-1> but was: <100>")
+    100.mustBeApproximately(98, 1).mustThrowAn[AssertionError]("expected: <98+/-1> but was: <100>")
+  }
+}

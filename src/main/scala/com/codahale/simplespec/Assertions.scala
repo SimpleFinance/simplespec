@@ -3,6 +3,7 @@ package com.codahale.simplespec
 import org.junit.Assert._
 import scala.util.matching.Regex
 import org.mockito.internal.matchers.Matches
+import org.junit.ComparisonFailure
 
 private[simplespec] class IgnoredTestException extends Exception
 
@@ -28,6 +29,7 @@ trait Assertions {
   implicit def either2Assertable[A, B](value: Either[A, B]) = new AssertableEither[A, B](value)
   implicit def traversableLike2Assertable[A](value: Traversable[A]) = new AssertableTraversable[A](value)
   implicit def lambda2Assertable[A](value: => A) = new AssertableLambda[A](() => value)
+  implicit def numeric2Assertable[A](value: A) = new AssertableNumeric[A](value)
 }
 
 class AssertableAny[A](actual: A) {
@@ -237,6 +239,20 @@ class AssertableTraversable[A](actual: Traversable[A]) {
   def mustNotBeEmpty(): Any = {
     if (actual.isEmpty) {
       fail("expected: <non-empty> but was: <empty>")
+    }
+  }
+}
+
+class AssertableNumeric[A](actual: A) {
+  /**
+   * Assert that the value is approximately equal to another value with a given
+   * bound.
+   */
+  def mustBeApproximately(expected: A, delta: A)(implicit num: Numeric[A]): Any = {
+    val lowerBound = num.minus(expected, delta)
+    val upperBound = num.plus(expected, delta)
+    if (num.lt(actual, lowerBound) || num.gt(actual, upperBound)) {
+      fail("expected: <" + expected + "+/-" + delta + "> but was: <" + actual + ">")
     }
   }
 }
