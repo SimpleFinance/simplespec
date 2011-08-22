@@ -49,18 +49,18 @@ How To Use
         val stack = Stack()
         
         @test def `has a size of zero` = {
-          stack.size.mustEqual(0)
+          stack.size.must(be(0))
         }
         
         @test def `is empty` = {
-          stack.isEmpty.mustBeTrue()
+          stack.isEmpty.must(be(true))
         }
 
         class `with an item added to it` = {
           stack += "woo"
 
           @test def `might have an item in it` = {
-            stack.isEmpty.mustBeFalse()
+            stack.must(be(empty))
           }
         }
       }
