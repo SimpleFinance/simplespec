@@ -122,6 +122,11 @@ class LambdaAnswer[A](f: InvocationOnMock => A) extends Answer[A] {
 
 class VerificationContext {
   /**
+   * Verifies that a method was never called with the given arguments.
+   */
+  def no[A](mock: A) = Mockito.verify(mock, Mockito.never())
+
+  /**
    * Verifies that a method was called with the given arguments exactly once.
    */
   def one[A](mock: A) = Mockito.verify(mock, Mockito.times(1))
