@@ -132,3 +132,32 @@ class PendingAssertionSpec extends Assertions {
     pending.mustThrowAn[IgnoredTestException]
   }
 }
+
+class EitherAssertionSpec extends Assertions {
+  val left: Either[String, Int] = Left("woo")
+  val right: Either[String, Int] = Right(1)
+
+  @Test
+  def leftMustBeLeft() {
+    left.mustBeLeft("woo")
+  }
+
+  @Test
+  def rightMustBeRight() {
+    right.mustBeRight(1)
+  }
+
+  @Test
+  def rightMustNotBeLeft() {
+    {
+      right.mustBeLeft("woo")
+    }.mustThrowAn[AssertionError]("expected:<Left(woo)> but was:<Right(1)>")
+  }
+
+  @Test
+  def leftMustNotBeSomeOtherLeft() {
+    {
+      right.mustBeRight(2)
+    }.mustThrowAn[AssertionError]("expected:<Right(2)> but was:<Right(1)>")
+  }
+}
