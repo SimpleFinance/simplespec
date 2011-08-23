@@ -91,4 +91,18 @@ class MockSpec extends Matchables with Matchers with Mocks {
       thing.poop("boom")
     }.must(throwAn[RuntimeException]("boom"))
   }
+
+  @Test
+  def mustHaveArgumentCaptorsOrRyanWillBeSad() {
+    val thing = mock[MockableThing]
+    val s = captor[String]
+
+    thing.poop("one")
+    thing.poop("two")
+
+    verify.exactly(2)(thing).poop(s.capture())
+
+    s.value.must(be(Some("two")))
+    s.allValues.must(be(Seq("one", "two")))
+  }
 }

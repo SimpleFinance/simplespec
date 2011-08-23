@@ -3,8 +3,8 @@ package com.codahale.simplespec
 import org.mockito.stubbing.Answer
 import org.mockito.invocation.InvocationOnMock
 import org.hamcrest.Matcher
-import org.mockito.{InOrder, Matchers => MockitoMatchers, Mockito}
 import scala.util.matching.Regex
+import org.mockito.{ArgumentCaptor, InOrder, Matchers => MockitoMatchers, Mockito}
 
 trait Mocks {
   /**
@@ -16,6 +16,11 @@ trait Mocks {
    * Returns a spy for the given object.
    */
   def spy[A](o: A) = Mockito.spy(o)
+
+  /**
+   * Returns an argument captor for the given type.
+   */
+  def captor[A](implicit mf: Manifest[A]) = ArgumentCaptor.forClass(mf.erasure.asInstanceOf[Class[A]])
 
   /**
    * Returns a matcher which will accept any instance.
@@ -91,6 +96,7 @@ trait Mocks {
   def verify = new VerificationContext
 
   implicit def any2Stubbable[A](method: A) = new Stubbable[A](method)
+  implicit def captor2FriendlyCaptor[A](captor: ArgumentCaptor[A]) = new FriendlyArgumentCaptor[A](captor)
 }
 
 class Stubbable[A](method: A) {
@@ -226,4 +232,19 @@ class OrderedVerificationContext(inOrder: InOrder) {
   def noMoreInteractions() {
     inOrder.verifyNoMoreInteractions()
   }
+}
+
+class FriendlyArgumentCaptor[A](captor: ArgumentCaptor[A]) {
+  import scala.collection.JavaConversions._
+
+  /**
+   * Returns the captured argument value, if any. If the argument was passed
+   * multiple times, returns the most recent argument.
+   */
+  def value = allValues.lastOption
+
+  /**
+   * Returns the sequence of captured argument values.
+   */
+  def allValues = captor.getAllValues.toSeq
 }
