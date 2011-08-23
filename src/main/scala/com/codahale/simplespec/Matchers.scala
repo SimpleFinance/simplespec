@@ -69,13 +69,7 @@ trait Matchers {
    * Does the context throw an exception of the given type and which matches the
    * given partial function?
    */
-  def throwA(pf: PartialFunction[Throwable, Any]) = new ThrownExceptionFunctionMatcher(pf)
-
-  /**
-   * Does the context throw an exception of the given type and which matches the
-   * given partial function?
-   */
-  def throwAn(pf: PartialFunction[Throwable, Any]) = throwA(pf)
+  def throwAnExceptionLike(pf: PartialFunction[Throwable, Any]) = new ThrownExceptionFunctionMatcher(pf)
 
   /**
    * Is the value equal to the expected value? (e.g., {@code ==})

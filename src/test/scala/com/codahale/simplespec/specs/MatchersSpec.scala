@@ -60,6 +60,33 @@ Expected: throws an exception of type <java.lang.UnsupportedOperationException>
       fail("should have thrown an AssertionError but didn't")
     }
   }
+
+  @Test
+  def mustFailIfTheExceptionDoesNotMatchThePartialFunction() {
+    var ok = true
+    try {
+      evaluating {
+        boom()
+      }.must(throwAnExceptionLike {
+        case e: UnsupportedOperationException => {
+          
+        }
+      })
+      ok = false
+    } catch {
+      case e: AssertionError => {
+        assertEquals(
+"""
+Expected: throws an exception which matches a partial function
+     got: <an exception of type <java.lang.RuntimeException> with a message of <EFFF>>
+""", e.getMessage)
+      }
+    }
+
+    if (!ok) {
+      fail("should have thrown an AssertionError but didn't")
+    }
+  }
 }
 
 class EqualityAssertionSpec extends Matchables with Matchers {
