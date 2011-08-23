@@ -5,6 +5,7 @@ import org.hamcrest._
 import org.junit.internal.matchers.CombinableMatcher
 import com.codahale.simplespec.matchers._
 import scala.util.matching.Regex
+import scala.collection.TraversableLike
 
 private[simplespec] class IgnoredTestException extends Exception
 
@@ -105,12 +106,12 @@ trait Matchers {
   /**
    * Is the value an empty traversable?
    */
-  def empty[A <: Traversable[_]] = new EmptyTraversableMatcher[A]
+  def empty[A <: TraversableLike[_, _]] = new EmptyTraversableMatcher[A]
 
   /**
    * Is the value a traversable with the given size?
    */
-  def haveSize[A <: Traversable[_]](expectedSize: Int) = new SizedTraversableMatcher[A](expectedSize)
+  def haveSize[A <: TraversableLike[_, _]](expectedSize: Int) = new SizedTraversableMatcher[A](expectedSize)
 
   /**
    * Is the value not null?
