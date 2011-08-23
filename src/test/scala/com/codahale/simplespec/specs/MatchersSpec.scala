@@ -191,6 +191,18 @@ Expected: a collection with a size of <40>
      got: <List(1, 2, 3)>
 """))
   }
+
+  @Test
+  def containsStuff() {
+    a.must(contain(2))
+
+    evaluating {
+      b.must(contain(40))
+    }.must(throwA[AssertionError]("""
+Expected: a collection containing <40>
+     got: <List()>
+"""))
+  }
 }
 
 class EventuallySpec extends Matchables with Matchers {

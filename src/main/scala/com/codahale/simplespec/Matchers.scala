@@ -5,7 +5,7 @@ import org.hamcrest._
 import org.junit.internal.matchers.CombinableMatcher
 import com.codahale.simplespec.matchers._
 import scala.util.matching.Regex
-import scala.collection.TraversableLike
+import scala.collection.{SeqLike, TraversableLike}
 
 private[simplespec] class IgnoredTestException extends Exception
 
@@ -112,6 +112,11 @@ trait Matchers {
    * Is the value a traversable with the given size?
    */
   def haveSize[A <: TraversableLike[_, _]](expectedSize: Int) = new SizedTraversableMatcher[A](expectedSize)
+
+  /**
+   * Is the value a seq which contains the given element?
+   */
+  def contain[A <: SeqLike[_, _]](element: Any) = new SeqLikeContainsMatcher[A](element)
 
   /**
    * Is the value not null?
