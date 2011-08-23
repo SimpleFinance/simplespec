@@ -1,6 +1,5 @@
 package com.codahale.simplespec
 
-import org.junit.Assert
 import org.hamcrest._
 import org.junit.internal.matchers.CombinableMatcher
 import com.codahale.simplespec.matchers._
