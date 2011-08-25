@@ -2,7 +2,7 @@ package com.codahale.simplespec.specs
 
 import org.junit.Test
 import org.junit.Assert._
-import com.codahale.simplespec.{Matchables, Matchers, IgnoredTestException}
+import com.codahale.simplespec.{Matchables, Matchers}
 
 class ExceptionAssertionSpec extends Matchables with Matchers {
   def boom(): Any = throw new RuntimeException("EFFF")
@@ -125,15 +125,6 @@ Expected: [<1>, <2>, <4>]
 Expected: <2>
      got: <1>
 """))
-  }
-}
-
-class PendingAssertionSpec extends Matchables with Matchers {
-  @Test
-  def pendingMustThrowAnIgnoredTestException() {
-    evaluating {
-      pending()
-    }.must(throwAn[IgnoredTestException])
   }
 }
 

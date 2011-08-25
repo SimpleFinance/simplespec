@@ -1,12 +1,10 @@
 package com.codahale.simplespec
 
 import org.junit.runner.RunWith
+import org.junit.Rule
 
 @RunWith(classOf[SpecRunner])
-abstract class Spec extends Matchables
-                            with Matchers
-                            with Mocks
-                            with BeforeAndAfterEach {
+abstract class Spec extends Matchers with BeforeAndAfterEach {
   
 }
 

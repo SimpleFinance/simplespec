@@ -6,9 +6,7 @@ import com.codahale.simplespec.matchers._
 import scala.util.matching.Regex
 import scala.collection.{SeqLike, TraversableLike}
 
-private[simplespec] class IgnoredTestException extends Exception
-
-trait Matchers {
+trait Matchers extends Matchables with Mocks {
   /**
    * Allows for the natural combination of matchers:
    *
@@ -25,11 +23,6 @@ trait Matchers {
    * Fail the test immediately with the given message.
    */
   def fail(message: String): Any = org.junit.Assert.fail(message)
-
-  /**
-   * Ignore all following assertions in the test.
-   */
-  def pending(): Any = throw new IgnoredTestException
 
   /**
    * Does the context throw an exception of the given type?

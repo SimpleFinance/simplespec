@@ -1,65 +1,113 @@
 package com.codahale.simplespec
 
-import org.junit.runner.{Description, Runner}
 import java.lang.reflect.Modifier._
-import java.lang.reflect.Method
-import com.codahale.simplespec.annotation.test
+import java.util.ArrayList
 import scala.reflect.NameTransformer
-import org.junit.runner.notification.{Failure => TestFailure, RunNotifier}
+import org.junit.internal.runners.statements.{RunAfters, RunBefores}
+import org.junit.runner.{Description, Runner}
+import org.junit.runner.notification.RunNotifier
+import org.junit.runners.BlockJUnit4ClassRunner
+import org.junit.runners.model.FrameworkMethod
+
+case class RunnerScope(klass: Class[_], runner: Runner, children: Seq[RunnerScope])
 
 class SpecRunner(topKlass: Class[_]) extends Runner {
-  require(classOf[Spec].isAssignableFrom(topKlass))
-  private val klass = Class.forName(topKlass.getName.replace("$", ""))
-  private val (descriptions, requirements) = describe(klass)
-  
+  private val runners = discover(topKlass, Nil)
+
   def getDescription = {
-    val top = Description.createSuiteDescription(klass)
-    descriptions.foreach(top.addChild)
+    val top = Description.createSuiteDescription(topKlass)
+    runners.foreach { s => describe(s, top) }
     top
   }
 
+  private def describe(scope: RunnerScope, parent: Description): Unit = {
+    val d = scope.runner.getDescription
+    scope.children.foreach { s => describe(s, d) }
+    parent.addChild(d)
+  }
+
   def run(notifier: RunNotifier) {
-    // sort for stability
-    for ((req, desc) <- requirements.toSeq.sortBy { case (r, d) => (r.klass.getName, r.method.getName) }) {
-      notifier.fireTestStarted(desc)
-      try {
-        req.evaluate()
-        notifier.fireTestFinished(desc)
-      } catch {
-        case e: IgnoredTestException => notifier.fireTestIgnored(desc)
-        case e: Throwable => {
-          notifier.fireTestFailure(new TestFailure(desc, e))
-          notifier.fireTestFinished(desc)
-        }
+    runners.foreach { run(notifier, _) }
+  }
+
+  private def run(notifier: RunNotifier, scope: RunnerScope) {
+    scope.runner.run(notifier)
+    scope.children.foreach { run(notifier, _) }
+  }
+
+  private def couldHaveTests(klass: Class[_]) =
+    !isInterface(klass.getModifiers) &&
+      isPublic(klass.getModifiers)
+
+  private def discover(klass: Class[_], path: List[Class[_]]): Seq[RunnerScope] = {
+    for (inner <- klass.getDeclaredClasses if couldHaveTests(klass);
+         runner <- new InnerClassRunner(klass :: path, inner) :: Nil) yield {
+      RunnerScope(klass, runner, discover(inner, klass :: path))
+    }
+  }
+}
+
+class InnerClassRunner(scope: List[Class[_]], klass: Class[_]) extends BlockJUnit4ClassRunner(klass) {
+  private val path = (klass :: scope).reverse
+
+  override def testName(method: FrameworkMethod) = NameTransformer.decode(method.getName)
+
+  override def getName = NameTransformer.decode(klass.getSimpleName)
+
+  override def collectInitializationErrors(errors: java.util.List[Throwable]) {
+    import scala.collection.JavaConversions._
+    val allErrors = new ArrayList[Throwable]
+    super.collectInitializationErrors(allErrors)
+    for (e <- allErrors) {
+      if (!ignoredError(e.getMessage)) {
+        errors.add(e)
       }
     }
   }
 
-  private def couldHaveRequirements(klass: Class[_]) =
-    klass.getInterfaces.contains(classOf[ScalaObject]) &&
-      !isInterface(klass.getModifiers) &&
-      isPublic(klass.getModifiers)
+  override def methodInvoker(method: FrameworkMethod, test: AnyRef) = {
+    import scala.collection.JavaConversions._
 
-  private def isRequirement(method: Method) =
-    method.getParameterTypes.length == 0 &&
-      method.isAnnotationPresent(classOf[test])
-
-  protected def describe(klass: Class[_]): (List[Description], Map[Requirement, Description]) = {
-    var descriptions = List.empty[Description]
-    var requirements = Map.empty[Requirement, Description]
-    for (inner <- klass.getClasses if couldHaveRequirements(inner)) {
-      val classDescription = Description.createSuiteDescription(NameTransformer.decode(inner.getSimpleName))
-      for (method <- inner.getDeclaredMethods if isRequirement(method)) {
-        val testDescription = Description.createTestDescription(inner, NameTransformer.decode(method.getName))
-        requirements += Requirement(inner, method) -> testDescription
-        classDescription.addChild(testDescription)
+    def traverseInstances(obj: Object): List[Object] = {
+      if (obj.getClass.getEnclosingClass == null) {
+        Nil
+      } else {
+        val field = obj.getClass.getDeclaredField("$outer")
+        val instance = field.get(obj)
+        instance :: traverseInstances(instance)
       }
-
-      val (innerDesc, innerReq) = describe(inner)
-      innerDesc.foreach(classDescription.addChild)
-      requirements ++= innerReq
-      descriptions = classDescription :: descriptions
     }
-    (descriptions, requirements)
+
+    val statement = super.methodInvoker(method, test)
+    val instances = test :: traverseInstances(test)
+    val withBefores = instances.foldLeft(statement) { (stmt, obj) =>
+      if (classOf[BeforeEach].isAssignableFrom(obj.getClass)) {
+        val method = obj.getClass.getMethod("beforeEach")
+        new RunBefores(stmt, List(new FrameworkMethod(method)), obj)
+      } else stmt
+    }
+
+    val withAfters = instances.foldLeft(withBefores) { (stmt, obj) =>
+      if (classOf[AfterEach].isAssignableFrom(obj.getClass)) {
+        val method = obj.getClass.getMethod("afterEach")
+        new RunAfters(stmt, List(new FrameworkMethod(method)), obj)
+      } else stmt
+    }
+    
+    withAfters
+  }
+
+  private def ignoredError(msg: String) =
+    msg.contains("should be void") ||
+      msg.contains("No runnable methods") ||
+    msg.contains("exactly one public zero-argument constructor")
+
+  override def createTest() = {
+    val root = path.head.newInstance().asInstanceOf[Object]
+    val instances = path.tail.foldLeft(root :: Nil) { (parents, k) =>
+      val parent = parents.head
+      k.getConstructor(parent.getClass).newInstance(parent).asInstanceOf[Object] :: parents
+    }
+    instances.head
   }
 }

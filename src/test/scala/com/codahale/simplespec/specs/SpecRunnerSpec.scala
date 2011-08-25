@@ -2,11 +2,10 @@ package com.codahale.simplespec.specs
 
 import scala.collection.mutable
 import org.junit.Assert._
-import com.codahale.simplespec.annotation.test
-import org.junit.Test
 import org.junit.runner.{Result, Description}
 import org.junit.runner.notification.{Failure, RunListener, RunNotifier}
 import com.codahale.simplespec.{SpecRunner, Spec}
+import org.junit.{Ignore, Test}
 
 class SpecRunnerSpec {
   @Test
@@ -18,10 +17,35 @@ class SpecRunnerSpec {
     assertEquals("com.codahale.simplespec.specs.SpecExample", desc.getClassName)
     assertNull(desc.getMethodName)
     assertEquals(classOf[SpecExample], desc.getTestClass)
-    assertEquals(2, desc.getChildren.size())
+    assertEquals(3, desc.getChildren.size())
 
     {
-      val oneNumber = desc.getChildren.get(0)
+      val emptySet = desc.getChildren.get(0)
+      assertEquals("An empty set", emptySet.getDisplayName)
+      assertEquals("An empty set", emptySet.getClassName)
+      assertNull(emptySet.getMethodName)
+      assertNull(emptySet.getTestClass)
+      assertEquals(2, emptySet.getChildren.size())
+
+      {
+        val hasZero = emptySet.getChildren.get(0)
+        assertEquals("has a size of zero(com.codahale.simplespec.specs.SpecExample$An$u0020empty$u0020set)", hasZero.getDisplayName)
+        assertEquals("com.codahale.simplespec.specs.SpecExample$An$u0020empty$u0020set", hasZero.getClassName)
+        assertEquals("has a size of zero", hasZero.getMethodName)
+        assertEquals(classOf[SpecExample#`An empty set`], hasZero.getTestClass)
+      }
+
+      {
+        val isEmpty = emptySet.getChildren.get(1)
+        assertEquals("is empty(com.codahale.simplespec.specs.SpecExample$An$u0020empty$u0020set)", isEmpty.getDisplayName)
+        assertEquals("com.codahale.simplespec.specs.SpecExample$An$u0020empty$u0020set", isEmpty.getClassName)
+        assertEquals("is empty", isEmpty.getMethodName)
+        assertEquals(classOf[SpecExample#`An empty set`], isEmpty.getTestClass)
+      }
+    }
+
+    {
+      val oneNumber = desc.getChildren.get(1)
       assertEquals("A set with one number", oneNumber.getDisplayName)
       assertEquals("A set with one number", oneNumber.getClassName)
       assertNull(oneNumber.getMethodName)
@@ -68,31 +92,8 @@ class SpecRunnerSpec {
           assertEquals(classOf[SpecExample#`A set with one number`#`having had that number removed`], isEmpty.getTestClass)
         }
       }
-    }
 
-    {
-      val emptySet = desc.getChildren.get(1)
-      assertEquals("An empty set", emptySet.getDisplayName)
-      assertEquals("An empty set", emptySet.getClassName)
-      assertNull(emptySet.getMethodName)
-      assertNull(emptySet.getTestClass)
-      assertEquals(2, emptySet.getChildren.size())
-
-      {
-        val hasZero = emptySet.getChildren.get(0)
-        assertEquals("has a size of zero(com.codahale.simplespec.specs.SpecExample$An$u0020empty$u0020set)", hasZero.getDisplayName)
-        assertEquals("com.codahale.simplespec.specs.SpecExample$An$u0020empty$u0020set", hasZero.getClassName)
-        assertEquals("has a size of zero", hasZero.getMethodName)
-        assertEquals(classOf[SpecExample#`An empty set`], hasZero.getTestClass)
-      }
-
-      {
-        val isEmpty = emptySet.getChildren.get(1)
-        assertEquals("is empty(com.codahale.simplespec.specs.SpecExample$An$u0020empty$u0020set)", isEmpty.getDisplayName)
-        assertEquals("com.codahale.simplespec.specs.SpecExample$An$u0020empty$u0020set", isEmpty.getClassName)
-        assertEquals("is empty", isEmpty.getMethodName)
-        assertEquals(classOf[SpecExample#`An empty set`], isEmpty.getTestClass)
-      }
+      // TODO: 8/25/11 <coda> -- add test for super-nested description
     }
   }
 
@@ -106,6 +107,10 @@ class SpecRunnerSpec {
 
     assertEquals(
       Vector(
+        ('started, "has a size of zero"),
+        ('finished, "has a size of zero"),
+        ('started, "is empty"),
+        ('finished, "is empty"),
         ('started, "has a size of one"),
         ('finished, "has a size of one"),
         ('started, "is not empty"),
@@ -114,10 +119,10 @@ class SpecRunnerSpec {
         ('finished, "has a size of zero"),
         ('started, "is empty"),
         ('finished, "is empty"),
-        ('started, "has a size of zero"),
-        ('finished, "has a size of zero"),
-        ('started, "is empty"),
-        ('finished, "is empty")
+        ('started, "has a size of one"),
+        ('finished, "has a size of one"),
+        ('started, "is not empty"),
+        ('finished, "is not empty")
       ),
       listener.events
     )
@@ -136,11 +141,10 @@ class SpecRunnerSpec {
         ('started, "should fail"),
         ('failure, "java.lang.AssertionError:should fail"),
         ('finished, "should fail"),
+        ('ignored, "should be ignored"),
         ('started, "should explode"),
         ('failure, "java.lang.RuntimeException:should explode"),
-        ('finished, "should explode"),
-        ('started, "should be ignored"),
-        ('ignored, "should be ignored")
+        ('finished, "should explode")
       ),
       listener.events
     )
@@ -183,11 +187,11 @@ class SpecExample extends Spec {
   val numbers = new mutable.HashSet[Int]()
 
   class `An empty set` {
-    @test def `has a size of zero` = {
+    @Test def `has a size of zero` = {
       numbers.size.must(be(0))
     }
 
-    @test def `is empty` = {
+    @Test def `is empty` = {
       numbers.isEmpty.must(be(true))
     }
   }
@@ -195,23 +199,39 @@ class SpecExample extends Spec {
   class `A set with one number` {
     numbers += 1
 
-    @test def `has a size of one` = {
+    @Test def `has a size of one` = {
       numbers.size.must(be(1))
     }
 
-    @test def `is not empty` = {
+    @Test def `is not empty` = {
       numbers.isEmpty.must(be(false))
     }
 
     class `having had that number removed` {
       numbers -= 1
 
-      @test def `has a size of zero` = {
+      @Test def `has a size of zero` = {
         numbers.size.must(be(0))
       }
 
-      @test def `is empty` = {
+      @Test def `is empty` = {
         numbers.isEmpty.must(be(true))
+      }
+    }
+  }
+
+  class `A set with two numbers` {
+    numbers ++= Set(1, 2)
+
+    class `with one removed` {
+      numbers -= 1
+
+      @Test def `has a size of one` = {
+        numbers.size.must(be(1))
+      }
+
+      @Test def `is not empty` = {
+        numbers.isEmpty.must(be(false))
       }
     }
   }
@@ -219,19 +239,19 @@ class SpecExample extends Spec {
 
 class BustedSpecExample extends Spec {
   class `An ignored test` {
-    @test def `should be ignored` = {
-      pending()
+    @Ignore @Test def `should be ignored` = {
+      throw new RuntimeException("should have ignored me!")
     }
   }
 
   class `A failing test` {
-    @test def `should fail` = {
+    @Test def `should fail` = {
       assertEquals(1, 2)
     }
   }
 
   class `An exploding test` {
-    @test def `should explode` = {
+    @Test def `should explode` = {
       throw new RuntimeException("EFFFFF")
     }
   }
