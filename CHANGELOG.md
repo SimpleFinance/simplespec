@@ -1,3 +1,9 @@
+v0.5.0: Aug 26 2011
+===================
+
+* Completely rewrote all the code to work entirely on JUnit and use Hamcrest
+  matchers. No longer uses Specs in any form.
+
 v0.4.1: Aug 16 2011
 ===================
 
