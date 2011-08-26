@@ -1,22 +1,22 @@
-SimpleSpec
+Simplespec
 ==========
 
-*I already have compositional techniques, tanks.*
+*No seriously, keep it simple.*
 
-SimpleSpec is a tiny extension to the
-[specs2](http://etorreborre.github.com/specs2/) BDD library which allows you to
-write your specifications as simple classes and methods.
+Simplespec is a thin layer of convenience over [JUnit](http://www.junit.org/),
+the most commonly-used test framework on the JVM.
 
 
 Requirements
 ------------
 
 * Scala 2.8.1 or 2.9.0-1
-* Specs2 1.5
+* JUnit 4.8.x
+* Mockito 1.8.x
 
 
-How To Use
-----------
+Getting Started
+---------------
 
 **First**, specify SimpleSpec as a dependency:
 
@@ -32,7 +32,7 @@ How To Use
     <dependency>
         <groupId>com.codahale</groupId>
         <artifactId>simplespec_${scala.version}</artifactId>
-        <version>0.4.1</version>
+        <version>0.5.0</version>
     </dependency>
 </dependencies>
 ```
@@ -40,71 +40,168 @@ How To Use
 **Second**, write a spec:
 
 ```scala
-    import com.example.Stack
-    import com.codahale.simplespec.Spec
-    import com.codahale.simplespec.annotation.test
-    
-    class StackSpec extends Spec {
-      class `An empty stack` {
-        val stack = Stack()
-        
-        @test def `has a size of zero` = {
-          stack.size must beEqualTo(0)
-        }
-        
-        @test def `is empty` = {
-          stack.isEmpty must beTrue
-        }
+import com.example.Stack
+import org.junit.Test
+import com.codahale.simplespec.Spec
 
-        class `with an item added to it` = {
-          stack += "woo"
+class StackSpec extends Spec {
+  class `An empty stack` {
+    val stack = Stack()
 
-          @test def `might have an item in it` = {
-            stack.isEmpty must beFalse
-          }
-        }
+    @Test def `has a size of zero` = {
+      stack.size.must(be(0))
+    }
+
+    @Test def `is empty` = {
+      stack.isEmpty.must(be(true))
+    }
+
+    class `with an item added to it` = {
+      stack += "woo"
+
+      @Test def `might have an item in it` = {
+        stack.must(be(empty))
       }
     }
-```
-
-This will produce the following output:
-
-```
-StackSpec
-An empty stack
-+ has a size of zero
-+ is empty
-
-An empty stack with an item added to it
-+ might have an item in it
+  }
+}
 ```
 
 
-How It Works
-------------
+Execution Model
+---------------
 
-`Spec` is a simple trait which extends spec's `Specification`. When it's
-instantiated, it recursively reflects on the instance's inner classes, creating
-a set of Spec2 examples for all of their public methods. Each example method
-(e.g., ``should blah blah``) is invoked on its own instance of the enclosing
-classes, making it play nicely with mutable data structures and mocks.
+The execution model for a `Spec` is just a logical extension of how JUnit itself
+works -- a `Spec` class contains one or more regular classes, each of which can
+contain zero or more `@Test`-annotated methods or further nested classes.
 
-Because Scala can use arbitrary strings for class and method names using the
-backtick characters, it's easy to use the literate style in naming
-systems-under-specification and examples. Simplespec will only run methods which
-have been annotated with the `@test` annotation.
+When JUnit runs the `Spec` class, it creates new instances of each class for
+each test method run, allowing for full test isolation. In the above example,
+first an instance of `StackSpec` would be created, then an instance of
+`` StackSpec#`An empty stack` ``, then an instance of
+`` StackSpec#`An empty stack`#`with an item added to it` ``, and finally its
+`` `might have an item in it` `` method is run as a test.
 
-`Spec` has two methods -- `beforeAll` and `afterAll` which are called before and
-after the entire set of requirements are evaluated. This is useful for fixture
-setup and teardown.
+The tradeoff of this execution model (vs. one which shares state between test
+invocation) is that tests which create a substantial amount of shared state
+(e.g., data-intensive tests) spend a lot of time setting up or tearing down
+state.
 
-Context classes can extend three traits -- `BeforeEach`, `AfterEach`, and
-`BeforeAndAfterEach` -- which provide `beforeEach` and `afterEach` methods which
-are called before and after each example method.
+Unlike JUnit, Simplespec doesn't require your test methods to return void.
 
-An example method which does not result a Specs2 `Result` (i.e., the result of
-a matcher or one of the explicit `success` or `failure` functions) is considered
-pending.
+
+Matchers
+--------
+
+Simplespec provides a thin layer over
+[Hamcrest matchers](http://code.google.com/p/hamcrest/) to allow for declarative
+assertions in your tests:
+
+```scala
+stack.must(be(empty))
+```
+
+Simplespec includes the following matchers by default, but you're encouraged to
+write your own:
+
+* `x.must(equal(y))`: Asserts `x == y`.
+* `x.must(be(y))`: A synonym for `equal`.
+* `x.must(beA(klass))`: Asserts that `x` is assignable as an instance of `klass`.
+* `x.must(be(matcher))`: Asserts that `matcher` applies to `x`.
+* `x.must(not(be(matcher)))`: Asserts that `matcher` does *not* apply to `x`.
+* `x.must(be(empty))`: Asserts that `x` is a `TraversableLike` which is empty.
+* `x.must(haveSize(n))`: Asserts that `x` is a `TraversableLike` which has `n`
+  elements.
+* `x.must(contain(y))`: Asserts that `x` is a `SeqLike` which contains the
+  element `y`.
+* `x.must(be(notNull))`: Asserts that `x` is not `null`.
+* `x.must(be(approximately(y, delta)))`: Asserts that `x` is within `delta` of
+  `y`. Useful for floating-point math.
+
+Matchers like `be` and `not` take matchers as their arguments, which means you
+can write domain-specific matchers for your tests:
+
+```scala
+class IsSufficientlyCromulentMatcher extends BaseMatcher[Fromulator] {
+  def describeTo(description: Description) {
+    description.appendText("a cromulemnt fromulator")
+  }
+
+  def matches(item: AnyRef) = item match {
+    case fromulator: Fromulator => fromulator.isCromulent
+    case _ => false
+  }
+}
+
+trait CromulentMatcher {
+  def cromulent = new IsSufficientlyCromulentMatcher
+}
+
+class BlahBlahSpec extends Spec with CromulentMatcher {
+  class `A Fromulator` {
+    val fromulator = new Fromulator
+
+    def `is cromulent` = {
+      fromulator.must(be(cromulent)
+    }
+  }
+}
+```
+
+Simplespec also includes two helper methods: `evaluating` and `eventually`.
+
+`evaluating` captures a closure and allows you to make assertions about what
+happens when it's evaluated:
+
+```scala
+@Test def `throws an exception` = {
+  evaluating {
+    dooHicky.stop()
+  }.must(throwAn[UnsupportedOperationException])
+}
+```
+
+`eventually` also captures a closure, but allows you to assert things about
+what happens when the closure is evaluated which might not be true the first
+few times:
+
+```scala
+@Test def `decay to zero` = {
+  eventually {
+    thingy.rate
+  }.must(be(approximately(0.0, 0.001)))
+}
+```
+
+See `Matchers.scala` for the full run-down.
+
+
+Mocks
+-----
+
+Also, yeah, mocks. Simplespec uses [Mockito](http://mockito.org/) for its
+mocking stuff:
+
+```scala
+class PublisherSpec extends Spec {
+  class `A publisher` {
+    val message = mock[Message]
+
+    val queue = mock[Queue]
+    queue.enqueue(any).returns(0, 1, 2, 3)
+
+    val publisher = new Publisher(queue)
+
+    @Test def `sends a message to the queue` = {
+      publisher.receive(message)
+
+      verify.one(queue).enqueue(message)
+    }
+  }
+}
+```
+
+See `Mocks.scala` for the full run-down.
 
 
 License
