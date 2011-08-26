@@ -8,6 +8,7 @@ import org.junit.runner.{Description, Runner}
 import org.junit.runner.notification.RunNotifier
 import org.junit.runners.BlockJUnit4ClassRunner
 import org.junit.runners.model.FrameworkMethod
+import org.junit.Test
 
 case class RunnerScope(klass: Class[_], runner: Runner, children: Seq[RunnerScope])
 
@@ -63,6 +64,11 @@ class InnerClassRunner(scope: List[Class[_]], klass: Class[_]) extends BlockJUni
         errors.add(e)
       }
     }
+
+    if (klass.getDeclaredClasses.isEmpty &&
+          !klass.getMethods.exists { _.getAnnotation(classOf[Test]) != null }) {
+      errors.add(new Exception("No runnable methods"))
+    }
   }
 
   override def methodInvoker(method: FrameworkMethod, test: AnyRef) = {
@@ -100,7 +106,7 @@ class InnerClassRunner(scope: List[Class[_]], klass: Class[_]) extends BlockJUni
   private def ignoredError(msg: String) =
     msg.contains("should be void") ||
       msg.contains("No runnable methods") ||
-    msg.contains("exactly one public zero-argument constructor")
+      msg.contains("exactly one public zero-argument constructor")
 
   override def createTest() = {
     val root = path.head.newInstance().asInstanceOf[Object]

@@ -3,9 +3,10 @@ package com.codahale.simplespec.specs
 import scala.collection.mutable
 import org.junit.Assert._
 import org.junit.runner.{Result, Description}
-import org.junit.runner.notification.{Failure, RunListener, RunNotifier}
 import com.codahale.simplespec.{SpecRunner, Spec}
 import org.junit.{Ignore, Test}
+import org.junit.runner.notification.{RunNotifier, Failure, RunListener}
+import org.junit.runners.model.InitializationError
 
 class SpecRunnerSpec {
   @Test
@@ -149,6 +150,22 @@ class SpecRunnerSpec {
       listener.events
     )
   }
+
+  @Test
+  def mustExplodeWhenNoTests() {
+    import scala.collection.JavaConversions._
+    
+    try {
+      val runner = new SpecRunner(classOf[InvalidExample])
+      val notifier = new RunNotifier
+      runner.run(notifier)
+      fail("expected an InitializationError but didn't see one")
+    } catch {
+      case e: InitializationError => {
+        assertTrue(e.getCauses.exists { _.getMessage == "No runnable methods" })
+      }
+    }
+  }
 }
 
 class RecordingRunListener extends RunListener {
@@ -253,6 +270,14 @@ class BustedSpecExample extends Spec {
   class `An exploding test` {
     @Test def `should explode` = {
       throw new RuntimeException("EFFFFF")
+    }
+  }
+}
+
+class InvalidExample extends Spec {
+  class `A class with children doesn't need tests` {
+    class `but a class without children does` {
+
     }
   }
 }
