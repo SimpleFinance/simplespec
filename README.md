@@ -32,7 +32,7 @@ Getting Started
     <dependency>
         <groupId>com.codahale</groupId>
         <artifactId>simplespec_${scala.version}</artifactId>
-        <version>0.5.0-SNAPSHOT</version>
+        <version>0.5.0</version>
     </dependency>
 </dependencies>
 ```
