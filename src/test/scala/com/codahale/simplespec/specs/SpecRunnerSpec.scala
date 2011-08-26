@@ -156,15 +156,19 @@ class SpecRunnerSpec {
     import scala.collection.JavaConversions._
     
     try {
-      val runner = new SpecRunner(classOf[InvalidExample])
-      val notifier = new RunNotifier
-      runner.run(notifier)
+      new SpecRunner(classOf[InvalidExample])
       fail("expected an InitializationError but didn't see one")
     } catch {
       case e: InitializationError => {
         assertTrue(e.getCauses.exists { _.getMessage == "No runnable methods" })
       }
     }
+  }
+
+  @Test
+  def mustNotExplodeWithAnonymousClasses() {
+    new SpecRunner(classOf[AnonymousClassExample])
+    assertTrue(true)
   }
 }
 
@@ -278,6 +282,20 @@ class InvalidExample extends Spec {
   class `A class with children doesn't need tests` {
     class `but a class without children does` {
 
+    }
+  }
+}
+
+class AnonymousClassExample extends Spec {
+  class `A thing` {
+    val thing = new Runnable {
+      def run() {
+        "woo"
+      }
+    }
+
+    @Test def `do a thing` = {
+      1
     }
   }
 }

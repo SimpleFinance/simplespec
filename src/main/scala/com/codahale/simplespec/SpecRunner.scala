@@ -36,13 +36,17 @@ class SpecRunner(topKlass: Class[_]) extends Runner {
     scope.children.foreach { run(notifier, _) }
   }
 
-  private def couldHaveTests(klass: Class[_]) =
+  private def couldHaveTests(klass: Class[_]) = {
     !isInterface(klass.getModifiers) &&
-      isPublic(klass.getModifiers)
+      isPublic(klass.getModifiers) &&
+      !klass.isAnonymousClass &&
+      !isFinal(klass.getModifiers) // excludes anonymous classes written in Scala
+  }
+
 
   private def discover(klass: Class[_], path: List[Class[_]]): Seq[RunnerScope] = {
-    for (inner <- klass.getDeclaredClasses if couldHaveTests(klass);
-         runner <- new InnerClassRunner(klass :: path, inner) :: Nil) yield {
+    for (inner <- klass.getDeclaredClasses if couldHaveTests(inner)) yield {
+      val runner = new InnerClassRunner(klass :: path, inner)
       RunnerScope(klass, runner, discover(inner, klass :: path))
     }
   }
@@ -65,7 +69,7 @@ class InnerClassRunner(scope: List[Class[_]], klass: Class[_]) extends BlockJUni
       }
     }
 
-    if (klass.getDeclaredClasses.isEmpty &&
+    if (!klass.getDeclaredClasses.exists { k => !k.isAnonymousClass } &&
           !klass.getMethods.exists { _.getAnnotation(classOf[Test]) != null }) {
       errors.add(new Exception("No runnable methods"))
     }
