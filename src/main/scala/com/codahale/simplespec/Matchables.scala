@@ -2,18 +2,25 @@ package com.codahale.simplespec
 
 import org.hamcrest.Matcher
 import org.junit.Assert
-import com.codahale.simplespec.matchers.ApproximateNumericMatcher
 
 trait Matchables {
   implicit def any2LiteralMatchable[A](value: A) = new LiteralMatchable[A](value)
 
+  /**
+   * Match the result of evaluating the given closure.
+   */
   def evaluating[A](f: => A) = new OutcomeMatchable[A](() => f)
 
+  /**
+   * Match the eventual result of evaluating the given closure.
+   */
   def eventually[A](f: => A) = new EventuallyMatchable[A](() => f, 20)
 
+  /**
+   * Match the eventual result of evaluating the given closure a maximum number
+   * of times.
+   */
   def eventually[A](maxAttempts: Int)(f: => A) = new EventuallyMatchable[A](() => f, maxAttempts)
-
-  def approximately[A](expected: A, delta: A)(implicit num: Numeric[A]) = new ApproximateNumericMatcher[A](expected, delta, num)
 }
 
 class LiteralMatchable[A](actual: A) {

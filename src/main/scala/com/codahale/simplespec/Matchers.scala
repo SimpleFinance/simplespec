@@ -111,4 +111,9 @@ trait Matchers extends Matchables with Mocks {
   // I'd rather express nullity as a double-negative in tests to express how
   // ungainly it is to deal with in an API.
   def notNull[A] = CoreMatchers.notNullValue[A]()
+
+  /**
+   * Is the value equal to the given value, plus or minus the given delta?
+   */
+  def approximately[A](expected: A, delta: A)(implicit num: Numeric[A]) = new ApproximateNumericMatcher[A](expected, delta, num)
 }
