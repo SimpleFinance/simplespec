@@ -1,3 +1,11 @@
+v0.5.1: Sep 08 2011
+===================
+
+* Added support for Scala 2.9.1.
+* Dropped support for Scala 2.8.1.
+* Added `lessThan`, `greaterThan`, `lessThanOrEqualTo`, and
+  `greaterThanOrEqualTo` matchers.
+
 v0.5.0: Aug 26 2011
 ===================
 
