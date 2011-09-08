@@ -10,7 +10,7 @@ the most commonly-used test framework on the JVM.
 Requirements
 ------------
 
-* Scala 2.8.1 or 2.9.0-1
+* Scala 2.9.1 or 2.9.0-1
 * JUnit 4.8.x
 * Mockito 1.8.x
 
@@ -32,7 +32,7 @@ Getting Started
     <dependency>
         <groupId>com.codahale</groupId>
         <artifactId>simplespec_${scala.version}</artifactId>
-        <version>0.5.0</version>
+        <version>0.5.1</version>
     </dependency>
 </dependencies>
 ```
