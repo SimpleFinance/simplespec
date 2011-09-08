@@ -111,4 +111,29 @@ trait Matchers extends Matchables with Mocks {
   // I'd rather express nullity as a double-negative in tests to express how
   // ungainly it is to deal with in an API.
   def notNull[A] = CoreMatchers.notNullValue[A]()
+
+  /**
+   * Is the value equal to the given value, plus or minus the given delta?
+   */
+  def approximately[A](expected: A, delta: A)(implicit num: Numeric[A]) = new ApproximateNumericMatcher[A](expected, delta, num)
+
+  /**
+   * Is the value less than the given ceiling?
+   */
+  def lessThan[A](ceiling: A)(implicit num: Numeric[A]) = new LessThanNumericMatcher[A](ceiling, num)
+
+  /**
+   * Is the value less than or equal to the given ceiling?
+   */
+  def lessThanOrEqualTo[A](ceiling: A)(implicit num: Numeric[A]) = new LessThanOrEqualToNumericMatcher[A](ceiling, num)
+
+  /**
+   * Is the value greater than the given floor?
+   */
+  def greaterThan[A](floor: A)(implicit num: Numeric[A]) = new GreaterThanNumericMatcher[A](floor, num)
+
+  /**
+   * Is the value greater than or equal to the given floor?
+   */
+  def greaterThanOrEqualTo[A](floor: A)(implicit num: Numeric[A]) = new GreaterThanOrEqualToNumericMatcher[A](floor, num)
 }
