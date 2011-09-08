@@ -155,10 +155,7 @@ class NumericSpec extends Matchables with Matchers {
   @Test
   def numbersMustBeApproximate() {
     100.must(be(approximately(101, 2)))
-  }
-
-  @Test
-  def numbersMustNotBeTooApproximate() {
+    
     evaluating {
       100.must(be(approximately(102, 1)))
     }.must(throwAn[AssertionError](
@@ -170,8 +167,48 @@ Expected: is <102> (+/- <1>)
     evaluating {
       100.must(be(approximately(98, 1)))
     }.must(throwAn[AssertionError](
-      """
+"""
 Expected: is <98> (+/- <1>)
+     got: <100>
+"""))
+  }
+
+  @Test
+  def numbersMustBeComparable() {
+    100.must(be(lessThan(101)))
+    100.must(be(lessThanOrEqualTo(100)))
+    100.must(be(greaterThan(99)))
+    100.must(be(greaterThanOrEqualTo(100)))
+
+    evaluating {
+      100.must(be(lessThan(99)))
+    }.must(throwAn[AssertionError](
+"""
+Expected: is less than <99>
+     got: <100>
+"""))
+
+    evaluating {
+      100.must(be(lessThanOrEqualTo(99)))
+    }.must(throwAn[AssertionError](
+"""
+Expected: is less than or equal to <99>
+     got: <100>
+"""))
+
+    evaluating {
+      100.must(be(greaterThan(101)))
+    }.must(throwAn[AssertionError](
+"""
+Expected: is greater than <101>
+     got: <100>
+"""))
+
+    evaluating {
+      100.must(be(greaterThanOrEqualTo(101)))
+    }.must(throwAn[AssertionError](
+"""
+Expected: is greater than or equal to <101>
      got: <100>
 """))
   }
