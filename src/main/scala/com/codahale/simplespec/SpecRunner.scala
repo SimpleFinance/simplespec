@@ -8,7 +8,7 @@ import org.junit.runner.{Description, Runner}
 import org.junit.runner.notification.RunNotifier
 import org.junit.runners.BlockJUnit4ClassRunner
 import org.junit.runners.model.FrameworkMethod
-import org.junit.Test
+import org.junit.{Ignore, Test}
 
 case class RunnerScope(klass: Class[_], runner: Runner, children: Seq[RunnerScope])
 
@@ -40,6 +40,7 @@ class SpecRunner(topKlass: Class[_]) extends Runner {
     !isInterface(klass.getModifiers) &&
       isPublic(klass.getModifiers) &&
       !klass.isAnonymousClass &&
+      !klass.isAnnotationPresent(classOf[Ignore]) &&
       !isFinal(klass.getModifiers) // excludes anonymous classes written in Scala
   }
 
