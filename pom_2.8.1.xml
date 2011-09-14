@@ -6,7 +6,7 @@
 
     <groupId>com.codahale</groupId>
     <artifactId>simplespec_2.8.1</artifactId>
-    <version>0.5.1</version>
+    <version>0.5.2</version>
     <name>SimpleSpec for Scala ${scala.version}</name>
 
     <properties>

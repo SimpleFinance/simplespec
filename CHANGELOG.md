@@ -1,8 +1,13 @@
+v0.5.2: Sep 13 2011
+===================
+
+* Added support for `@Ignore` on classes as well as methods.
+* Added `startWith`, `endWith`, `match`, and `contain` matchers for strings.
+
 v0.5.1: Sep 08 2011
 ===================
 
 * Added support for Scala 2.9.1.
-* Dropped support for Scala 2.8.1.
 * Added `lessThan`, `greaterThan`, `lessThanOrEqualTo`, and
   `greaterThanOrEqualTo` matchers.
 

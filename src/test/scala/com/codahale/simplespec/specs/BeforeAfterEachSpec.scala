@@ -2,8 +2,8 @@ package com.codahale.simplespec.specs
 
 import java.util.concurrent.CopyOnWriteArrayList
 import scala.collection.JavaConversions._
-import org.junit.runner.notification.RunNotifier
 import org.junit.Test
+import org.junit.runner.notification.RunNotifier
 import com.codahale.simplespec._
 
 class BeforeAfterEachSpec extends Matchers {
@@ -32,29 +32,29 @@ object BeforeAfterEachExample {
 class BeforeAfterEachExample extends Spec {
   import BeforeAfterEachExample._
 
-  override def beforeEach() = {
+  override def beforeEach() {
     befores += "BeforeAfterEachExample"
   }
 
-  override def afterEach() = {
+  override def afterEach() {
     afters += "BeforeAfterEachExample"
   }
 
   class `Doing a thing` extends BeforeAndAfterEach {
-    override def beforeEach() = {
+    override def beforeEach() {
       befores += "Doing a thing"
     }
 
-    override def afterEach() = {
+    override def afterEach() {
       afters += "Doing a thing"
     }
 
     class `with another thing` extends BeforeAndAfterEach {
-      override def beforeEach() = {
+      override def beforeEach() {
         befores += "with another thing"
       }
 
-      override def afterEach() = {
+      override def afterEach() {
         afters += "with another thing"
       }
 

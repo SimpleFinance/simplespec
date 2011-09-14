@@ -256,6 +256,11 @@ class SpecExample extends Spec {
       }
     }
   }
+
+  @Ignore
+  class `An ignored set of tests` {
+
+  }
 }
 
 class BustedSpecExample extends Spec {
