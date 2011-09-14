@@ -10,7 +10,7 @@ the most commonly-used test framework on the JVM.
 Requirements
 ------------
 
-* Scala 2.9.1 or 2.9.0-1
+* Scala 2.9.1 or 2.9.0-1 or 2.8.1
 * JUnit 4.8.x
 * Mockito 1.8.x
 
@@ -32,7 +32,7 @@ Getting Started
     <dependency>
         <groupId>com.codahale</groupId>
         <artifactId>simplespec_${scala.version}</artifactId>
-        <version>0.5.1</version>
+        <version>0.5.2</version>
     </dependency>
 </dependencies>
 ```
@@ -117,6 +117,17 @@ write your own:
 * `x.must(be(notNull))`: Asserts that `x` is not `null`.
 * `x.must(be(approximately(y, delta)))`: Asserts that `x` is within `delta` of
   `y`. Useful for floating-point math.
+* `x.must(be(lessThan(2))`: Asserts that `x` is less than `2`.
+* `x.must(be(greaterThan(2))`: Asserts that `x` is greater than `2`.
+* `x.must(be(lessThanOrEqualTo(2))`: Asserts that `x` is less than or equal to
+  `2`.
+* `x.must(be(greaterThanOrEqualTo(2))`: Asserts that `x` is greater than or
+  equal to `2`.
+* `x.must(startWith("woo"))`: Asserts that string `x` starts with `"woo"`.
+* `x.must(endWith("woo"))`: Asserts that string `x` ends with `"woo"`.
+* `x.must(contain("woo"))`: Asserts that string `x` contains with `"woo"`.
+* `x.must(`match`(".*oo".r))`: Asserts that string `x` matches the regular
+  expression `.*oo`.
 
 Matchers like `be` and `not` take matchers as their arguments, which means you
 can write domain-specific matchers for your tests:
