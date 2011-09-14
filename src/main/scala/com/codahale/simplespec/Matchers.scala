@@ -5,6 +5,7 @@ import org.junit.internal.matchers.CombinableMatcher
 import com.codahale.simplespec.matchers._
 import scala.util.matching.Regex
 import scala.collection.{SeqLike, TraversableLike}
+import org.mockito.internal.matchers.{Matches, Contains, EndsWith, StartsWith}
 
 trait Matchers extends Matchables with Mocks {
   /**
@@ -102,7 +103,27 @@ trait Matchers extends Matchables with Mocks {
   /**
    * Is the value a seq which contains the given element?
    */
-  def contain[A <: SeqLike[_, _]](element: Any) = new SeqLikeContainsMatcher[A](element)
+  def contain[A <: SeqLike[_, _]](element: Any): Matcher[A] = new SeqLikeContainsMatcher[A](element)
+
+  /**
+   * Is the value a string which starts with the given prefix?
+   */
+  def startWith(prefix: String): Matcher[String] = new StartsWith(prefix)
+
+  /**
+   * Is the value a string which ends with the given suffix?
+   */
+  def endWith(suffix: String): Matcher[String] = new EndsWith(suffix)
+
+  /**
+   * Is the value a string which contains the given substring?
+   */
+  def contain(substring: String): Matcher[String] = new Contains(substring)
+
+  /**
+   * Is the value a string which matches the given regular expression?
+   */
+  def `match`(regex: Regex): Matcher[String] = new Matches(regex.toString()).asInstanceOf[Matcher[String]]
 
   /**
    * Is the value not null?

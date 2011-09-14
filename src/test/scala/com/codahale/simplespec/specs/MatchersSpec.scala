@@ -2,7 +2,7 @@ package com.codahale.simplespec.specs
 
 import org.junit.Test
 import org.junit.Assert._
-import com.codahale.simplespec.{Matchables, Matchers}
+import com.codahale.simplespec.{Spec, Matchables, Matchers}
 
 class ExceptionAssertionSpec extends Matchables with Matchers {
   def boom(): Any = throw new RuntimeException("EFFF")
@@ -298,6 +298,72 @@ Expected: is <Some(40)>
         Some(x)
       }
       case Nil => None
+    }
+  }
+}
+
+class StringSpec extends Spec {
+  class `Matching a string` {
+    val string = "this is a string"
+
+    class `by its prefix` {
+      @Test def `passes if the string has that prefix` = {
+        string.must(startWith("this "))
+      }
+
+      @Test def `fails if the string doesn't have that prefix` = {
+        evaluating {
+          string.must(startWith("poop"))
+        }.must(throwAn[AssertionError]("""
+Expected: startsWith("poop")
+     got: "this is a string"
+"""))
+      }
+    }
+
+    class `by its suffix` {
+      @Test def `passes if the string has that suffix` = {
+        string.must(endWith("string"))
+      }
+
+      @Test def `fails if the string doesn't have that suffix` = {
+        evaluating {
+          string.must(endWith("poop"))
+        }.must(throwAn[AssertionError]("""
+Expected: endsWith("poop")
+     got: "this is a string"
+"""))
+      }
+    }
+
+    class `by a substring` {
+      @Test def `passes if the string has that substring` = {
+        string.must(contain("is a"))
+      }
+
+      @Test def `fails if the string doesn't have that substring` = {
+        evaluating {
+          string.must(contain("poop"))
+        }.must(throwAn[AssertionError]("""
+Expected: contains("poop")
+     got: "this is a string"
+"""))
+      }
+    }
+
+    class `by a regular expression` {
+      @Test def `passes if the string matches the expression` = {
+        string.must(`match`(""".*ring""".r))
+      }
+
+      @Test def `fails if the string doesn't match the expression` = {
+        evaluating {
+          string.must(`match`(""".*oop""".r))
+        }.must(throwAn[AssertionError]("""
+Expected: matches(".*oop")
+     got: "this is a string"
+"""))
+      }
     }
   }
 }
