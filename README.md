@@ -89,6 +89,12 @@ state.
 
 Unlike JUnit, Simplespec doesn't require your test methods to return void.
 
+The outer `Spec` instance has `beforeEach` and `afterEach` methods which can be
+overridden to perform setup and teardown tasks for each test contained in the
+context. Simplespec also provides `BeforeEach`, `AfterEach`, and
+`BeforeAndAfterEach` traits which inner classes can extend to perform more
+tightly-scoped setup and teardown tasks.
+
 
 Matchers
 --------
