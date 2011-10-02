@@ -132,7 +132,7 @@ write your own:
 * `x.must(startWith("woo"))`: Asserts that string `x` starts with `"woo"`.
 * `x.must(endWith("woo"))`: Asserts that string `x` ends with `"woo"`.
 * `x.must(contain("woo"))`: Asserts that string `x` contains with `"woo"`.
-* `x.must(`match`(".*oo".r))`: Asserts that string `x` matches the regular
+* `x.must(match(".*oo".r))`: Asserts that string `x` matches the regular
   expression `.*oo`.
 
 Matchers like `be` and `not` take matchers as their arguments, which means you
