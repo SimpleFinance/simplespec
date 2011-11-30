@@ -56,7 +56,7 @@ class StackSpec extends Spec {
       stack.isEmpty.must(be(true))
     }
 
-    class `with an item added to it` = {
+    class `with an item added to it` {
       stack += "woo"
 
       @Test def `might have an item in it` = {
