@@ -1,8 +1,3 @@
 .idea
-lib_managed
 target
-project/boot
-project/build/target
-project/plugins/lib_managed
-project/plugins/src_managed
-project/plugins/target
+
