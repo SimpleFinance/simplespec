@@ -56,7 +56,7 @@ class StackSpec extends Spec {
       stack.isEmpty.must(be(true))
     }
 
-    class `with an item added to it` = {
+    class `with an item added to it` {
       stack += "woo"
 
       @Test def `might have an item in it` = {
@@ -88,6 +88,12 @@ invocation) is that tests which create a substantial amount of shared state
 state.
 
 Unlike JUnit, Simplespec doesn't require your test methods to return void.
+
+The outer `Spec` instance has `beforeEach` and `afterEach` methods which can be
+overridden to perform setup and teardown tasks for each test contained in the
+context. Simplespec also provides `BeforeEach`, `AfterEach`, and
+`BeforeAndAfterEach` traits which inner classes can extend to perform more
+tightly-scoped setup and teardown tasks.
 
 
 Matchers
@@ -126,7 +132,7 @@ write your own:
 * `x.must(startWith("woo"))`: Asserts that string `x` starts with `"woo"`.
 * `x.must(endWith("woo"))`: Asserts that string `x` ends with `"woo"`.
 * `x.must(contain("woo"))`: Asserts that string `x` contains with `"woo"`.
-* `x.must(`match`(".*oo".r))`: Asserts that string `x` matches the regular
+* ``x.must(`match`(".*oo".r))``: Asserts that string `x` matches the regular
   expression `.*oo`.
 
 Matchers like `be` and `not` take matchers as their arguments, which means you
