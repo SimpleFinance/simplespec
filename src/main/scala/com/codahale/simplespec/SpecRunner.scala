@@ -111,7 +111,8 @@ class InnerClassRunner(scope: List[Class[_]], klass: Class[_]) extends BlockJUni
   private def ignoredError(msg: String) =
     msg.contains("should be void") ||
       msg.contains("No runnable methods") ||
-      msg.contains("exactly one public zero-argument constructor")
+      msg.contains("exactly one public zero-argument constructor") ||
+      msg.contains("is not static")
 
   override def createTest() = {
     val root = path.head.newInstance().asInstanceOf[Object]
