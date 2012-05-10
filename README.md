@@ -11,8 +11,8 @@ Requirements
 ------------
 
 * Scala 2.9.1 or 2.9.0-1 or 2.8.1
-* JUnit 4.8.x
-* Mockito 1.8.x
+* JUnit 4.10.x
+* Mockito 1.9.x
 
 
 Getting Started
