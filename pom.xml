@@ -7,7 +7,10 @@
     <groupId>com.simple</groupId>
     <artifactId>simplespec_2.9.1</artifactId>
     <version>0.6.0</version>
+    <packaging>pom</packaging>
     <name>simplespec for Scala ${scala.version}</name>
+    <url>https://github.com/SimpleFinance/simplespec</url>
+    <description>simplespec is a thin Scala wrapper over JUnit, featuring Hamcrest matchers, easy mocks, and literate test descriptions.</description>
 
     <properties>
         <scala.version>2.9.1</scala.version>
