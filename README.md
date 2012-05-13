@@ -3,15 +3,16 @@ simplespec
 
 *No seriously, keep it simple.*
 
-**simplespec** is a thin layer of convenience over [JUnit](http://www.junit.org/),
+**simplespec** is a thin Scala wrapper over [JUnit](http://www.junit.org/),
 the most commonly-used test framework on the JVM. simplespec was originally written
-by Coda Hale and is now maintained and developed by Simple.
+by Coda Hale and is now maintained and developed by Simple. The library features
+extensible Hamcrest matchers, easy mocks, and other niceties.
 
 
 Requirements
 ------------
 
-* Scala 2.9.1 or 2.9.0-1 or 2.8.1
+* Scala 2.9.1
 * JUnit 4.10.x
 * Mockito 1.9.x
 
@@ -22,18 +23,11 @@ Getting Started
 **First**, specify simplespec as a dependency:
 
 ```xml
-<repositories>
-    <repository>
-        <id>repo.codahale.com</id>
-        <url>http://repo.codahale.com</url>
-    </repository>
-</repositories>
-
 <dependencies>
     <dependency>
         <groupId>com.simple</groupId>
-        <artifactId>simplespec_${scala.version}</artifactId>
-        <version>0.5.2</version>
+        <artifactId>simplespec_2.9.1</artifactId>
+        <version>0.6.0</version>
     </dependency>
 </dependencies>
 ```
@@ -226,6 +220,7 @@ License
 -------
 
 Copyright (c) 2010-2012 Coda Hale
+
 Copyright (c) 2012 Simple Finance Technology
 
 Published under The MIT License, see LICENSE
