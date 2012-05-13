@@ -1,4 +1,4 @@
-package com.codahale.simplespec
+package com.simple.simplespec
 
 sealed abstract class Outcome[+A]
 

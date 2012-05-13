@@ -1,4 +1,4 @@
-package com.codahale.simplespec
+package com.simple.simplespec
 
 import org.mockito.stubbing.Answer
 import org.mockito.invocation.InvocationOnMock

@@ -1,7 +1,7 @@
-package com.codahale.simplespec.specs
+package com.simple.simplespec.specs
 
 import org.junit.Test
-import com.codahale.simplespec.{Matchables, Matchers, Mocks}
+import com.simple.simplespec.{Matchables, Matchers, Mocks}
 
 trait MockableThing {
   def aString: String

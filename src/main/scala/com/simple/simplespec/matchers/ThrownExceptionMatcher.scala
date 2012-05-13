@@ -1,7 +1,7 @@
-package com.codahale.simplespec.matchers
+package com.simple.simplespec.matchers
 
 import org.hamcrest.{Description, BaseMatcher}
-import com.codahale.simplespec.{Outcome, Failure}
+import com.simple.simplespec.{Outcome, Failure}
 
 class ThrownExceptionMatcher(expectedException: Class[_]) extends BaseMatcher[Outcome[Any]] {
   def describeTo(description: Description) {

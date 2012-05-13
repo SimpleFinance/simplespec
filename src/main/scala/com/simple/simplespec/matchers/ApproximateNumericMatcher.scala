@@ -1,4 +1,4 @@
-package com.codahale.simplespec.matchers
+package com.simple.simplespec.matchers
 
 import org.hamcrest.{Description, BaseMatcher}
 

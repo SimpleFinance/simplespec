@@ -1,7 +1,7 @@
-package com.codahale.simplespec.matchers
+package com.simple.simplespec.matchers
 
 import org.hamcrest.{Description, BaseMatcher}
-import com.codahale.simplespec.{Outcome, Failure}
+import com.simple.simplespec.{Outcome, Failure}
 
 class ThrownExceptionMessageMatcher(expectedException: Class[_],
                                     expectedMessage: String) extends BaseMatcher[Outcome[Any]] {

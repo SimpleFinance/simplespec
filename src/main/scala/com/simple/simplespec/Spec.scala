@@ -1,4 +1,4 @@
-package com.codahale.simplespec
+package com.simple.simplespec
 
 import org.junit.runner.RunWith
 import org.junit.Rule

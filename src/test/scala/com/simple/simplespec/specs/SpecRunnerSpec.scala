@@ -1,9 +1,9 @@
-package com.codahale.simplespec.specs
+package com.simple.simplespec.specs
 
 import scala.collection.mutable
 import org.junit.Assert._
 import org.junit.runner.{Result, Description}
-import com.codahale.simplespec.{SpecRunner, Spec}
+import com.simple.simplespec.{SpecRunner, Spec}
 import org.junit.{Ignore, Test}
 import org.junit.runner.notification.{RunNotifier, Failure, RunListener}
 import org.junit.runners.model.InitializationError
@@ -14,8 +14,8 @@ class SpecRunnerSpec {
     val runner = new SpecRunner(classOf[SpecExample])
     val desc = runner.getDescription
 
-    assertEquals("com.codahale.simplespec.specs.SpecExample", desc.getDisplayName)
-    assertEquals("com.codahale.simplespec.specs.SpecExample", desc.getClassName)
+    assertEquals("com.simple.simplespec.specs.SpecExample", desc.getDisplayName)
+    assertEquals("com.simple.simplespec.specs.SpecExample", desc.getClassName)
     assertNull(desc.getMethodName)
     assertEquals(classOf[SpecExample], desc.getTestClass)
     assertEquals(3, desc.getChildren.size())
@@ -30,16 +30,16 @@ class SpecRunnerSpec {
 
       {
         val hasZero = emptySet.getChildren.get(0)
-        assertEquals("has a size of zero(com.codahale.simplespec.specs.SpecExample$An$u0020empty$u0020set)", hasZero.getDisplayName)
-        assertEquals("com.codahale.simplespec.specs.SpecExample$An$u0020empty$u0020set", hasZero.getClassName)
+        assertEquals("has a size of zero(com.simple.simplespec.specs.SpecExample$An$u0020empty$u0020set)", hasZero.getDisplayName)
+        assertEquals("com.simple.simplespec.specs.SpecExample$An$u0020empty$u0020set", hasZero.getClassName)
         assertEquals("has a size of zero", hasZero.getMethodName)
         assertEquals(classOf[SpecExample#`An empty set`], hasZero.getTestClass)
       }
 
       {
         val isEmpty = emptySet.getChildren.get(1)
-        assertEquals("is empty(com.codahale.simplespec.specs.SpecExample$An$u0020empty$u0020set)", isEmpty.getDisplayName)
-        assertEquals("com.codahale.simplespec.specs.SpecExample$An$u0020empty$u0020set", isEmpty.getClassName)
+        assertEquals("is empty(com.simple.simplespec.specs.SpecExample$An$u0020empty$u0020set)", isEmpty.getDisplayName)
+        assertEquals("com.simple.simplespec.specs.SpecExample$An$u0020empty$u0020set", isEmpty.getClassName)
         assertEquals("is empty", isEmpty.getMethodName)
         assertEquals(classOf[SpecExample#`An empty set`], isEmpty.getTestClass)
       }
@@ -55,16 +55,16 @@ class SpecRunnerSpec {
 
       {
         val hasOne = oneNumber.getChildren.get(0)
-        assertEquals("has a size of one(com.codahale.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number)", hasOne.getDisplayName)
-        assertEquals("com.codahale.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number", hasOne.getClassName)
+        assertEquals("has a size of one(com.simple.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number)", hasOne.getDisplayName)
+        assertEquals("com.simple.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number", hasOne.getClassName)
         assertEquals("has a size of one", hasOne.getMethodName)
         assertEquals(classOf[SpecExample#`A set with one number`], hasOne.getTestClass)
       }
 
       {
         val notEmpty = oneNumber.getChildren.get(1)
-        assertEquals("is not empty(com.codahale.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number)", notEmpty.getDisplayName)
-        assertEquals("com.codahale.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number", notEmpty.getClassName)
+        assertEquals("is not empty(com.simple.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number)", notEmpty.getDisplayName)
+        assertEquals("com.simple.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number", notEmpty.getClassName)
         assertEquals("is not empty", notEmpty.getMethodName)
         assertEquals(classOf[SpecExample#`A set with one number`], notEmpty.getTestClass)
       }
@@ -79,16 +79,16 @@ class SpecRunnerSpec {
 
         {
           val hasZero = withRemoved.getChildren.get(0)
-          assertEquals("has a size of zero(com.codahale.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number$having$u0020had$u0020that$u0020number$u0020removed)", hasZero.getDisplayName)
-          assertEquals("com.codahale.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number$having$u0020had$u0020that$u0020number$u0020removed", hasZero.getClassName)
+          assertEquals("has a size of zero(com.simple.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number$having$u0020had$u0020that$u0020number$u0020removed)", hasZero.getDisplayName)
+          assertEquals("com.simple.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number$having$u0020had$u0020that$u0020number$u0020removed", hasZero.getClassName)
           assertEquals("has a size of zero", hasZero.getMethodName)
           assertEquals(classOf[SpecExample#`A set with one number`#`having had that number removed`], hasZero.getTestClass)
         }
 
         {
           val isEmpty = withRemoved.getChildren.get(1)
-          assertEquals("is empty(com.codahale.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number$having$u0020had$u0020that$u0020number$u0020removed)", isEmpty.getDisplayName)
-          assertEquals("com.codahale.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number$having$u0020had$u0020that$u0020number$u0020removed", isEmpty.getClassName)
+          assertEquals("is empty(com.simple.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number$having$u0020had$u0020that$u0020number$u0020removed)", isEmpty.getDisplayName)
+          assertEquals("com.simple.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number$having$u0020had$u0020that$u0020number$u0020removed", isEmpty.getClassName)
           assertEquals("is empty", isEmpty.getMethodName)
           assertEquals(classOf[SpecExample#`A set with one number`#`having had that number removed`], isEmpty.getTestClass)
         }

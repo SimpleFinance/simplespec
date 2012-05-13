@@ -1,10 +1,10 @@
-package com.codahale.simplespec.specs
+package com.simple.simplespec.specs
 
 import java.util.concurrent.CopyOnWriteArrayList
 import scala.collection.JavaConversions._
 import org.junit.Test
 import org.junit.runner.notification.RunNotifier
-import com.codahale.simplespec._
+import com.simple.simplespec._
 
 class BeforeAfterEachSpec extends Matchers {
   @Test

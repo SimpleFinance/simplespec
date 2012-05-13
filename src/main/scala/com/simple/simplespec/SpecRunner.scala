@@ -1,4 +1,4 @@
-package com.codahale.simplespec
+package com.simple.simplespec
 
 import java.lang.reflect.Modifier._
 import java.util.ArrayList

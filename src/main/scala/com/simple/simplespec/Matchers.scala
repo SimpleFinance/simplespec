@@ -1,8 +1,8 @@
-package com.codahale.simplespec
+package com.simple.simplespec
 
 import org.hamcrest._
 import org.junit.internal.matchers.CombinableMatcher
-import com.codahale.simplespec.matchers._
+import com.simple.simplespec.matchers._
 import scala.util.matching.Regex
 import scala.collection.{SeqLike, TraversableLike}
 import org.mockito.internal.matchers.{Matches, Contains, EndsWith, StartsWith}

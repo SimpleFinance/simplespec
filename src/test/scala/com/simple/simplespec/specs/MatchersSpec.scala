@@ -1,8 +1,8 @@
-package com.codahale.simplespec.specs
+package com.simple.simplespec.specs
 
 import org.junit.Test
 import org.junit.Assert._
-import com.codahale.simplespec.{Spec, Matchables, Matchers}
+import com.simple.simplespec.{Spec, Matchables, Matchers}
 
 class ExceptionAssertionSpec extends Matchables with Matchers {
   def boom(): Any = throw new RuntimeException("EFFF")

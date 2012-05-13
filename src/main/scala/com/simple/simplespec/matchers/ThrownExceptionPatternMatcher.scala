@@ -1,7 +1,7 @@
-package com.codahale.simplespec.matchers
+package com.simple.simplespec.matchers
 
 import scala.util.matching.Regex
-import com.codahale.simplespec.{Failure, Outcome}
+import com.simple.simplespec.{Failure, Outcome}
 import org.hamcrest.{Description, BaseMatcher}
 
 class ThrownExceptionPatternMatcher(expectedException: Class[_],

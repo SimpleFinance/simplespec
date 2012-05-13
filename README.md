@@ -1,10 +1,11 @@
-Simplespec
+simplespec
 ==========
 
 *No seriously, keep it simple.*
 
-Simplespec is a thin layer of convenience over [JUnit](http://www.junit.org/),
-the most commonly-used test framework on the JVM.
+**simplespec** is a thin layer of convenience over [JUnit](http://www.junit.org/),
+the most commonly-used test framework on the JVM. simplespec was originally written
+by Coda Hale and is now maintained and developed by Simple.
 
 
 Requirements
@@ -18,7 +19,7 @@ Requirements
 Getting Started
 ---------------
 
-**First**, specify SimpleSpec as a dependency:
+**First**, specify simplespec as a dependency:
 
 ```xml
 <repositories>
@@ -30,7 +31,7 @@ Getting Started
 
 <dependencies>
     <dependency>
-        <groupId>com.codahale</groupId>
+        <groupId>com.simple</groupId>
         <artifactId>simplespec_${scala.version}</artifactId>
         <version>0.5.2</version>
     </dependency>
@@ -42,7 +43,7 @@ Getting Started
 ```scala
 import com.example.Stack
 import org.junit.Test
-import com.codahale.simplespec.Spec
+import com.simple.simplespec.Spec
 
 class StackSpec extends Spec {
   class `An empty stack` {
@@ -87,11 +88,11 @@ invocation) is that tests which create a substantial amount of shared state
 (e.g., data-intensive tests) spend a lot of time setting up or tearing down
 state.
 
-Unlike JUnit, Simplespec doesn't require your test methods to return void.
+Unlike JUnit, simplespec doesn't require your test methods to return void.
 
 The outer `Spec` instance has `beforeEach` and `afterEach` methods which can be
 overridden to perform setup and teardown tasks for each test contained in the
-context. Simplespec also provides `BeforeEach`, `AfterEach`, and
+context. simplespec also provides `BeforeEach`, `AfterEach`, and
 `BeforeAndAfterEach` traits which inner classes can extend to perform more
 tightly-scoped setup and teardown tasks.
 
@@ -99,7 +100,7 @@ tightly-scoped setup and teardown tasks.
 Matchers
 --------
 
-Simplespec provides a thin layer over
+simplespec provides a thin layer over
 [Hamcrest matchers](http://code.google.com/p/hamcrest/) to allow for declarative
 assertions in your tests:
 
@@ -107,7 +108,7 @@ assertions in your tests:
 stack.must(be(empty))
 ```
 
-Simplespec includes the following matchers by default, but you're encouraged to
+simplespec includes the following matchers by default, but you're encouraged to
 write your own:
 
 * `x.must(equal(y))`: Asserts `x == y`.
@@ -165,7 +166,7 @@ class BlahBlahSpec extends Spec with CromulentMatcher {
 }
 ```
 
-Simplespec also includes two helper methods: `evaluating` and `eventually`.
+simplespec also includes two helper methods: `evaluating` and `eventually`.
 
 `evaluating` captures a closure and allows you to make assertions about what
 happens when it's evaluated:
@@ -196,7 +197,7 @@ See `Matchers.scala` for the full run-down.
 Mocks
 -----
 
-Also, yeah, mocks. Simplespec uses [Mockito](http://mockito.org/) for its
+Also, yeah, mocks. simplespec uses [Mockito](http://mockito.org/) for its
 mocking stuff:
 
 ```scala
@@ -224,6 +225,7 @@ See `Mocks.scala` for the full run-down.
 License
 -------
 
-Copyright (c) 2010-2011 Coda Hale
+Copyright (c) 2010-2012 Coda Hale
+Copyright (c) 2012 Simple Finance Technology
 
 Published under The MIT License, see LICENSE

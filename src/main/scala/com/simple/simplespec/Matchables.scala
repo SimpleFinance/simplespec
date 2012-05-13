@@ -1,4 +1,4 @@
-package com.codahale.simplespec
+package com.simple.simplespec
 
 import org.hamcrest.Matcher
 import org.junit.Assert
