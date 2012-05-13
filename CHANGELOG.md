@@ -1,3 +1,10 @@
+v0.6.0: May 13 2012
+===================
+
+* Rename packages from `com.codahale` to `com.simple`
+* Prepare for release to Maven Central
+* Drop support for Scala 2.8.1
+
 v0.5.2: Sep 13 2011
 ===================
 
