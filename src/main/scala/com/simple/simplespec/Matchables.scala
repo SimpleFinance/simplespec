@@ -32,6 +32,10 @@ class LiteralMatchable[A](actual: A) {
   def must(condition: Matcher[_ <: A]): Any = {
     Assert.assertThat(actual, condition.asInstanceOf[Matcher[A]])
   }
+
+  def must(condition: Matcher[_ <: A], reason: String): Any = {
+    Assert.assertThat(reason, actual, condition.asInstanceOf[Matcher[A]])
+  }
 }
 
 class OutcomeMatchable[A](context: () => A) {
@@ -43,6 +47,16 @@ class OutcomeMatchable[A](context: () => A) {
     }
     Assert.assertThat(actual, condition.asInstanceOf[Matcher[Outcome[A]]])
   }
+
+  def must(condition: Matcher[Outcome[Any]], message: String): Any = {
+    val actual = try {
+      Success(context())
+    } catch {
+      case e: Throwable => Failure(e)
+    }
+    Assert.assertThat(
+      message, actual, condition.asInstanceOf[Matcher[Outcome[A]]])
+  }
 }
 
 class EventuallyMatchable[A](context: () => A, maxAttempts: Int) {
@@ -50,6 +64,18 @@ class EventuallyMatchable[A](context: () => A, maxAttempts: Int) {
     for (i <- 1 to maxAttempts) {
       try {
         Assert.assertThat(context(), condition.asInstanceOf[Matcher[A]])
+        return ()
+      } catch {
+        case e: AssertionError if i < maxAttempts => // bury it
+      }
+    }
+  }
+
+  def must(condition: Matcher[_ <: A], message: String): Any = {
+    for (i <- 1 to maxAttempts) {
+      try {
+        Assert.assertThat(
+          message, context(), condition.asInstanceOf[Matcher[A]])
         return ()
       } catch {
         case e: AssertionError if i < maxAttempts => // bury it
