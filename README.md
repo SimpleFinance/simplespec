@@ -12,7 +12,7 @@ extensible Hamcrest matchers, easy mocks, and other niceties.
 Requirements
 ------------
 
-* Scala 2.9.1
+* Scala 2.9.2
 * JUnit 4.10.x
 * Mockito 1.9.x
 
@@ -26,8 +26,8 @@ Getting Started
 <dependencies>
     <dependency>
         <groupId>com.simple</groupId>
-        <artifactId>simplespec_2.9.1</artifactId>
-        <version>0.6.0</version>
+        <artifactId>simplespec_2.9.2</artifactId>
+        <version>0.7.0</version>
     </dependency>
 </dependencies>
 ```
