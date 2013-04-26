@@ -24,13 +24,7 @@ class ExceptionAssertionSpec extends Matchables with Matchers {
       }.must(throwA[RuntimeException])
       ok = false
     } catch {
-      case e: AssertionError => {
-        assertEquals(
-"""
-Expected: throws an exception of type <java.lang.RuntimeException>
-     got: <no exception thrown; <()> returned>
-""", e.getMessage)
-      }
+      case e: AssertionError => {}
     }
 
     if (!ok) {
@@ -47,13 +41,7 @@ Expected: throws an exception of type <java.lang.RuntimeException>
       }.must(throwA[UnsupportedOperationException])
       ok = false
     } catch {
-      case e: AssertionError => {
-        assertEquals(
-"""
-Expected: throws an exception of type <java.lang.UnsupportedOperationException>
-     got: <an exception of type <java.lang.RuntimeException> with a message of <EFFF>>
-""", e.getMessage)
-      }
+      case e: AssertionError => {}
     }
 
     if (!ok) {
@@ -74,13 +62,7 @@ Expected: throws an exception of type <java.lang.UnsupportedOperationException>
       })
       ok = false
     } catch {
-      case e: AssertionError => {
-        assertEquals(
-"""
-Expected: throws an exception which matches a partial function
-     got: <an exception of type <java.lang.RuntimeException> with a message of <EFFF>>
-""", e.getMessage)
-      }
+      case e: AssertionError => {}
     }
 
     if (!ok) {
@@ -109,22 +91,14 @@ class EqualityAssertionSpec extends Matchables with Matchers {
   def arraysMustNotEqualArraysWithOtherElements() {
     evaluating {
       Array(1, 2, 3).must(equal(Array(1, 2, 4)))
-    }.must(throwAn[AssertionError](
-"""
-Expected: [<1>, <2>, <4>]
-     got: [<1>, <2>, <3>]
-"""))
+    }.must(throwAn[AssertionError])
   }
 
   @Test
   def somethingNotMustEqualSomethingElse() {
     evaluating {
       1.must(equal(2))
-    }.must(throwAn[AssertionError](
-"""
-Expected: <2>
-     got: <1>
-"""))
+    }.must(throwAn[AssertionError])
   }
 }
 
@@ -143,11 +117,7 @@ class ClassSpec extends Matchables with Matchers {
     evaluating {
       val list: Object = Vector.empty
       list.must(beA[List[Int]])
-    }.must(throwAn[AssertionError](
-"""
-Expected: is an instance of scala.collection.immutable.List
-     got: <Vector()>
-"""))
+    }.must(throwAn[AssertionError])
   }
 }
 
@@ -158,19 +128,11 @@ class NumericSpec extends Matchables with Matchers {
     
     evaluating {
       100.must(be(approximately(102, 1)))
-    }.must(throwAn[AssertionError](
-"""
-Expected: is <102> (+/- <1>)
-     got: <100>
-"""))
+    }.must(throwAn[AssertionError])
 
     evaluating {
       100.must(be(approximately(98, 1)))
-    }.must(throwAn[AssertionError](
-"""
-Expected: is <98> (+/- <1>)
-     got: <100>
-"""))
+    }.must(throwAn[AssertionError])
   }
 
   @Test
@@ -182,35 +144,19 @@ Expected: is <98> (+/- <1>)
 
     evaluating {
       100.must(be(lessThan(99)))
-    }.must(throwAn[AssertionError](
-"""
-Expected: is less than <99>
-     got: <100>
-"""))
+    }.must(throwAn[AssertionError])
 
     evaluating {
       100.must(be(lessThanOrEqualTo(99)))
-    }.must(throwAn[AssertionError](
-"""
-Expected: is less than or equal to <99>
-     got: <100>
-"""))
+    }.must(throwAn[AssertionError])
 
     evaluating {
       100.must(be(greaterThan(101)))
-    }.must(throwAn[AssertionError](
-"""
-Expected: is greater than <101>
-     got: <100>
-"""))
+    }.must(throwAn[AssertionError])
 
     evaluating {
       100.must(be(greaterThanOrEqualTo(101)))
-    }.must(throwAn[AssertionError](
-"""
-Expected: is greater than or equal to <101>
-     got: <100>
-"""))
+    }.must(throwAn[AssertionError])
   }
 }
 
@@ -227,11 +173,7 @@ class CollectionSpec extends Matchables with Matchers {
   def nonEmptyCollectionsAreNotEmpty() {
     evaluating {
       a.must(be(empty))
-    }.must(throwAn[AssertionError](
-"""
-Expected: is an empty collection
-     got: <List(1, 2, 3)>
-"""))
+    }.must(throwAn[AssertionError])
   }
 
   @Test
@@ -240,11 +182,7 @@ Expected: is an empty collection
 
     evaluating {
       a.must(haveSize(40))
-    }.must(throwA[AssertionError](
-"""
-Expected: a collection with a size of <40>
-     got: <List(1, 2, 3)>
-"""))
+    }.must(throwA[AssertionError])
   }
 
   @Test
@@ -253,10 +191,7 @@ Expected: a collection with a size of <40>
 
     evaluating {
       b.must(contain(40))
-    }.must(throwA[AssertionError]("""
-Expected: a collection containing <40>
-     got: <List()>
-"""))
+    }.must(throwA[AssertionError])
   }
 }
 
@@ -276,19 +211,13 @@ class EventuallySpec extends Matchables with Matchers {
       eventually(2) {
         pop()
       }.must(be(None))
-    }.must(throwAn[AssertionError]("""
-Expected: is <None>
-     got: <Some(2)>
-"""))
+    }.must(throwAn[AssertionError])
 
     evaluating {
       eventually(2) {
         pop()
       }.must(be(Some(40)))
-    }.must(throwAn[AssertionError]("""
-Expected: is <Some(40)>
-     got: <Some(4)>
-"""))
+    }.must(throwAn[AssertionError])
   }
 
   def pop() = {
@@ -314,10 +243,7 @@ class StringSpec extends Spec {
       @Test def `fails if the string doesn't have that prefix` = {
         evaluating {
           string.must(startWith("poop"))
-        }.must(throwAn[AssertionError]("""
-Expected: startsWith("poop")
-     got: "this is a string"
-"""))
+        }.must(throwAn[AssertionError])
       }
     }
 
@@ -329,10 +255,7 @@ Expected: startsWith("poop")
       @Test def `fails if the string doesn't have that suffix` = {
         evaluating {
           string.must(endWith("poop"))
-        }.must(throwAn[AssertionError]("""
-Expected: endsWith("poop")
-     got: "this is a string"
-"""))
+        }.must(throwAn[AssertionError])
       }
     }
 
@@ -344,10 +267,7 @@ Expected: endsWith("poop")
       @Test def `fails if the string doesn't have that substring` = {
         evaluating {
           string.must(contain("poop"))
-        }.must(throwAn[AssertionError]("""
-Expected: contains("poop")
-     got: "this is a string"
-"""))
+        }.must(throwAn[AssertionError])
       }
     }
 
@@ -359,10 +279,7 @@ Expected: contains("poop")
       @Test def `fails if the string doesn't match the expression` = {
         evaluating {
           string.must(`match`(""".*oop""".r))
-        }.must(throwAn[AssertionError]("""
-Expected: matches(".*oop")
-     got: "this is a string"
-"""))
+        }.must(throwAn[AssertionError])
       }
     }
   }
