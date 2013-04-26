@@ -12,15 +12,30 @@ extensible Hamcrest matchers, easy mocks, and other niceties.
 Requirements
 ------------
 
-* Scala 2.9.2
-* JUnit 4.10.x
-* Mockito 1.9.x
+* Scala 2.10.1
+* JUnit 4.11
+* Mockito 1.9.5
+
+(Scala 2.9.1 and 2.9.2 are supported in simplespec 0.6.0 and 0.7.0, respectively.)
 
 
 Getting Started
 ---------------
 
-**First**, specify simplespec as a dependency:
+**First**, specify simplespec as a dependency.
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.simple</groupId>
+        <artifactId>simplespec_2.10.1</artifactId>
+        <version>0.8.0</version>
+    </dependency>
+</dependencies>
+```
+
+
+If you are on Scala 2.9.2, you should use:
 
 ```xml
 <dependencies>
@@ -31,6 +46,19 @@ Getting Started
     </dependency>
 </dependencies>
 ```
+
+And for 2.9.1:
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.simple</groupId>
+        <artifactId>simplespec_2.9.1</artifactId>
+        <version>0.6.00</version>
+    </dependency>
+</dependencies>
+```
+
 
 **Second**, write a spec:
 
