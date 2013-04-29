@@ -54,7 +54,7 @@ And for 2.9.1:
     <dependency>
         <groupId>com.simple</groupId>
         <artifactId>simplespec_2.9.1</artifactId>
-        <version>0.6.00</version>
+        <version>0.6.0</version>
     </dependency>
 </dependencies>
 ```
