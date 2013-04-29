@@ -10,7 +10,7 @@ trait Mocks {
   /**
    * Returns a mock object of the given type.
    */
-  def mock[A](implicit mf: Manifest[A]): A = Mockito.mock(mf.erasure.asInstanceOf[Class[A]])
+  def mock[A](implicit mf: Manifest[A]): A = Mockito.mock(mf.runtimeClass.asInstanceOf[Class[A]])
 
   /**
    * Returns a spy for the given object.
@@ -20,17 +20,17 @@ trait Mocks {
   /**
    * Returns an argument captor for the given type.
    */
-  def captor[A](implicit mf: Manifest[A]) = ArgumentCaptor.forClass(mf.erasure.asInstanceOf[Class[A]])
+  def captor[A](implicit mf: Manifest[A]) = ArgumentCaptor.forClass(mf.runtimeClass.asInstanceOf[Class[A]])
 
   /**
    * Returns a matcher which will accept any instance.
    */
-  def any[A](implicit mf: Manifest[A]) = MockitoMatchers.any(mf.erasure.asInstanceOf[Class[A]])
+  def any[A](implicit mf: Manifest[A]) = MockitoMatchers.any(mf.runtimeClass.asInstanceOf[Class[A]])
 
   /**
    * Returns a matcher which will accept any instance of the given type.
    */
-  def isA[A](implicit mf: Manifest[A]) = MockitoMatchers.isA(mf.erasure.asInstanceOf[Class[A]])
+  def isA[A](implicit mf: Manifest[A]) = MockitoMatchers.isA(mf.runtimeClass.asInstanceOf[Class[A]])
 
   /**
    * Returns a matcher which will accept any instance of the given type which is
