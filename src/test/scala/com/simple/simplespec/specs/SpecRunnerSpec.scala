@@ -150,16 +150,7 @@ class SpecRunnerSpec {
 
   @Test
   def mustNotExplodeWithAnonymousClasses() {
-    try {
-      new SpecRunner(classOf[AnonymousClassExample])
-      assertTrue(true)
-    } catch {
-      case e: Exception => {
-        println(e.getMessage)
-        println(e)
-        throw e
-      }
-    }
+    new SpecRunner(classOf[AnonymousClassExample])
   }
 }
 
