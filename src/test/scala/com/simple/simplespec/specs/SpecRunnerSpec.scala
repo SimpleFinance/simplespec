@@ -108,8 +108,27 @@ class SpecRunnerSpec {
     notifier.addListener(listener)
     runner.run(notifier)
 
-    // The order in which they run is dependent on the Scala compiler, so we only check the size.
+    // The order in which they run is dependent on the Scala compiler, so we only check size.
     assertEquals(16, listener.events.size)
+    // Check the composition.
+    assertEquals(listener.events.toSet,
+      Set(
+        ('started, "has a size of zero"),
+        ('finished, "has a size of zero"),
+        ('started, "is empty"),
+        ('finished, "is empty"),
+        ('started, "has a size of one"),
+        ('finished, "has a size of one"),
+        ('started, "is not empty"),
+        ('finished, "is not empty"),
+        ('started, "has a size of zero"),
+        ('finished, "has a size of zero"),
+        ('started, "is empty"),
+        ('finished, "is empty"),
+        ('started, "has a size of one"),
+        ('finished, "has a size of one"),
+        ('started, "is not empty"),
+        ('finished, "is not empty")))
   }
 
   @Test
