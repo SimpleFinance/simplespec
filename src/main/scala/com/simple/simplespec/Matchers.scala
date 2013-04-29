@@ -1,7 +1,6 @@
 package com.simple.simplespec
 
 import org.hamcrest._
-import org.junit.internal.matchers.CombinableMatcher
 import com.simple.simplespec.matchers._
 import scala.util.matching.Regex
 import scala.collection.{SeqLike, TraversableLike}
@@ -13,7 +12,7 @@ trait Matchers extends Matchables with Mocks {
    *
    * {@code must(be(1).or(be(2))}
    */
-  implicit def matcher2CombinableMatcher[A](matcher: Matcher[A]) = new CombinableMatcher(matcher)
+  implicit def matcher2CombinableMatcher[A](matcher: Matcher[A]) = CoreMatchers.both(matcher)
 
   /**
    * Fail the test immediately.
@@ -28,7 +27,7 @@ trait Matchers extends Matchables with Mocks {
   /**
    * Does the context throw an exception of the given type?
    */
-  def throwA[E <: Throwable](implicit mf: Manifest[E]) = new ThrownExceptionMatcher(mf.erasure)
+  def throwA[E <: Throwable](implicit mf: Manifest[E]) = new ThrownExceptionMatcher(mf.runtimeClass)
 
   /**
    * Does the context throw an exception of the given type?
@@ -39,7 +38,7 @@ trait Matchers extends Matchables with Mocks {
    * Does the context throw an exception of the given type and with the given
    * message?
    */
-  def throwA[E <: Throwable](message: String)(implicit mf: Manifest[E]) = new ThrownExceptionMessageMatcher(mf.erasure, message)
+  def throwA[E <: Throwable](message: String)(implicit mf: Manifest[E]) = new ThrownExceptionMessageMatcher(mf.runtimeClass, message)
 
   /**
    * Does the context throw an exception of the given type and with the given
@@ -51,7 +50,7 @@ trait Matchers extends Matchables with Mocks {
    * Does the context throw an exception of the given type and with a message
    * which matches the given pattern?
    */
-  def throwA[E <: Throwable](pattern: Regex)(implicit mf: Manifest[E]) = new ThrownExceptionPatternMatcher(mf.erasure, pattern)
+  def throwA[E <: Throwable](pattern: Regex)(implicit mf: Manifest[E]) = new ThrownExceptionPatternMatcher(mf.runtimeClass, pattern)
 
   /**
    * Does the context throw an exception of the given type and with a message
@@ -88,7 +87,7 @@ trait Matchers extends Matchables with Mocks {
   /**
    * Is the value an instance of the given type?
    */
-  def beA[A <: AnyRef](implicit mf: Manifest[A]) = CoreMatchers.is(CoreMatchers.instanceOf(mf.erasure)).asInstanceOf[Matcher[_ <: A]]
+  def beA[A <: AnyRef](implicit mf: Manifest[A]) = CoreMatchers.is(CoreMatchers.instanceOf[A](mf.runtimeClass)).asInstanceOf[Matcher[_ <: A]]
 
   /**
    * Is the value an empty traversable?
@@ -131,7 +130,7 @@ trait Matchers extends Matchables with Mocks {
   // FWIW, this is the only expressed negative in the matchers for a reason.
   // I'd rather express nullity as a double-negative in tests to express how
   // ungainly it is to deal with in an API.
-  def notNull[A] = CoreMatchers.notNullValue[A]()
+  def notNull[A] = CoreMatchers.notNullValue()
 
   /**
    * Is the value equal to the given value, plus or minus the given delta?

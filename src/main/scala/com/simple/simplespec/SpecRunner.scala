@@ -41,7 +41,7 @@ class SpecRunner(topKlass: Class[_]) extends Runner {
       isPublic(klass.getModifiers) &&
       !klass.isAnonymousClass &&
       !klass.isAnnotationPresent(classOf[Ignore]) &&
-      !isFinal(klass.getModifiers) // excludes anonymous classes written in Scala
+      !klass.getName.contains("$$anon$") // excludes anonymous classes written in Scala
   }
 
 
