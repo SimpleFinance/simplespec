@@ -8,13 +8,14 @@
     <artifactId>simplespec_2.10.1</artifactId>
     <version>0.8.0</version>
     <packaging>jar</packaging>
-    
+
     <name>simplespec for Scala ${scala.version}</name>
     <url>https://github.com/SimpleFinance/simplespec</url>
     <description>simplespec is a thin Scala wrapper over JUnit, featuring Hamcrest matchers, easy mocks, and literate test descriptions.</description>
 
     <properties>
-        <scala.version>2.10.1</scala.version>
+        <scala.major.version>2.10</scala.major.version>
+        <scala.version>${scala.major.version}.1</scala.version>
     </properties>
 
     <developers>
@@ -86,6 +87,11 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>1.9.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.scalacheck</groupId>
+            <artifactId>scalacheck_${scala.major.version}</artifactId>
+            <version>1.10.1</version>
         </dependency>
     </dependencies>
 

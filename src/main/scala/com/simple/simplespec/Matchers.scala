@@ -5,6 +5,7 @@ import com.simple.simplespec.matchers._
 import scala.util.matching.Regex
 import scala.collection.{SeqLike, TraversableLike}
 import org.mockito.internal.matchers.{Matches, Contains, EndsWith, StartsWith}
+import org.scalacheck.Test
 
 trait Matchers extends Matchables with Mocks {
   /**
@@ -156,4 +157,45 @@ trait Matchers extends Matchables with Mocks {
    * Is the value greater than or equal to the given floor?
    */
   def greaterThanOrEqualTo[A](floor: A)(implicit num: Numeric[A]) = new GreaterThanOrEqualToNumericMatcher[A](floor, num)
+
+  /**
+   * Does the property hold?
+   */
+  def hold: Matcher[Test.Result] = new HeldPropertyMatcher
+
+  /**
+   * Does the property prove?
+   */
+  def prove: Matcher[Test.Result] = new ProvedPropertyMatcher
+}
+
+/**
+ * Matcher indicating that a property holds.
+ *
+ * This is a looser check than ProvedPropertyMatcher.
+ */
+class HeldPropertyMatcher[T <: Test.Result] extends BaseMatcher[T] {
+
+  def matches(r: Any) = r.asInstanceOf[T].passed
+
+  def describeTo(desc: Description) = {
+    desc.appendText("property to hold")
+  }
+}
+
+/**
+ * Matcher indicating that a property proves.
+ *
+ * This is a stricter check than HeldPropertyMatcher.
+ */
+class ProvedPropertyMatcher[T <: Test.Result] extends BaseMatcher[T] {
+
+  def matches(r: Any) = r.asInstanceOf[T].status match {
+    case Test.Proved(_) => true
+    case _ => false
+  }
+
+  def describeTo(desc: Description) = {
+    desc.appendText("property to prove")
+  }
 }
