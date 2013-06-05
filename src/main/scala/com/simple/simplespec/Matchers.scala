@@ -5,9 +5,9 @@ import com.simple.simplespec.matchers._
 import scala.util.matching.Regex
 import scala.collection.{SeqLike, TraversableLike}
 import org.mockito.internal.matchers.{Matches, Contains, EndsWith, StartsWith}
-import org.scalacheck.Test
+import org.scalacheck.{Test, Prop}
 
-trait Matchers extends Matchables with Mocks {
+trait Matchers extends Matchables with Mocks with PropertyMatchers {
   /**
    * Allows for the natural combination of matchers:
    *
@@ -157,6 +157,13 @@ trait Matchers extends Matchables with Mocks {
    * Is the value greater than or equal to the given floor?
    */
   def greaterThanOrEqualTo[A](floor: A)(implicit num: Numeric[A]) = new GreaterThanOrEqualToNumericMatcher[A](floor, num)
+}
+
+trait PropertyMatchers extends Prop {
+  /**
+   * Dummy so we can inherit Prop & use its methods
+   */
+  def apply(prms: Prop.Params): Prop.Result = Prop.Result(Prop.Undecided)
 
   /**
    * Does the property hold?
