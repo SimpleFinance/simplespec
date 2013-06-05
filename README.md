@@ -245,12 +245,39 @@ class PublisherSpec extends Spec {
 
 See `Mocks.scala` for the full run-down.
 
+ScalaCheck
+----------
+
+SimpleSpec includes helpers for integrating ScalaCheck properties into
+your tests.
+
+```scala
+class StringPropertySpec extends Spec {
+  class String {
+    @Test def startsWith {
+      forAll((a: String, b: String) => (a+b).startsWith(a)).must(hold)
+    }
+
+    @Test def concatenate {
+      forAll((a: String, b: String) =>
+        (a+b).length > a.length && (a+b).length > b.length
+      ).must(hold)
+    }
+
+    @Test def substring {
+      forAll((a: String, b: String, c: String) =>
+        (a+b+c).substring(a.length, a.length+b.length) == b
+      ).must(hold)
+    }
+  }
+}
+```
 
 License
 -------
 
 Copyright (c) 2010-2012 Coda Hale
 
-Copyright (c) 2012 Simple Finance Technology
+Copyright (c) 2012-2013 Simple Finance Technology
 
 Published under The MIT License, see LICENSE
