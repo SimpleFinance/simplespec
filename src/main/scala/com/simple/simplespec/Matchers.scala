@@ -159,12 +159,7 @@ trait Matchers extends Matchables with Mocks with PropertyMatchers {
   def greaterThanOrEqualTo[A](floor: A)(implicit num: Numeric[A]) = new GreaterThanOrEqualToNumericMatcher[A](floor, num)
 }
 
-trait PropertyMatchers extends Prop {
-  /**
-   * Dummy so we can inherit Prop & use its methods
-   */
-  def apply(prms: Prop.Params): Prop.Result = Prop.Result(Prop.Undecided)
-
+trait PropertyMatchers {
   /**
    * Does the property hold?
    */
