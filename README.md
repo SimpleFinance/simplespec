@@ -29,7 +29,7 @@ Getting Started
     <dependency>
         <groupId>com.simple</groupId>
         <artifactId>simplespec_2.10.1</artifactId>
-        <version>0.8.0</version>
+        <version>0.8.1</version>
     </dependency>
 </dependencies>
 ```
