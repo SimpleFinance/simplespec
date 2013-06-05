@@ -28,7 +28,7 @@ trait Matchers extends Matchables with Mocks with PropertyMatchers {
   /**
    * Does the context throw an exception of the given type?
    */
-  def throwA[E <: Throwable](implicit mf: Manifest[E]) = new ThrownExceptionMatcher(mf.runtimeClass)
+  def throwA[E <: Throwable](implicit mf: Manifest[E]) = new ThrownExceptionMatcher(mf.erasure)
 
   /**
    * Does the context throw an exception of the given type?
@@ -39,7 +39,7 @@ trait Matchers extends Matchables with Mocks with PropertyMatchers {
    * Does the context throw an exception of the given type and with the given
    * message?
    */
-  def throwA[E <: Throwable](message: String)(implicit mf: Manifest[E]) = new ThrownExceptionMessageMatcher(mf.runtimeClass, message)
+  def throwA[E <: Throwable](message: String)(implicit mf: Manifest[E]) = new ThrownExceptionMessageMatcher(mf.erasure, message)
 
   /**
    * Does the context throw an exception of the given type and with the given
@@ -51,7 +51,7 @@ trait Matchers extends Matchables with Mocks with PropertyMatchers {
    * Does the context throw an exception of the given type and with a message
    * which matches the given pattern?
    */
-  def throwA[E <: Throwable](pattern: Regex)(implicit mf: Manifest[E]) = new ThrownExceptionPatternMatcher(mf.runtimeClass, pattern)
+  def throwA[E <: Throwable](pattern: Regex)(implicit mf: Manifest[E]) = new ThrownExceptionPatternMatcher(mf.erasure, pattern)
 
   /**
    * Does the context throw an exception of the given type and with a message
@@ -88,7 +88,7 @@ trait Matchers extends Matchables with Mocks with PropertyMatchers {
   /**
    * Is the value an instance of the given type?
    */
-  def beA[A <: AnyRef](implicit mf: Manifest[A]) = CoreMatchers.is(CoreMatchers.instanceOf[A](mf.runtimeClass)).asInstanceOf[Matcher[_ <: A]]
+  def beA[A <: AnyRef](implicit mf: Manifest[A]) = CoreMatchers.is(CoreMatchers.instanceOf[A](mf.erasure)).asInstanceOf[Matcher[_ <: A]]
 
   /**
    * Is the value an empty traversable?
