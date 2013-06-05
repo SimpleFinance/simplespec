@@ -2,6 +2,7 @@ package com.simple.simplespec
 
 import org.hamcrest.Matcher
 import org.junit.Assert
+import org.scalacheck.{Prop, Test, Pretty}
 
 trait Matchables {
   implicit def any2LiteralMatchable[A](value: A) = new LiteralMatchable[A](value)
@@ -21,6 +22,10 @@ trait Matchables {
    * of times.
    */
   def eventually[A](maxAttempts: Int)(f: => A) = new EventuallyMatchable[A](() => f, maxAttempts)
+
+  implicit def propToPropMatchable(p: Prop): PropMatchable = {
+    new PropMatchable(p)
+  }
 }
 
 class LiteralMatchable[A](actual: A) {
@@ -50,5 +55,16 @@ class EventuallyMatchable[A](context: () => A, maxAttempts: Int) {
         case e: AssertionError if i < maxAttempts => // bury it
       }
     }
+  }
+}
+
+/**
+ * A matchable that matches a ScalaCheck property.
+ */
+class PropMatchable(p: Prop) {
+  def must(condition: Matcher[Test.Result]) {
+    val actual = Test.check(Test.Parameters.default, p)
+    Assert.assertThat(Pretty.prettyTestRes(actual)(Pretty.defaultParams),
+                      actual, condition)
   }
 }
