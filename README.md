@@ -247,16 +247,18 @@ ScalaCheck
 ----------
 
 SimpleSpec includes helpers for integrating ScalaCheck properties into
-your tests.
+your tests, with the `hold` and `prove` matchers.
 
 ```scala
 class StringPropertySpec extends Spec {
-  class String {
+  import org.scalacheck.Prop._
+
+  class `String operations` {
     @Test def startsWith {
       forAll((a: String, b: String) => (a+b).startsWith(a)).must(hold)
     }
 
-    @Test def concatenate {
+     @Test def concatenate {
       forAll((a: String, b: String) =>
         (a+b).length > a.length && (a+b).length > b.length
       ).must(hold)
@@ -270,6 +272,10 @@ class StringPropertySpec extends Spec {
   }
 }
 ```
+
+This is very convenient, since you may mix property and non-property
+tests freely, and produce test reports & code coverage for your
+ScalaCheck properties.
 
 License
 -------
