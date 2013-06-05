@@ -8,6 +8,8 @@ the most commonly-used test framework on the JVM. simplespec was originally writ
 by Coda Hale and is now maintained and developed by Simple. The library features
 extensible Hamcrest matchers, easy mocks, and other niceties.
 
+<img src="https://travis-ci.org/SimpleFinance/simplespec.png" />
+
 
 Requirements
 ------------
