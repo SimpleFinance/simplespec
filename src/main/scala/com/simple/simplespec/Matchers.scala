@@ -163,41 +163,10 @@ trait PropertyMatchers {
   /**
    * Does the property hold?
    */
-  def hold: Matcher[Test.Result] = new HeldPropertyMatcher
+  def hold: Matcher[Test.Result] = new matchers.HeldPropertyMatcher
 
   /**
    * Does the property prove?
    */
-  def prove: Matcher[Test.Result] = new ProvedPropertyMatcher
-}
-
-/**
- * Matcher indicating that a property holds.
- *
- * This is a looser check than ProvedPropertyMatcher.
- */
-class HeldPropertyMatcher[T <: Test.Result] extends BaseMatcher[T] {
-
-  def matches(r: Any) = r.asInstanceOf[T].passed
-
-  def describeTo(desc: Description) = {
-    desc.appendText("property to hold")
-  }
-}
-
-/**
- * Matcher indicating that a property proves.
- *
- * This is a stricter check than HeldPropertyMatcher.
- */
-class ProvedPropertyMatcher[T <: Test.Result] extends BaseMatcher[T] {
-
-  def matches(r: Any) = r.asInstanceOf[T].status match {
-    case Test.Proved(_) => true
-    case _ => false
-  }
-
-  def describeTo(desc: Description) = {
-    desc.appendText("property to prove")
-  }
+  def prove: Matcher[Test.Result] = new matchers.ProvedPropertyMatcher
 }
