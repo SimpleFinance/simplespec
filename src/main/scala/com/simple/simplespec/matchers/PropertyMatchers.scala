@@ -16,7 +16,7 @@ trait PropErrorMatcher {
     r.status match {
       case Test.PropException(_, e, _) => throw new AssertionError(pretty(r), e)
       case Test.GenException(e) => throw new AssertionError(pretty(r), e)
-      case _ => Nil
+      case _ =>
     }
   }
 }
