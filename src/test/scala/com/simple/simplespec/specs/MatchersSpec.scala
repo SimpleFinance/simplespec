@@ -7,7 +7,8 @@ import com.simple.simplespec.{Spec, Matchables, Matchers}
 import com.simple.simplespec.matchers.{PropErrorMatcher, HeldPropertyMatcher,
   ProvedPropertyMatcher}
 import org.scalacheck.{Prop, Arg}
-import org.scalacheck.Test.{Result, Passed, Proved, Failed, Exhausted}
+import org.scalacheck.Test.{Result, Passed, Proved, Failed, Exhausted, 
+  PropException, GenException}
 import org.scalacheck.util.FreqMap
 
 class ExceptionAssertionSpec extends Matchables with Matchers {
@@ -298,14 +299,27 @@ class PropertyMatchersSpec extends Spec {
   val proved = Result(Proved(args), 0, 0, fm, 0L)
   val failed = Result(Failed(args, Set()), 0, 0, fm, 0L)
   val exhausted = Result(Exhausted, 0, 0, fm, 0L)
+  val propEx = Result(
+    PropException(args, new RuntimeException("whoops"), Set()),
+    0, 0, fm, 0L)
+  val genEx = Result(GenException(new ArithmeticException),
+                     0, 0, fm, 0L)
 
-  class PropErrorMatcherSpec extends PropErrorMatcher {
-    @Test def `foo` {
-      1.must(be(1))
+  class `Property Error Matcher` extends PropErrorMatcher {
+    @Test def `Exceptions generating data are re-thrown` {
+      evaluating {
+        throwIfError(genEx)
+      }.must(throwAn[AssertionError])
+    }
+
+    @Test def `Exceptions evaluating properties data are re-thrown` {
+      evaluating {
+        throwIfError(propEx)
+      }.must(throwAn[AssertionError])
     }
   }
 
-  class HeldPropertyMatcherSpec {
+  class `Held property matcher` {
     val m = new HeldPropertyMatcher
 
     @Test def `Passing properties pass` {
@@ -325,7 +339,7 @@ class PropertyMatchersSpec extends Spec {
     }
   }
 
-  class ProvedPropertyMatcherSpec {
+  class `Proved property matcher` {
     val m = new ProvedPropertyMatcher
 
     @Test def `Passing properties don't pass` {
