@@ -4,17 +4,40 @@
  */
 package com.simple.simplespec.matchers
 
-import org.scalacheck.Test
+import org.scalacheck.{Test, Pretty}
 import org.hamcrest.{Description, BaseMatcher}
+
+trait PropErrorMatcher {
+  private def pretty(r: Test.Result): String = {
+    Pretty.prettyTestRes(r)(Pretty.defaultParams)
+  }
+
+  def throwIfError(r: Test.Result) {
+    r.status match {
+      case Test.PropException(_, e, _) => throw new AssertionError(pretty(r), e)
+      case Test.GenException(e) => throw new AssertionError(pretty(r), e)
+      case _ => Nil
+    }
+  }
+}
 
 /**
  * Matcher indicating that a property holds.
  *
  * This is a looser check than ProvedPropertyMatcher.
  */
-class HeldPropertyMatcher[T <: Test.Result] extends BaseMatcher[T] {
+class HeldPropertyMatcher[T <: Test.Result] extends BaseMatcher[T]
+with PropErrorMatcher {
 
-  def matches(r: Any) = r.asInstanceOf[T].passed
+  def matches(rr: Any) = {
+    val r = rr.asInstanceOf[T]
+    throwIfError(r)
+    r.status match {
+      case Test.Passed => true
+      case Test.Proved(_) => true
+      case _ => false
+    }
+  }
 
   def describeTo(desc: Description) = {
     desc.appendText("property to hold")
@@ -26,11 +49,16 @@ class HeldPropertyMatcher[T <: Test.Result] extends BaseMatcher[T] {
  *
  * This is a stricter check than HeldPropertyMatcher.
  */
-class ProvedPropertyMatcher[T <: Test.Result] extends BaseMatcher[T] {
+class ProvedPropertyMatcher[T <: Test.Result] extends BaseMatcher[T]
+with PropErrorMatcher {
 
-  def matches(r: Any) = r.asInstanceOf[T].status match {
-    case Test.Proved(_) => true
-    case _ => false
+  def matches(rr: Any) = {
+    val r = rr.asInstanceOf[T]
+    throwIfError(r)
+    r.status match {
+      case Test.Proved(_) => true
+      case _ => false
+    }
   }
 
   def describeTo(desc: Description) = {
