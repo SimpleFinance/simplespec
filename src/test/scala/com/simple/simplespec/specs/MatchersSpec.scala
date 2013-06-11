@@ -1,8 +1,14 @@
+
 package com.simple.simplespec.specs
 
 import org.junit.Test
 import org.junit.Assert._
 import com.simple.simplespec.{Spec, Matchables, Matchers}
+import com.simple.simplespec.matchers.{PropErrorMatcher, HeldPropertyMatcher,
+  ProvedPropertyMatcher}
+import org.scalacheck.{Prop, Arg}
+import org.scalacheck.Test.{Result, Passed, Proved, Failed, Exhausted}
+import org.scalacheck.util.FreqMap
 
 class ExceptionAssertionSpec extends Matchables with Matchers {
   def boom(): Any = throw new RuntimeException("EFFF")
@@ -281,6 +287,61 @@ class StringSpec extends Spec {
           string.must(`match`(""".*oop""".r))
         }.must(throwAn[AssertionError])
       }
+    }
+  }
+}
+
+class PropertyMatchersSpec extends Spec {
+  val fm = FreqMap.empty[Set[Any]]
+  val args = List[Arg[Any]]()
+  val passed = Result(Passed, 0, 0, fm, 0L)
+  val proved = Result(Proved(args), 0, 0, fm, 0L)
+  val failed = Result(Failed(args, Set()), 0, 0, fm, 0L)
+  val exhausted = Result(Exhausted, 0, 0, fm, 0L)
+
+  class PropErrorMatcherSpec extends PropErrorMatcher {
+    @Test def `foo` {
+      1.must(be(1))
+    }
+  }
+
+  class HeldPropertyMatcherSpec {
+    val m = new HeldPropertyMatcher
+
+    @Test def `Passing properties pass` {
+      m.matches(passed).must(be(true))
+    }
+
+    @Test def `Proved properties pass` {
+      m.matches(proved).must(be(true))
+    }
+
+    @Test def `Failed properties don't pass` {
+      m.matches(failed).must(be(false))
+    }
+
+    @Test def `Exhausted properties don't pass` {
+      m.matches(exhausted).must(be(false))
+    }
+  }
+
+  class ProvedPropertyMatcherSpec {
+    val m = new ProvedPropertyMatcher
+
+    @Test def `Passing properties don't pass` {
+      m.matches(passed).must(be(false))
+    }
+
+    @Test def `Proved properties pass` {
+      m.matches(proved).must(be(true))
+    }
+
+    @Test def `Failed properties don't pass` {
+      m.matches(failed).must(be(false))
+    }
+
+    @Test def `Exhausted properties don't pass` {
+      m.matches(exhausted).must(be(false))
     }
   }
 }
