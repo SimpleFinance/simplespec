@@ -6,7 +6,7 @@
 
     <groupId>com.simple</groupId>
     <artifactId>simplespec_2.10.1</artifactId>
-    <version>0.8.2</version>
+    <version>0.8.3</version>
     <packaging>jar</packaging>
 
     <name>simplespec for Scala ${scala.version}</name>

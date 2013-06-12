@@ -14,8 +14,11 @@ trait PropErrorMatcher {
 
   def throwIfError(r: Test.Result) {
     r.status match {
-      case Test.PropException(_, e, _) => throw new AssertionError(pretty(r), e)
-      case Test.GenException(e) => throw new AssertionError(pretty(r), e)
+      case Test.PropException(_, e, _) =>
+        throw new RuntimeException(pretty(r), e)
+
+      case Test.GenException(e) =>
+        throw new RuntimeException(pretty(r), e)
       case _ =>
     }
   }

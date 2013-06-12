@@ -309,13 +309,13 @@ class PropertyMatchersSpec extends Spec {
     @Test def `Exceptions generating data are re-thrown` {
       evaluating {
         throwIfError(genEx)
-      }.must(throwAn[AssertionError])
+      }.must(throwA[RuntimeException])
     }
 
     @Test def `Exceptions evaluating properties data are re-thrown` {
       evaluating {
         throwIfError(propEx)
-      }.must(throwAn[AssertionError])
+      }.must(throwA[RuntimeException])
     }
   }
 
