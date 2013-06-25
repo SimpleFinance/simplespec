@@ -107,6 +107,14 @@ class EqualityAssertionSpec extends Matchables with Matchers {
       1.must(equal(2))
     }.must(throwAn[AssertionError])
   }
+
+  @Test
+  def notNullMustWork() {
+    evaluating {
+      val x: String = null
+      x.must(be(notNull))
+    }.must(throwAn[AssertionError])
+  }
 }
 
 class ClassSpec extends Matchables with Matchers {

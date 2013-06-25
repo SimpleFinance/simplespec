@@ -131,7 +131,7 @@ trait Matchers extends Matchables with Mocks with PropertyMatchers {
   // FWIW, this is the only expressed negative in the matchers for a reason.
   // I'd rather express nullity as a double-negative in tests to express how
   // ungainly it is to deal with in an API.
-  def notNull[A] = CoreMatchers.notNullValue()
+  def notNull[A] = CoreMatchers.notNullValue().asInstanceOf[Matcher[A]]
 
   /**
    * Is the value equal to the given value, plus or minus the given delta?
