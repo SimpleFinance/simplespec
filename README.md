@@ -31,7 +31,7 @@ Getting Started
     <dependency>
         <groupId>com.simple</groupId>
         <artifactId>simplespec_2.10.1</artifactId>
-        <version>0.8.2</version>
+        <version>0.8.4</version>
     </dependency>
 </dependencies>
 ```
