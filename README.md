@@ -221,7 +221,7 @@ See `Matchers.scala` for the full run-down.
 Mocks
 -----
 
-simplespec uses [Mockito](http://mockito.org/) for mocking stuff. It has its
+SimpleSpec uses [Mockito](http://mockito.org/) for mocking stuff. It has its
 own wrappers around Mockito to make things a bit easier.
 
 ```scala
@@ -276,7 +276,7 @@ foo.get(1).returns("cats")
 foo.get(1).returns("dogs")
 ```
 
-Will return `dogs`.
+Will return `"dogs"` every time you call `foo.get(1)`.
 
 You can also dynamically match arguments in method calls. The simplest way is
 to use `any` to match any argument of a given type:
