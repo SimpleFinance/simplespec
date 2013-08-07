@@ -221,7 +221,7 @@ See `Matchers.scala` for the full run-down.
 Mocks
 -----
 
-simplespec uses [Mockito](http://mockito.org/) for mocking stuff.  It has its
+simplespec uses [Mockito](http://mockito.org/) for mocking stuff. It has its
 own wrappers around Mockito to make things a bit easier.
 
 ```scala
@@ -259,8 +259,8 @@ foo.getNumber("one").returns(1)
 foo.getNumber("two").returns(2)
 
 // .throws() will make the call throw the given exception.
-// Note: if Mockito complains about a checked exception being invalid,
-//       you'll need to use .answersWith() to throw the exception instead
+// Note: if Mockito complains about a checked exception being invalid, you'll
+// need to use .answersWith() to throw the exception instead.
 foo.getNumber("dogs").throws(new NumberFormatException)
 
 // .answersWith() will call the function you pass it and use its result
@@ -269,7 +269,7 @@ foo.getNumber("three").answersWith(_ => 3)
 foo.getNumber("dogs").answersWith(_ => throw new NumberFormatException)
 ```
 
-These stubbing functions are sensitive to order.  So this:
+These stubbing functions are sensitive to order. So this:
 
 ```scala
 foo.get(1).returns("cats")
@@ -278,7 +278,7 @@ foo.get(1).returns("dogs")
 
 Will return `dogs`.
 
-You can also dynamically match arguments in method calls.  The simplest way is
+You can also dynamically match arguments in method calls. The simplest way is
 to use `any` to match any argument of a given type:
 
 ```scala
@@ -290,7 +290,7 @@ This example uses the fact that stubs are sensitive to ordering to its
 advantage.
 
 Note that if you match *any* of the method's arguments with a dymanic matcher
-like `any`, you'll need to match them *all* dynamically.  For example, this does
+like `any`, you'll need to match them *all* dynamically. For example, this does
 **not** work:
 
 ```scala
