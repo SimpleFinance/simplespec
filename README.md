@@ -221,8 +221,8 @@ See `Matchers.scala` for the full run-down.
 Mocks
 -----
 
-Also, yeah, mocks. simplespec uses [Mockito](http://mockito.org/) for its
-mocking stuff:
+SimpleSpec uses [Mockito](http://mockito.org/) for mocking stuff. It has its
+own wrappers around Mockito to make things a bit easier.
 
 ```scala
 class PublisherSpec extends Spec {
@@ -243,7 +243,85 @@ class PublisherSpec extends Spec {
 }
 ```
 
-See `Mocks.scala` for the full run-down.
+### Mock Stubbing
+
+By default, when you mock something and call a method on it, the call will
+return `null` or a basic value like `0` or `false` for primitives.
+
+If you want to control what the mocked object returns for a given method call,
+you can use `returns`, `throws`, or `answersWith`:
+
+```scala
+val foo = mock[FooService]
+
+// .returns() can be used when you just want to return a static value
+foo.getNumber("one").returns(1)
+foo.getNumber("two").returns(2)
+
+// .throws() will make the call throw the given exception.
+// Note: if Mockito complains about a checked exception being invalid, you'll
+// need to use .answersWith() to throw the exception instead.
+foo.getNumber("dogs").throws(new NumberFormatException)
+
+// .answersWith() will call the function you pass it and use its result
+// as the mocked return value.
+foo.getNumber("three").answersWith(_ => 3)
+foo.getNumber("dogs").answersWith(_ => throw new NumberFormatException)
+```
+
+These stubbing functions are sensitive to order. So this:
+
+```scala
+foo.get(1).returns("cats")
+foo.get(1).returns("dogs")
+```
+
+Will return `"dogs"` every time you call `foo.get(1)`.
+
+You can also dynamically match arguments in method calls. The simplest way is
+to use `any` to match any argument of a given type:
+
+```scala
+foo.get(any[Int]).returns(None)
+foo.get(1).returns(Some("dogs"))
+```
+
+This example uses the fact that stubs are sensitive to ordering to its
+advantage.
+
+Note that if you match *any* of the method's arguments with a dymanic matcher
+like `any`, you'll need to match them *all* dynamically. For example, this does
+**not** work:
+
+```scala
+foo.get(any[Int], "Hello").returns(...)
+```
+
+You can use `equalTo` to get around this:
+
+```scala
+foo.get(any[Int], equalTo[String]("Hello")).returns(...)
+```
+
+Available dynamic matchers:
+
+* `any[A](implicit mf: Manifest[A])`: A matcher which will accept any instance.
+* `isA[A](implicit mf: Manifest[A])`: A matcher which will accept any instance of the given type.
+* `equalTo[A](value: A)`: A matcher which will accept any instance of the given type which is equal to the given value.
+* `same[A](value: A)`: A matcher which will accept only the same instance as the given value.
+* `isNull[A]`: A matcher which will accept only null values.
+* `isNotNull[A]`: A matcher which will accept only non-null values.
+* `contains(substring: String)`: A matcher which will accept only strings which contain the given substring.
+* `matches(pattern: Regex)`: A matcher which will accept only strings which match the given pattern.
+* `endsWith(suffix: String)`: A matcher which will accept only strings which end with the given suffix.
+* `startsWith(prefix: String)`: A matcher which will accept only strings which start with the given prefix.
+
+TODO: Document how to stub a method with `answersWith` that uses the matched
+arguments.
+
+### Mock Verification
+
+TODO: Document this.
 
 ScalaCheck
 ----------
