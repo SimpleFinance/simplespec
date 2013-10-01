@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.simple</groupId>
-    <artifactId>simplespec_2.10.1</artifactId>
+    <artifactId>simplespec_2.10.2</artifactId>
     <version>0.8.4</version>
     <packaging>jar</packaging>
 
@@ -15,7 +15,7 @@
 
     <properties>
         <scala.major.version>2.10</scala.major.version>
-        <scala.version>${scala.major.version}.1</scala.version>
+        <scala.version>${scala.major.version}.2</scala.version>
     </properties>
 
     <developers>
@@ -92,6 +92,12 @@
             <groupId>org.scalacheck</groupId>
             <artifactId>scalacheck_${scala.major.version}</artifactId>
             <version>1.10.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.scala-lang</groupId>
+                    <artifactId>scala-library</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
