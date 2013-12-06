@@ -316,6 +316,11 @@ Available dynamic matchers:
 * `endsWith(suffix: String)`: A matcher which will accept only strings which end with the given suffix.
 * `startsWith(prefix: String)`: A matcher which will accept only strings which start with the given prefix.
 
+**WARNING**: Since the matchers are really Java under the hood, they do not
+understand Scala default arguments. If you are matching against a method with
+default arguments, you *must* specify the default arguments as well
+(Scala calls the method with `null` if the default is used.)
+
 TODO: Document how to stub a method with `answersWith` that uses the matched
 arguments.
 
