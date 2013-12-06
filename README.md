@@ -321,8 +321,22 @@ understand Scala default arguments. If you are matching against a method with
 default arguments, you *must* specify the default arguments as well
 (Scala calls the method with `null` if the default is used.)
 
-TODO: Document how to stub a method with `answersWith` that uses the matched
-arguments.
+### Responding to invocations with answersWith
+
+If you have a mock, you can invoke arbitrary behavior when it is called
+by using `answersWith`. This calls a function whenever the mock is used.
+
+This can let you use a fake implementation for the mocked object. It's
+useful for implementing enough of the functionality to make your code work,
+or for doing some more advanced checks than normal matchers allow.
+
+```scala
+myMock.get(any[String]).answersWith { f =>
+  val stringArg = f.getArguments.toSeq.head.asInstanceOf[String]
+  println("I was called with " + stringArg)
+  false // your return value
+}
+```
 
 ### Mock Verification
 
