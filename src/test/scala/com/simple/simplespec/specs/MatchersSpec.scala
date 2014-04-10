@@ -375,8 +375,7 @@ class AssertionMessageSpec extends Spec {
         1.must(not(be(1)), "I am what I am")
       }.must(throwAn[AssertionError]("""I am what I am
 Expected: not is <1>
-     got: <1>
-"""))
+     but: was <1>"""))
     }
   }
 
@@ -388,8 +387,7 @@ Expected: not is <1>
         }.must(not(throwAn[AssertionError]), "whops")
       }.must(throwAn[AssertionError]("""whops
 Expected: not throws an exception of type <java.lang.AssertionError>
-     got: <an exception of type <java.lang.AssertionError> with a message of <sup>>
-"""))
+     but: was <an exception of type <java.lang.AssertionError> with a message of <sup>>"""))
     }
   }
 
@@ -401,8 +399,7 @@ Expected: not throws an exception of type <java.lang.AssertionError>
         }.must(not(be(None)), "whops")
       }.must(throwAn[AssertionError]("""whops
 Expected: not is <None>
-     got: <None>
-"""))
+     but: was <None>"""))
     }
   }
 }
