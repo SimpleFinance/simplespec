@@ -367,3 +367,39 @@ class PropertyMatchersSpec extends Spec {
     }
   }
 }
+
+class AssertionMessageSpec extends Spec {
+  class `Literal matchables` {
+    @Test def `Can have a failure message` {
+      evaluating {
+        1.must(not(be(1)), "I am what I am")
+      }.must(throwAn[AssertionError]("""I am what I am
+Expected: not is <1>
+     but: was <1>"""))
+    }
+  }
+
+  class `Evaluating matchables` {
+    @Test def `Can have a failure message` {
+      evaluating {
+        evaluating {
+          fail("sup")
+        }.must(not(throwAn[AssertionError]), "whops")
+      }.must(throwAn[AssertionError]("""whops
+Expected: not throws an exception of type <java.lang.AssertionError>
+     but: was <an exception of type <java.lang.AssertionError> with a message of <sup>>"""))
+    }
+  }
+
+  class `Eventual matchables` {
+    @Test def `Can have a failure message` {
+      evaluating {
+        eventually(2) {
+          None
+        }.must(not(be(None)), "whops")
+      }.must(throwAn[AssertionError]("""whops
+Expected: not is <None>
+     but: was <None>"""))
+    }
+  }
+}

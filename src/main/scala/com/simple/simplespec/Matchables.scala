@@ -30,26 +30,40 @@ trait Matchables {
 
 class LiteralMatchable[A](actual: A) {
   def must(condition: Matcher[_ <: A]): Any = {
-    Assert.assertThat(actual, condition.asInstanceOf[Matcher[A]])
+    must(condition, "")
+  }
+
+  def must(condition: Matcher[_ <: A], reason: String): Any = {
+    Assert.assertThat(reason, actual, condition.asInstanceOf[Matcher[A]])
   }
 }
 
 class OutcomeMatchable[A](context: () => A) {
   def must(condition: Matcher[Outcome[Any]]): Any = {
+    must(condition, "")
+  }
+
+  def must(condition: Matcher[Outcome[Any]], reason: String): Any = {
     val actual = try {
       Success(context())
     } catch {
       case e: Throwable => Failure(e)
     }
-    Assert.assertThat(actual, condition.asInstanceOf[Matcher[Outcome[A]]])
+    Assert.assertThat(
+      reason, actual, condition.asInstanceOf[Matcher[Outcome[A]]])
   }
 }
 
 class EventuallyMatchable[A](context: () => A, maxAttempts: Int) {
   def must(condition: Matcher[_ <: A]): Any = {
+    must(condition, "")
+  }
+
+  def must(condition: Matcher[_ <: A], reason: String): Any = {
     for (i <- 1 to maxAttempts) {
       try {
-        Assert.assertThat(context(), condition.asInstanceOf[Matcher[A]])
+        Assert.assertThat(
+          reason, context(), condition.asInstanceOf[Matcher[A]])
         return ()
       } catch {
         case e: AssertionError if i < maxAttempts => // bury it
