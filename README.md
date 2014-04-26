@@ -14,11 +14,11 @@ extensible Hamcrest matchers, easy mocks, and other niceties.
 Requirements
 ------------
 
-* Scala 2.10.1 / 2.10.2
+* Scala 2.11.0
 * JUnit 4.11
 * Mockito 1.9.5
 
-(Scala 2.9.1 and 2.9.2 are supported in simplespec 0.6.0 and 0.7.0, respectively.)
+(Scala 2.10.2, 2.9.1, and 2.9.2 are supported in simplespec 0.8.4, 0.6.0, and 0.7.0, respectively.)
 
 
 Getting Started
@@ -30,12 +30,23 @@ Getting Started
 <dependencies>
     <dependency>
         <groupId>com.simple</groupId>
-        <artifactId>simplespec_2.10.2</artifactId>
+        <artifactId>simplespec_2.11.0</artifactId>
         <version>0.8.4</version>
     </dependency>
 </dependencies>
 ```
 
+If you are on Scala 2.10.2, you should use:
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.simple</groupId>
+        <artifactId>simplespec_2.10.2</artifactId>
+        <version>0.8.4</version>
+    </dependency>
+</dependencies>
+```
 
 If you are on Scala 2.9.2, you should use:
 
@@ -381,6 +392,6 @@ License
 
 Copyright (c) 2010-2012 Coda Hale
 
-Copyright (c) 2012-2013 Simple Finance Technology
+Copyright (c) 2012-2014 Simple Finance Technology
 
 Published under The MIT License, see LICENSE
