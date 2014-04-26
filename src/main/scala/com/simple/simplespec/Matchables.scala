@@ -2,7 +2,8 @@ package com.simple.simplespec
 
 import org.hamcrest.Matcher
 import org.junit.Assert
-import org.scalacheck.{Prop, Test, Pretty}
+import org.scalacheck.{Prop, Test}
+import org.scalacheck.util.Pretty
 
 trait Matchables {
   implicit def any2LiteralMatchable[A](value: A) = new LiteralMatchable[A](value)
