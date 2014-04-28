@@ -4,7 +4,8 @@
  */
 package com.simple.simplespec.matchers
 
-import org.scalacheck.{Test, Pretty}
+import org.scalacheck.Test
+import org.scalacheck.util.Pretty
 import org.hamcrest.{Description, BaseMatcher}
 
 trait PropErrorMatcher {

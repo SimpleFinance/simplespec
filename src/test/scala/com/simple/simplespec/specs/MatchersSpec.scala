@@ -1,4 +1,3 @@
-
 package com.simple.simplespec.specs
 
 import org.junit.Test
@@ -6,8 +5,8 @@ import org.junit.Assert._
 import com.simple.simplespec.{Spec, Matchables, Matchers}
 import com.simple.simplespec.matchers.{PropErrorMatcher, HeldPropertyMatcher,
   ProvedPropertyMatcher}
-import org.scalacheck.{Prop, Arg}
-import org.scalacheck.Test.{Result, Passed, Proved, Failed, Exhausted, 
+import org.scalacheck.Prop.Arg
+import org.scalacheck.Test.{Result, Passed, Proved, Failed, Exhausted,
   PropException, GenException}
 import org.scalacheck.util.FreqMap
 
@@ -64,7 +63,7 @@ class ExceptionAssertionSpec extends Matchables with Matchers {
         boom()
       }.must(throwAnExceptionLike {
         case e: UnsupportedOperationException => {
-          
+
         }
       })
       ok = false
@@ -140,7 +139,7 @@ class NumericSpec extends Matchables with Matchers {
   @Test
   def numbersMustBeApproximate() {
     100.must(be(approximately(101, 2)))
-    
+
     evaluating {
       100.must(be(approximately(102, 1)))
     }.must(throwAn[AssertionError])
