@@ -349,10 +349,6 @@ myMock.get(any[String]).answersWith { f =>
 }
 ```
 
-### Mock Verification
-
-TODO: Document this.
-
 ### Argument Capture
 
 Simplespec supports Mockito's [ArgumentCaptor](http://docs.mockito.googlecode.com/hg/org/mockito/ArgumentCaptor.html) to capture
@@ -371,6 +367,10 @@ verify.one(fooMock).concatMethod(arg3.capture(), arg4.capture())
 arg3.getValue().must(be("foo"))
 arg4.getValue().must(be(1))
 ```
+
+### Mock Verification
+
+TODO: Document this.
 
 ScalaCheck
 ----------
