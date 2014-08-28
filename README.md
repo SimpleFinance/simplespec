@@ -353,6 +353,25 @@ myMock.get(any[String]).answersWith { f =>
 
 TODO: Document this.
 
+### Argument Capture
+
+Simplespec supports Mockito's [ArgumentCaptor](http://docs.mockito.googlecode.com/hg/org/mockito/ArgumentCaptor.html) to capture
+arguments:
+
+```scala
+class FooClass {
+  def concatMethod(x: String, y: Int): String = x + y.toString
+}
+val arg3 = captor[String]
+val arg4 = captor[Int]
+val fooMock = mock[FooClass]
+fooMock.concatMethod("foo", 1)
+
+verify.one(fooMock).concatMethod(arg3.capture(), arg4.capture())
+arg3.getValue().must(be("foo"))
+arg4.getValue().must(be(1))
+```
+
 ScalaCheck
 ----------
 
