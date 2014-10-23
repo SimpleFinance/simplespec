@@ -159,11 +159,11 @@ write your own:
 * `x.must(be(notNull))`: Asserts that `x` is not `null`.
 * `x.must(be(approximately(y, delta)))`: Asserts that `x` is within `delta` of
   `y`. Useful for floating-point math.
-* `x.must(be(lessThan(2))`: Asserts that `x` is less than `2`.
-* `x.must(be(greaterThan(2))`: Asserts that `x` is greater than `2`.
-* `x.must(be(lessThanOrEqualTo(2))`: Asserts that `x` is less than or equal to
+* `x.must(be(lessThan(2)))`: Asserts that `x` is less than `2`.
+* `x.must(be(greaterThan(2)))`: Asserts that `x` is greater than `2`.
+* `x.must(be(lessThanOrEqualTo(2)))`: Asserts that `x` is less than or equal to
   `2`.
-* `x.must(be(greaterThanOrEqualTo(2))`: Asserts that `x` is greater than or
+* `x.must(be(greaterThanOrEqualTo(2)))`: Asserts that `x` is greater than or
   equal to `2`.
 * `x.must(startWith("woo"))`: Asserts that string `x` starts with `"woo"`.
 * `x.must(endWith("woo"))`: Asserts that string `x` ends with `"woo"`.
