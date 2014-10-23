@@ -232,7 +232,7 @@ See `Matchers.scala` for the full run-down.
 Mocks
 -----
 
-SimpleSpec uses [Mockito](http://mockito.org/) for mocking stuff. It has its
+SimpleSpec uses [Mockito](http://docs.mockito.googlecode.com/hg/org/mockito/Mockito.html) for mocking stuff. It has its
 own wrappers around Mockito to make things a bit easier.
 
 ```scala
