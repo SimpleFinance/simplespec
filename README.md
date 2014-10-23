@@ -413,4 +413,4 @@ Copyright (c) 2010-2012 Coda Hale
 
 Copyright (c) 2012-2014 Simple Finance Technology
 
-Published under The MIT License, see LICENSE
+Published under The MIT License, see [`LICENSE.md`](LICENSE.md)
