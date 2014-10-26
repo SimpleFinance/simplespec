@@ -159,11 +159,11 @@ write your own:
 * `x.must(be(notNull))`: Asserts that `x` is not `null`.
 * `x.must(be(approximately(y, delta)))`: Asserts that `x` is within `delta` of
   `y`. Useful for floating-point math.
-* `x.must(be(lessThan(2))`: Asserts that `x` is less than `2`.
-* `x.must(be(greaterThan(2))`: Asserts that `x` is greater than `2`.
-* `x.must(be(lessThanOrEqualTo(2))`: Asserts that `x` is less than or equal to
+* `x.must(be(lessThan(2)))`: Asserts that `x` is less than `2`.
+* `x.must(be(greaterThan(2)))`: Asserts that `x` is greater than `2`.
+* `x.must(be(lessThanOrEqualTo(2)))`: Asserts that `x` is less than or equal to
   `2`.
-* `x.must(be(greaterThanOrEqualTo(2))`: Asserts that `x` is greater than or
+* `x.must(be(greaterThanOrEqualTo(2)))`: Asserts that `x` is greater than or
   equal to `2`.
 * `x.must(startWith("woo"))`: Asserts that string `x` starts with `"woo"`.
 * `x.must(endWith("woo"))`: Asserts that string `x` ends with `"woo"`.
@@ -232,7 +232,7 @@ See `Matchers.scala` for the full run-down.
 Mocks
 -----
 
-SimpleSpec uses [Mockito](http://mockito.org/) for mocking stuff. It has its
+SimpleSpec uses [Mockito](http://docs.mockito.googlecode.com/hg/org/mockito/Mockito.html) for mocking stuff. It has its
 own wrappers around Mockito to make things a bit easier.
 
 ```scala
@@ -413,4 +413,4 @@ Copyright (c) 2010-2012 Coda Hale
 
 Copyright (c) 2012-2014 Simple Finance Technology
 
-Published under The MIT License, see LICENSE
+Published under The MIT License, see [`LICENSE.md`](LICENSE.md)
