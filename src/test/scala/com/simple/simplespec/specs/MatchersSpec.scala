@@ -6,8 +6,7 @@ import com.simple.simplespec.{Spec, Matchables, Matchers}
 import com.simple.simplespec.matchers.{PropErrorMatcher, HeldPropertyMatcher,
   ProvedPropertyMatcher}
 import org.scalacheck.Prop.Arg
-import org.scalacheck.Test.{Result, Passed, Proved, Failed, Exhausted,
-  PropException, GenException}
+import org.scalacheck.Test.{Result, Passed, Proved, Failed, Exhausted, PropException}
 import org.scalacheck.util.FreqMap
 
 class ExceptionAssertionSpec extends Matchables with Matchers {
@@ -309,16 +308,8 @@ class PropertyMatchersSpec extends Spec {
   val propEx = Result(
     PropException(args, new RuntimeException("whoops"), Set()),
     0, 0, fm, 0L)
-  val genEx = Result(GenException(new ArithmeticException),
-                     0, 0, fm, 0L)
 
   class `Property Error Matcher` extends PropErrorMatcher {
-    @Test def `Exceptions generating data are re-thrown` {
-      evaluating {
-        throwIfError(genEx)
-      }.must(throwA[RuntimeException])
-    }
-
     @Test def `Exceptions evaluating properties data are re-thrown` {
       evaluating {
         throwIfError(propEx)

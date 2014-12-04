@@ -4,9 +4,9 @@
  */
 package com.simple.simplespec.matchers
 
+import org.hamcrest.{Description, BaseMatcher}
 import org.scalacheck.Test
 import org.scalacheck.util.Pretty
-import org.hamcrest.{Description, BaseMatcher}
 
 trait PropErrorMatcher {
   private def pretty(r: Test.Result): String = {
@@ -18,8 +18,6 @@ trait PropErrorMatcher {
       case Test.PropException(_, e, _) =>
         throw new RuntimeException(pretty(r), e)
 
-      case Test.GenException(e) =>
-        throw new RuntimeException(pretty(r), e)
       case _ =>
     }
   }
