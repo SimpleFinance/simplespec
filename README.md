@@ -1,12 +1,20 @@
 simplespec
 ==========
 
+(**NOTE**: This project is **no longer actively maintained**. For an
+actively developed replacement, we recommend [ScalaTest]
+(http://www.scalatest.org). If you have any interest in taking over
+maintenance and development, please [file an issue]
+(https://github.com/SimpleFinance/simplespec/issues/new).)
+
 *No seriously, keep it simple.*
 
-**simplespec** is a thin Scala wrapper over [JUnit](http://www.junit.org/),
-the most commonly-used test framework on the JVM. simplespec was originally written
-by Coda Hale and is now maintained and developed by Simple. The library features
-extensible Hamcrest matchers, easy mocks, and other niceties.
+**simplespec** is a thin Scala wrapper over
+[JUnit](http://www.junit.org/), the most commonly-used test framework on
+the JVM. simplespec was originally written by Coda Hale and was
+subsequently maintained and developed by Simple until June 2016. The
+library features extensible Hamcrest matchers, easy mocks, and other
+niceties.
 
 <img src="https://travis-ci.org/SimpleFinance/simplespec.png" />
 
