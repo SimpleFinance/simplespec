@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.simple</groupId>
-    <artifactId>simplespec_2.11</artifactId>
-    <version>0.8.4</version>
+    <artifactId>simplespec_2.12</artifactId>
+    <version>0.9.0</version>
     <packaging>jar</packaging>
 
     <name>simplespec for Scala ${scala.version}</name>
@@ -14,8 +14,8 @@
     <description>simplespec is a thin Scala wrapper over JUnit, featuring Hamcrest matchers, easy mocks, and literate test descriptions.</description>
 
     <properties>
-        <scala.major.version>2.11</scala.major.version>
-        <scala.version>${scala.major.version}.4</scala.version>
+        <scala.major.version>2.12</scala.major.version>
+        <scala.version>${scala.major.version}.1</scala.version>
     </properties>
 
     <developers>
@@ -91,7 +91,7 @@
         <dependency>
             <groupId>org.scalacheck</groupId>
             <artifactId>scalacheck_${scala.major.version}</artifactId>
-            <version>1.12.0</version>
+            <version>1.13.4</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.scala-lang</groupId>
@@ -143,8 +143,18 @@
                 <configuration>
                     <verbose>true</verbose>
                     <args>
-                        <arg>-unchecked</arg>
+                        <arg>-target:jvm-1.8</arg>
                         <arg>-deprecation</arg>
+                        <arg>-feature</arg>
+                        <arg>-unchecked</arg>
+                        <arg>-Xfatal-warnings</arg>
+                        <!--<arg>-Xlint</arg>-->
+                        <arg>-Yno-adapted-args</arg>
+                        <arg>-language:implicitConversions</arg>
+                        <arg>-Ywarn-dead-code</arg>
+                        <arg>-Ywarn-numeric-widen</arg>
+                        <!--<arg>-Ywarn-value-discard</arg>-->
+                        <arg>-Ywarn-unused</arg>
                     </args>
                     <charset>UTF-8</charset>
                 </configuration>
@@ -154,8 +164,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>

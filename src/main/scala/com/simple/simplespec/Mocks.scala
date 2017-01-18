@@ -235,7 +235,7 @@ class OrderedVerificationContext(inOrder: InOrder) {
 }
 
 class FriendlyArgumentCaptor[A](captor: ArgumentCaptor[A]) {
-  import scala.collection.JavaConversions._
+  import scala.collection.JavaConverters._
 
   /**
    * Returns the captured argument value, if any. If the argument was passed
@@ -246,5 +246,5 @@ class FriendlyArgumentCaptor[A](captor: ArgumentCaptor[A]) {
   /**
    * Returns the sequence of captured argument values.
    */
-  def allValues = captor.getAllValues.toSeq
+  def allValues = captor.getAllValues.asScala.toSeq
 }

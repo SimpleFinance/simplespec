@@ -7,7 +7,7 @@ import com.simple.simplespec.{SpecRunner, Spec}
 import org.junit.{Ignore, Test}
 import org.junit.runner.notification.{RunNotifier, Failure, RunListener}
 import org.junit.runners.model.InitializationError
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 class SpecRunnerSpec {
   @Test
@@ -19,19 +19,19 @@ class SpecRunnerSpec {
     assertEquals("com.simple.simplespec.specs.SpecExample", desc.getClassName)
     assertNull(desc.getMethodName)
     assertEquals(classOf[SpecExample], desc.getTestClass)
-    assertEquals(3, desc.getChildren.size())
+    assertEquals(3L, desc.getChildren.size().toLong)
 
     // Child ordering changes between versions of Scala, so we sort them.
     {
-      val emptySet = desc.getChildren.sortBy(_.getDisplayName).apply(2)
+      val emptySet = desc.getChildren.asScala.sortBy(_.getDisplayName).apply(2)
       assertEquals("An empty set", emptySet.getDisplayName)
       assertEquals("An empty set", emptySet.getClassName)
       assertNull(emptySet.getMethodName)
       assertNull(emptySet.getTestClass)
-      assertEquals(2, emptySet.getChildren.size())
+      assertEquals(2L, emptySet.getChildren.size().toLong)
 
       {
-        val hasZero = emptySet.getChildren.sortBy(_.getDisplayName).apply(0)
+        val hasZero = emptySet.getChildren.asScala.sortBy(_.getDisplayName).apply(0)
         assertEquals("has a size of zero(com.simple.simplespec.specs.SpecExample$An$u0020empty$u0020set)", hasZero.getDisplayName)
         assertEquals("com.simple.simplespec.specs.SpecExample$An$u0020empty$u0020set", hasZero.getClassName)
         assertEquals("has a size of zero", hasZero.getMethodName)
@@ -39,7 +39,7 @@ class SpecRunnerSpec {
       }
 
       {
-        val isEmpty = emptySet.getChildren.sortBy(_.getDisplayName).apply(1)
+        val isEmpty = emptySet.getChildren.asScala.sortBy(_.getDisplayName).apply(1)
         assertEquals("is empty(com.simple.simplespec.specs.SpecExample$An$u0020empty$u0020set)", isEmpty.getDisplayName)
         assertEquals("com.simple.simplespec.specs.SpecExample$An$u0020empty$u0020set", isEmpty.getClassName)
         assertEquals("is empty", isEmpty.getMethodName)
@@ -48,15 +48,15 @@ class SpecRunnerSpec {
     }
 
     {
-      val oneNumber = desc.getChildren.sortBy(_.getDisplayName).apply(0)
+      val oneNumber = desc.getChildren.asScala.sortBy(_.getDisplayName).apply(0)
       assertEquals("A set with one number", oneNumber.getDisplayName)
       assertEquals("A set with one number", oneNumber.getClassName)
       assertNull(oneNumber.getMethodName)
       assertNull(oneNumber.getTestClass)
-      assertEquals(3, oneNumber.getChildren.size())
+      assertEquals(3L, oneNumber.getChildren.size().toLong)
 
       {
-        val hasOne = oneNumber.getChildren.sortBy(_.getDisplayName).apply(0)
+        val hasOne = oneNumber.getChildren.asScala.sortBy(_.getDisplayName).apply(0)
         assertEquals("has a size of one(com.simple.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number)", hasOne.getDisplayName)
         assertEquals("com.simple.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number", hasOne.getClassName)
         assertEquals("has a size of one", hasOne.getMethodName)
@@ -64,7 +64,7 @@ class SpecRunnerSpec {
       }
 
       {
-        val notEmpty = oneNumber.getChildren.sortBy(_.getDisplayName).apply(2)
+        val notEmpty = oneNumber.getChildren.asScala.sortBy(_.getDisplayName).apply(2)
         assertEquals("is not empty(com.simple.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number)", notEmpty.getDisplayName)
         assertEquals("com.simple.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number", notEmpty.getClassName)
         assertEquals("is not empty", notEmpty.getMethodName)
@@ -72,15 +72,15 @@ class SpecRunnerSpec {
       }
 
       {
-        val withRemoved = oneNumber.getChildren.sortBy(_.getDisplayName).apply(1)
+        val withRemoved = oneNumber.getChildren.asScala.sortBy(_.getDisplayName).apply(1)
         assertEquals("having had that number removed", withRemoved.getDisplayName)
         assertEquals("having had that number removed", withRemoved.getClassName)
         assertNull(withRemoved.getMethodName)
         assertNull(withRemoved.getTestClass)
-        assertEquals(2, withRemoved.getChildren.size())
+        assertEquals(2L, withRemoved.getChildren.size().toLong)
 
         {
-          val hasZero = withRemoved.getChildren.sortBy(_.getDisplayName).apply(0)
+          val hasZero = withRemoved.getChildren.asScala.sortBy(_.getDisplayName).apply(0)
           assertEquals("has a size of zero(com.simple.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number$having$u0020had$u0020that$u0020number$u0020removed)", hasZero.getDisplayName)
           assertEquals("com.simple.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number$having$u0020had$u0020that$u0020number$u0020removed", hasZero.getClassName)
           assertEquals("has a size of zero", hasZero.getMethodName)
@@ -88,7 +88,7 @@ class SpecRunnerSpec {
         }
 
         {
-          val isEmpty = withRemoved.getChildren.sortBy(_.getDisplayName).apply(1)
+          val isEmpty = withRemoved.getChildren.asScala.sortBy(_.getDisplayName).apply(1)
           assertEquals("is empty(com.simple.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number$having$u0020had$u0020that$u0020number$u0020removed)", isEmpty.getDisplayName)
           assertEquals("com.simple.simplespec.specs.SpecExample$A$u0020set$u0020with$u0020one$u0020number$having$u0020had$u0020that$u0020number$u0020removed", isEmpty.getClassName)
           assertEquals("is empty", isEmpty.getMethodName)
@@ -109,7 +109,7 @@ class SpecRunnerSpec {
     runner.run(notifier)
 
     // The order in which they run is dependent on the Scala compiler, so we only check size.
-    assertEquals(16, listener.events.size)
+    assertEquals(16L, listener.events.size.toLong)
     // Check the composition.
     assertEquals(listener.events.toSet,
       Set(
@@ -139,8 +139,11 @@ class SpecRunnerSpec {
     notifier.addListener(listener)
     runner.run(notifier)
 
+    // The order in which they run is dependent on the Scala compiler, so we only check size.
+    assertEquals(7L, listener.events.size.toLong)
+    // Check the composition.
     assertEquals(
-      Vector(
+      Set(
         ('started, "should fail"),
         ('failure, "java.lang.AssertionError:should fail"),
         ('finished, "should fail"),
@@ -149,20 +152,20 @@ class SpecRunnerSpec {
         ('failure, "java.lang.RuntimeException:should explode"),
         ('finished, "should explode")
       ),
-      listener.events
+      listener.events.toSet
     )
   }
 
   @Test
   def mustExplodeWhenNoTests() {
-    import scala.collection.JavaConversions._
+    import scala.collection.JavaConverters._
     
     try {
       new SpecRunner(classOf[InvalidExample])
       fail("expected an InitializationError but didn't see one")
     } catch {
       case e: InitializationError => {
-        assertTrue(e.getCauses.exists { _.getMessage == "No runnable methods" })
+        assertTrue(e.getCauses.asScala.exists { _.getMessage == "No runnable methods" })
       }
     }
   }
@@ -174,7 +177,7 @@ class SpecRunnerSpec {
 }
 
 class RecordingRunListener extends RunListener {
-  var events = Vector.empty[(Symbol, String)]
+  var events = List.empty[(Symbol, String)]
 
   override def testAssumptionFailure(failure: Failure) {
     events = events :+ (('assumptionFailure, failure.toString))
@@ -273,7 +276,7 @@ class BustedSpecExample extends Spec {
 
   class `A failing test` {
     @Test def `should fail` = {
-      assertEquals(1, 2)
+      assertEquals(1L, 2L)
     }
   }
 

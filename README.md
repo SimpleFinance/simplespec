@@ -22,11 +22,11 @@ niceties.
 Requirements
 ------------
 
-* Scala 2.11.0
+* Scala 2.12.1
 * JUnit 4.11
 * Mockito 1.9.5
 
-(Scala 2.10.2, 2.9.1, and 2.9.2 are supported in simplespec 0.8.4, 0.6.0, and 0.7.0, respectively.)
+(Scala 2.11.0 & 2.10.2, 2.9.1, and 2.9.2 are supported in simplespec 0.8.4, 0.6.0, and 0.7.0, respectively.)
 
 
 Getting Started
@@ -38,7 +38,19 @@ Getting Started
 <dependencies>
     <dependency>
         <groupId>com.simple</groupId>
-        <artifactId>simplespec_2.11.0</artifactId>
+        <artifactId>simplespec_2.12</artifactId>
+        <version>0.9.0</version>
+    </dependency>
+</dependencies>
+```
+
+If you are on Scala 2.11.0, you should use:
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.simple</groupId>
+        <artifactId>simplespec_2.11</artifactId>
         <version>0.8.4</version>
     </dependency>
 </dependencies>

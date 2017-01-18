@@ -21,7 +21,7 @@ class MockSpec extends Matchables with Matchers with Mocks {
   @Test
   def mustReturnAnsweredMethods() {
     val thing = mock[MockableThing]
-    thing.number(any).answersWith { i =>
+    thing.number(any[Int]).answersWith { i =>
       i.getArguments.apply(0).asInstanceOf[Int] % 2
     }
 
@@ -75,10 +75,10 @@ class MockSpec extends Matchables with Matchers with Mocks {
       verify.exactly(12)(thing).poop("never happened")
     }.must(throwAn[AssertionError])
 
-    verify.exactly(2)(thing).poop(isNotNull)
+    verify.exactly(2)(thing).poop(isNotNull[String])
 
     evaluating {
-      verify.one(thing).poop(isNull)
+      verify.one(thing).poop(isNull[String])
     }.must(throwAn[AssertionError])
   }
 
