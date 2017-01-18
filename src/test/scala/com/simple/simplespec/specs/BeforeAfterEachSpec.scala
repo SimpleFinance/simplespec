@@ -1,7 +1,7 @@
 package com.simple.simplespec.specs
 
 import java.util.concurrent.CopyOnWriteArrayList
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import org.junit.Test
 import org.junit.runner.notification.RunNotifier
 import com.simple.simplespec._
@@ -14,8 +14,8 @@ class BeforeAfterEachSpec extends Matchers {
     val notifier = new RunNotifier
     runner.run(notifier)
 
-    BeforeAfterEachExample.befores.toList.must(be(List("BeforeAfterEachExample", "Doing a thing", "with another thing", "<test>")))
-    BeforeAfterEachExample.afters.toList.must(be(List("<test>", "with another thing", "Doing a thing", "BeforeAfterEachExample")))
+    BeforeAfterEachExample.befores.asScala.toList.must(be(List("BeforeAfterEachExample", "Doing a thing", "with another thing", "<test>")))
+    BeforeAfterEachExample.afters.asScala.toList.must(be(List("<test>", "with another thing", "Doing a thing", "BeforeAfterEachExample")))
   }
 }
 
@@ -33,34 +33,34 @@ class BeforeAfterEachExample extends Spec {
   import BeforeAfterEachExample._
 
   override def beforeEach() {
-    befores += "BeforeAfterEachExample"
+    befores.add("BeforeAfterEachExample")
   }
 
   override def afterEach() {
-    afters += "BeforeAfterEachExample"
+    afters.add("BeforeAfterEachExample")
   }
 
   class `Doing a thing` extends BeforeAndAfterEach {
     override def beforeEach() {
-      befores += "Doing a thing"
+      befores.add("Doing a thing")
     }
 
     override def afterEach() {
-      afters += "Doing a thing"
+      afters.add("Doing a thing")
     }
 
     class `with another thing` extends BeforeAndAfterEach {
       override def beforeEach() {
-        befores += "with another thing"
+        befores.add("with another thing")
       }
 
       override def afterEach() {
-        afters += "with another thing"
+        afters.add("with another thing")
       }
 
       @Test def `poops` = {
-        befores += "<test>"
-        afters += "<test>"
+        befores.add("<test>")
+        afters.add("<test>")
       }
     }
   }

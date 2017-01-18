@@ -61,10 +61,10 @@ class InnerClassRunner(scope: List[Class[_]], klass: Class[_]) extends BlockJUni
   override def getName = NameTransformer.decode(klass.getSimpleName)
 
   override def collectInitializationErrors(errors: java.util.List[Throwable]) {
-    import scala.collection.JavaConversions._
+    import scala.collection.JavaConverters._
     val allErrors = new ArrayList[Throwable]
     super.collectInitializationErrors(allErrors)
-    for (e <- allErrors) {
+    for (e <- allErrors.asScala) {
       if (!ignoredError(e.getMessage)) {
         errors.add(e)
       }
@@ -77,7 +77,7 @@ class InnerClassRunner(scope: List[Class[_]], klass: Class[_]) extends BlockJUni
   }
 
   override def methodInvoker(method: FrameworkMethod, test: AnyRef) = {
-    import scala.collection.JavaConversions._
+    import scala.collection.JavaConverters._
 
     def traverseInstances(obj: Object): List[Object] = {
       if (obj.getClass.getEnclosingClass == null) {
@@ -94,14 +94,14 @@ class InnerClassRunner(scope: List[Class[_]], klass: Class[_]) extends BlockJUni
     val withBefores = instances.foldLeft(statement) { (stmt, obj) =>
       if (classOf[BeforeEach].isAssignableFrom(obj.getClass)) {
         val method = obj.getClass.getMethod("beforeEach")
-        new RunBefores(stmt, List(new FrameworkMethod(method)), obj)
+        new RunBefores(stmt, List(new FrameworkMethod(method)).asJava, obj)
       } else stmt
     }
 
     val withAfters = instances.foldLeft(withBefores) { (stmt, obj) =>
       if (classOf[AfterEach].isAssignableFrom(obj.getClass)) {
         val method = obj.getClass.getMethod("afterEach")
-        new RunAfters(stmt, List(new FrameworkMethod(method)), obj)
+        new RunAfters(stmt, List(new FrameworkMethod(method)).asJava, obj)
       } else stmt
     }
     
