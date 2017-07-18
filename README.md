@@ -22,7 +22,8 @@ niceties.
 Requirements
 ------------
 
-* Scala 2.11.0
+* Scala 2.11.8
+* JDK 8+
 * JUnit 4.11
 * Mockito 1.9.5
 
@@ -38,8 +39,8 @@ Getting Started
 <dependencies>
     <dependency>
         <groupId>com.simple</groupId>
-        <artifactId>simplespec_2.11.0</artifactId>
-        <version>0.8.4</version>
+        <artifactId>simplespec_2.11</artifactId>
+        <version>0.8.5</version>
     </dependency>
 </dependencies>
 ```
@@ -419,6 +420,6 @@ License
 
 Copyright (c) 2010-2012 Coda Hale
 
-Copyright (c) 2012-2014 Simple Finance Technology
+Copyright (c) 2012-2017 Simple Finance Technology
 
 Published under The MIT License, see [`LICENSE.md`](LICENSE.md)
