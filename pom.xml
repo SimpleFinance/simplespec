@@ -6,7 +6,7 @@
 
     <groupId>com.simple</groupId>
     <artifactId>simplespec_2.11</artifactId>
-    <version>0.8.4</version>
+    <version>0.8.5</version>
     <packaging>jar</packaging>
 
     <name>simplespec for Scala ${scala.version}</name>
@@ -14,8 +14,13 @@
     <description>simplespec is a thin Scala wrapper over JUnit, featuring Hamcrest matchers, easy mocks, and literate test descriptions.</description>
 
     <properties>
+        <java.major.version>1.8</java.major.version>
         <scala.major.version>2.11</scala.major.version>
-        <scala.version>${scala.major.version}.4</scala.version>
+        <scala.version>${scala.major.version}.8</scala.version>
+
+        <encoding>UTF-8</encoding>
+        <project.build.sourceEncoding>${encoding}</project.build.sourceEncoding>
+        <file.encoding>${encoding}</file.encoding>
     </properties>
 
     <developers>
@@ -146,7 +151,7 @@
                         <arg>-unchecked</arg>
                         <arg>-deprecation</arg>
                     </args>
-                    <charset>UTF-8</charset>
+                    <charset>${encoding}</charset>
                 </configuration>
             </plugin>
             <plugin>
@@ -154,9 +159,9 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
-                    <encoding>UTF-8</encoding>
+                    <source>${java.major.version}</source>
+                    <target>${java.major.version}</target>
+                    <charset>${encoding}</charset>
                 </configuration>
             </plugin>
             <plugin>
@@ -190,7 +195,7 @@
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
-                    <encoding>UTF-8</encoding>
+                    <charset>${encoding}</charset>
                 </configuration>
             </plugin>
             <plugin>
